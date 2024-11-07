@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masukkan Kode Verifikasi</title>
+    <title>Masukkan Kode</title>
     <style>
         body {
             font-family: "Courier New", monospace;
@@ -15,6 +15,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            flex-direction: column;
         }
 
         .container {
@@ -28,6 +29,7 @@
             border-radius: 8px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
             text-align: center;
+            flex-grow: 1;
         }
 
         h2 {
@@ -88,6 +90,11 @@
             font-size: 12px;
             color: #999;
             text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            padding: 10px 0;
+            background-color: #1c1c1c;
         }
 
         .error {
@@ -96,35 +103,39 @@
             margin-top: 10px;
         }
 
+        /* Styling untuk link mendapatkan kode */
         .get-code-link {
-            margin-top: 20px;
             font-size: 14px;
             color: #66ff66;
-            text-decoration: none;
-        }
-
-        .get-code-link:hover {
-            text-decoration: underline;
+            margin-top: 10px;
+            display: block;
         }
     </style>
     <script>
+        // 10 Kode Verifikasi yang Diberikan oleh Admin
         const validCodes = [
             "A1b2C3d4E5", "F6g7H8i9J0", "K1l2M3n4O5", "P6q7R8s9T0", "U1v2W3x4Y5",
             "Z6a7B8c9D0", "E1f2G3h4I5", "J6k7L8m9N0", "O1p2Q3r4S5", "T6u7V8w9X0"
         ];
 
+        // Fungsi untuk memverifikasi kode
         function verifyCode(event) {
-            event.preventDefault(); 
+            event.preventDefault(); // Menghentikan pengiriman form sebelum verifikasi
+
             const userCode = document.getElementById("kode").value.trim();
             const errorMessage = document.getElementById("error-message");
 
+            // Periksa apakah kode yang dimasukkan valid
             if (validCodes.includes(userCode)) {
+                // Jika kode valid, ganti input dengan 🔥
                 document.getElementById("kode").value = "🔥".repeat(userCode.length);
-                errorMessage.textContent = "";
+                errorMessage.textContent = ""; // Hapus pesan error jika valid
+                // Redirect setelah 1 detik untuk transisi yang halus
                 setTimeout(() => {
-                    window.location.href = "home.html";
+                    window.location.href = "home.html"; // Arahkan ke halaman home setelah verifikasi
                 }, 1000);
             } else {
+                // Jika kode salah, tampilkan pesan error
                 errorMessage.textContent = "Kode yang Anda masukkan salah. Coba lagi.";
             }
         }
@@ -141,9 +152,10 @@
             <button type="submit">Lanjutkan</button>
         </form>
         <p id="error-message" class="error"></p>
-        <p class="footer">Anda harus menunggu 1x24 jam untuk kode verifikasi.</p>
-        <!-- Link ke halaman untuk mendapatkan kode verifikasi -->
         <a href="getcode.html" class="get-code-link">Klik di sini untuk mendapatkan kode verifikasi dari admin.</a>
+    </div>
+    <div class="footer">
+        <p>Pastikan Anda telah mendapatkan kode dari admin untuk melanjutkan.</p>
     </div>
 </body>
 </html>
