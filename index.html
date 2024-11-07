@@ -37,14 +37,18 @@
         .input-container {
             position: relative;
             margin: 20px 0;
-            width: 100%;
+            width: 100%; /* Memastikan input tidak melebar */
             max-width: 600px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .input-container input {
             padding: 15px 20px 15px 60px; /* Memberikan padding kiri untuk ikon */
             margin: 10px 0;
             width: 100%;
+            max-width: 500px; /* Membatasi lebar input */
             background-color: #222; /* Latar belakang input lebih gelap */
             border: 1px solid #444;
             color: #f0f0f0; /* Teks dalam input */
@@ -61,7 +65,8 @@
             top: 50%;
             transform: translateY(-50%);
             font-size: 16px;
-            color: #888;
+            font-weight: bold; /* Tulisan tebal */
+            color: #fff; /* Warna putih untuk teks */
         }
 
         button {
@@ -102,7 +107,7 @@
 
     <!-- Formulir 1 untuk verifikasi alamat Onion -->
     <div class="input-container">
-        <input type="text" id="onionAddress" placeholder="Masukkan alamat Onion Anda" />
+        <input type="text" id="onionAddress" placeholder="Masukkan alamat Onion Anda" oninput="checkForSpaces()" />
         <span class="onion-label">.onion</span> <!-- Label untuk menunjukkan .onion -->
     </div>
     <button onclick="verifyOnion()">Verifikasi Onion</button>
@@ -165,6 +170,15 @@
             // Lanjutkan ke halaman pembelian atau proses lainnya
         } else {
             alert("Kode Akses Salah! Coba lagi.");
+        }
+    }
+
+    // Fungsi untuk mendeteksi jika ada spasi di input dan mengosongkan field jika ada
+    function checkForSpaces() {
+        const onionAddress = document.getElementById('onionAddress').value;
+        if (onionAddress.includes(" ")) {
+            document.getElementById('onionAddress').value = ''; // Kosongkan field jika ada spasi
+            alert("Alamat Onion tidak boleh mengandung spasi. Silakan masukkan kembali.");
         }
     }
 </script>
