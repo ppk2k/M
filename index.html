@@ -7,7 +7,7 @@
     <style>
         /* Tema untuk halaman seperti situs Tor */
         body {
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Arial', sans-serif; /* Menggunakan font yang lebih jelas */
             background-color: #1a1a1a; /* Warna latar belakang gelap */
             color: #f0f0f0; /* Teks terang */
             margin: 0;
@@ -93,6 +93,16 @@
                 padding: 15px;
             }
         }
+
+        .admin-info {
+            background-color: #444;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 14px;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
@@ -107,6 +117,12 @@
     <button onclick="verifyOnion()">Verifikasi Onion</button>
 
     <div id="status"></div>
+
+    <!-- Informasi tentang Onion Admin -->
+    <div class="admin-info">
+        <h4>Alamat Onion Admin</h4>
+        <p>Untuk mengakses halaman admin, masukkan alamat .onion yang benar. Admin tidak bisa diakses oleh publik lainnya.</p>
+    </div>
     
     <!-- Formulir 2 untuk memasukkan kode akses (sembunyi hingga Onion terverifikasi) -->
     <div id="purchaseSection" style="display: none;">
@@ -131,7 +147,7 @@
 
         // Validasi untuk memastikan tidak ada spasi dalam alamat Onion
         if (onionAddress.includes(" ")) {
-            statusDiv.innerHTML = "Alamat Onion tidak boleh mengandung spasi.";
+            statusDiv.innerHTML = "Alamat Onion tidak boleh mengandung spasi. Silakan coba lagi.";
             purchaseSection.style.display = "none";
             errorSection.style.display = "block";
             document.getElementById('onionAddress').value = ''; // Mengosongkan input
