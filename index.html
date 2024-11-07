@@ -18,10 +18,9 @@
         }
 
         .container {
-            width: 100%;
-            max-width: 360px; /* Batas lebar maksimum untuk perangkat ponsel */
+            width: 90%;
+            max-width: 360px;
             padding: 20px;
-            margin: 0 10px; /* Ruang seimbang di kiri dan kanan */
             background-color: #1c1c1c;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -48,23 +47,26 @@
         }
 
         input[type="text"] {
-            width: 100%;
+            width: calc(100% - 75px); /* Mengurangi lebar untuk menyesuaikan ruang teks ".onion" */
             padding: 10px;
-            padding-right: 70px; /* Ruang untuk teks ".onion" */
             font-size: 16px;
             background-color: #333;
             border: 1px solid #666;
             color: #e0e0e0;
             border-radius: 5px;
+            margin-right: 5px;
         }
 
         .onion-suffix {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            color: #e0e0e0;
+            display: inline-block;
+            padding: 8px;
             font-size: 16px;
-            pointer-events: none;
+            font-weight: bold;
+            color: #fff;
+            background-color: #666;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            vertical-align: middle;
         }
 
         button {
@@ -99,7 +101,7 @@
         }
     </style>
     <script>
-        const validDomain = "blackangels.onion"; // Ganti dengan nama domain Anda yang sebenarnya tanpa ".onion"
+        const validDomain = "alamat_onion_anda"; // Ganti dengan nama domain Anda yang sebenarnya tanpa ".onion"
 
         function validateDomain() {
             var onionInput = document.getElementById('onion').value.trim();
