@@ -47,26 +47,24 @@
         }
 
         input[type="text"] {
-            width: calc(100% - 75px); /* Mengurangi lebar untuk menyesuaikan ruang teks ".onion" */
+            width: 100%;
             padding: 10px;
+            padding-right: 60px;
             font-size: 16px;
             background-color: #333;
             border: 1px solid #666;
             color: #e0e0e0;
             border-radius: 5px;
-            margin-right: 5px;
         }
 
         .onion-suffix {
-            display: inline-block;
-            padding: 8px;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
             font-size: 16px;
             font-weight: bold;
             color: #fff;
-            background-color: #666;
-            border: 1px solid #e0e0e0;
-            border-radius: 5px;
-            vertical-align: middle;
         }
 
         button {
@@ -128,7 +126,7 @@
     <div class="container">
         <h2>Verifikasi Domain Onion</h2>
         <form action="kode.html" method="get" onsubmit="return validateDomain()">
-            <label for="onion">Masukkan Domain Anda (tanpa ".onion"):</label>
+            <label for="onion">Masukkan Domain Anda:</label>
             <div class="input-container">
                 <input type="text" id="onion" name="onion" required placeholder="Masukkan domain Anda" onkeydown="clearOnSpace(event)">
                 <span class="onion-suffix">.onion</span>
