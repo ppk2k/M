@@ -47,14 +47,14 @@
         }
 
         input[type="text"] {
-            width: 100%;
+            width: calc(100% - 50px); /* Mengurangi lebar sedikit untuk menyesuaikan ruang teks ".onion" */
             padding: 10px;
-            padding-right: 60px;
             font-size: 16px;
             background-color: #333;
             border: 1px solid #666;
             color: #e0e0e0;
             border-radius: 5px;
+            padding-right: 50px;
         }
 
         .onion-suffix {
@@ -99,7 +99,7 @@
         }
     </style>
     <script>
-        const validDomain = "alamat_onion_anda"; // Ganti dengan nama domain Anda yang sebenarnya tanpa ".onion"
+        const validDomain = "blackangels"; // Ganti dengan nama domain Anda yang sebenarnya tanpa ".onion"
 
         function validateDomain() {
             var onionInput = document.getElementById('onion').value.trim();
