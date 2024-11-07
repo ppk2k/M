@@ -42,9 +42,9 @@
         }
 
         .input-container input {
-            padding: 15px 20px 15px 40px; /* Memberikan padding kiri untuk ikon */
+            padding: 15px 20px 15px 60px; /* Memberikan padding kiri untuk ikon */
             margin: 10px 0;
-            width: 80%;
+            width: 100%;
             background-color: #222; /* Latar belakang input lebih gelap */
             border: 1px solid #444;
             color: #f0f0f0; /* Teks dalam input */
@@ -57,7 +57,7 @@
 
         .onion-label {
             position: absolute;
-            right: 10px;
+            left: 10px;
             top: 50%;
             transform: translateY(-50%);
             font-size: 16px;
@@ -93,22 +93,13 @@
                 padding: 15px;
             }
         }
-
-        .admin-info {
-            background-color: #444;
-            color: #fff;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 20px;
-            font-size: 14px;
-            text-align: left;
-        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h2>Verifikasi Alamat Onion</h2>
+
     <!-- Formulir 1 untuk verifikasi alamat Onion -->
     <div class="input-container">
         <input type="text" id="onionAddress" placeholder="Masukkan alamat Onion Anda" />
@@ -118,12 +109,6 @@
 
     <div id="status"></div>
 
-    <!-- Informasi tentang Onion Admin -->
-    <div class="admin-info">
-        <h4>Alamat Onion Admin</h4>
-        <p>Untuk mengakses halaman admin, masukkan alamat .onion yang benar. Admin tidak bisa diakses oleh publik lainnya.</p>
-    </div>
-    
     <!-- Formulir 2 untuk memasukkan kode akses (sembunyi hingga Onion terverifikasi) -->
     <div id="purchaseSection" style="display: none;">
         <h3>Masukkan Kode Akses</h3>
@@ -132,8 +117,8 @@
     </div>
 
     <div id="errorSection" style="display: none;">
-        <h3>Alamat Onion tidak valid atau tidak dapat dihubungi.</h3>
-        <p>Pastikan alamat Onion yang Anda masukkan benar dan terhubung dengan jaringan.</p>
+        <h3>Alamat Onion tidak valid atau mengandung spasi.</h3>
+        <p>Pastikan alamat Onion yang Anda masukkan benar dan tanpa spasi.</p>
     </div>
 </div>
 
@@ -154,17 +139,13 @@
             return;
         }
 
-        // Cek apakah alamat .onion yang dimasukkan adalah alamat admin
-        const adminOnion = "blackangels.onion"; // Ganti dengan alamat Onion admin yang sesungguhnya
+        // Logika untuk memeriksa apakah alamat yang dimasukkan valid (hanya sekedar contoh)
+        const validOnionRegex = /^[a-z2-7]{16,56}\.onion$/;
 
-        // Logika untuk memeriksa apakah alamat yang dimasukkan adalah milik admin
-        if (onionAddress === adminOnion) {
-            statusDiv.innerHTML = "Alamat Onion Admin terverifikasi. Silakan lanjutkan.";
+        // Cek apakah alamat .onion yang dimasukkan sesuai format
+        if (validOnionRegex.test(onionAddress)) {
+            statusDiv.innerHTML = "Alamat Onion terverifikasi.";
             purchaseSection.style.display = "block";
-            errorSection.style.display = "none";
-        } else if (onionAddress.includes(".onion")) {
-            statusDiv.innerHTML = "Alamat Onion valid, tetapi bukan admin. Akses terbatas.";
-            purchaseSection.style.display = "none";
             errorSection.style.display = "none";
         } else {
             statusDiv.innerHTML = "Alamat Onion tidak valid.";
