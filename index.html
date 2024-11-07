@@ -4,42 +4,164 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verifikasi Alamat Onion dan Pembelian</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
+    <style>
+        /* Styling dasar untuk seluruh halaman */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        /* Container utama untuk semua elemen */
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2, h3 {
+            color: #333;
+        }
+
+        /* Styling untuk form */
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            margin-top: 10px;
+            display: block;
+        }
+
+        input[type="text"], input[type="number"], input[type="email"] {
+            padding: 10px;
+            margin: 5px;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+        }
+
+        #status {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        #purchaseSection, #errorSection {
+            margin-top: 30px;
+        }
+
+        /* Responsif untuk perangkat kecil */
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+        }
+    </style>
+    <script>
+        function verifyOnionAddress() {
+            const onionAddress = document.getElementById("onionAddress").value;
+            const onionPattern = /^[a-z2-7]{16}\.onion$/;  // Validasi format
+
+            if (onionPattern.test(onionAddress)) {
+                document.getElementById("status").innerText = "Alamat Onion valid. Memeriksa keaktifan...";
+                document.getElementById("status").style.color = "blue";
+
+                // Kirim permintaan ke backend untuk memeriksa keaktifan alamat Onion
+                fetch('https://blackangels.onion/verify-onion', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ onionAddress })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'active') {
+                        document.getElementById("status").innerText = "Alamat Onion aktif! Silakan lanjutkan ke formulir pembelian.";
+                        document.getElementById("status").style.color = "green";
+                        
+                        // Menyembunyikan verifikasi dan menampilkan formulir pembelian
+                        document.getElementById("codeSection").style.display = "none";
+                        document.getElementById("purchaseSection").style.display = "block";
+                    } else {
+                        document.getElementById("status").innerText = data.message;
+                        document.getElementById("status").style.color = "red";
+                        document.getElementById("errorSection").style.display = "block";
+                    }
+                })
+                .catch(error => {
+                    document.getElementById("status").innerText = "Gagal menghubungi server.";
+                    document.getElementById("status").style.color = "red";
+                    document.getElementById("errorSection").style.display = "block";
+                });
+            } else {
+                document.getElementById("status").innerText = "Alamat Onion tidak valid.";
+                document.getElementById("status").style.color = "red";
+            }
+        }
+    </script>
 </head>
 <body>
-    <div id="codeSection">
-        <h2>Verifikasi Alamat Onion untuk Akses Kode</h2>
-        <p>Masukkan kode untuk melanjutkan. Anda harus memverifikasi alamat Onion terlebih dahulu.</p>
-        
-        <form id="onionVerificationForm">
-            <label for="onionAddress">Masukkan Alamat Onion:</label>
-            <input type="text" id="onionAddress" name="onionAddress" placeholder="Masukkan alamat Onion" required>
-            <button type="button" onclick="verifyOnionAddress()">Verifikasi Alamat</button><br><br>
-        </form>
+    <div class="container">
+        <!-- Verifikasi Kode dan Alamat Onion -->
+        <div id="codeSection">
+            <h2>Verifikasi Alamat Onion untuk Akses Kode</h2>
+            <p>Masukkan alamat Onion untuk melanjutkan. Anda harus memverifikasi alamat Onion terlebih dahulu.</p>
 
-        <p id="status"></p>
-    </div>
+            <form id="onionVerificationForm">
+                <label for="onionAddress">Masukkan Alamat Onion:</label>
+                <input type="text" id="onionAddress" name="onionAddress" placeholder="Masukkan alamat Onion" required>
+                <button type="button" onclick="verifyOnionAddress()">Verifikasi Alamat</button><br><br>
+            </form>
 
-    <div id="purchaseSection" style="display:none;">
-        <h2>Formulir Pembelian</h2>
-        <form id="purchaseForm">
-            <label for="product">Produk yang akan dibeli:</label>
-            <input type="text" id="product" name="product" required><br><br>
-            
-            <label for="price">Harga (dalam Bitcoin):</label>
-            <input type="number" id="price" name="price" min="0.01" step="0.01" required><br><br>
-            
-            <label for="quantity">Jumlah:</label>
-            <input type="number" id="quantity" name="quantity" min="1" required><br><br>
+            <p id="status"></p>
+        </div>
 
-            <button type="submit">Proses Pembelian</button>
-        </form>
-    </div>
+        <!-- Formulir Pembelian -->
+        <div id="purchaseSection" style="display:none;">
+            <h2>Formulir Pembelian</h2>
+            <form id="purchaseForm">
+                <label for="product">Produk yang akan dibeli:</label>
+                <input type="text" id="product" name="product" required><br><br>
 
-    <div id="errorSection" style="display:none;">
-        <h3>Alamat Onion tidak valid atau tidak terverifikasi.</h3>
-        <p>Pastikan Anda memasukkan alamat Onion yang valid dan terhubung dengan server yang tepat.</p>
+                <label for="price">Harga (dalam Bitcoin):</label>
+                <input type="number" id="price" name="price" min="0.01" step="0.01" required><br><br>
+
+                <label for="quantity">Jumlah:</label>
+                <input type="number" id="quantity" name="quantity" min="1" required><br><br>
+
+                <button type="submit">Proses Pembelian</button>
+            </form>
+        </div>
+
+        <!-- Error Section -->
+        <div id="errorSection" style="display:none;">
+            <h3>Alamat Onion tidak valid atau tidak terverifikasi.</h3>
+            <p>Pastikan Anda memasukkan alamat Onion yang valid dan terhubung dengan server yang tepat.</p>
+        </div>
     </div>
 </body>
 </html>
