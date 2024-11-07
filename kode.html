@@ -50,7 +50,7 @@
             max-width: 300px;
         }
 
-        input[type="text"] {
+        input[type="text"], input[type="email"] {
             width: 100%;
             padding: 12px;
             font-size: 16px;
@@ -108,10 +108,33 @@
             margin-top: 10px;
             display: block;
             text-decoration: none;
+            cursor: pointer;
         }
 
         .contact-admin-link:hover {
             text-decoration: underline;
+        }
+
+        .admin-info {
+            display: none;
+            margin-top: 20px;
+            color: #e0e0e0;
+        }
+
+        .admin-form {
+            display: none;
+            margin-top: 20px;
+            color: #e0e0e0;
+            text-align: left;
+        }
+
+        .admin-form input[type="text"], .admin-form input[type="email"] {
+            margin-bottom: 10px;
+        }
+
+        .admin-form button {
+            width: auto;
+            margin-top: 10px;
         }
     </style>
     <script>
@@ -135,10 +158,17 @@
                 errorMessage.textContent = "Kode yang Anda masukkan salah. Coba lagi.";
             }
         }
+
+        function showAdminInfo() {
+            const formDiv = document.getElementById("form-container");
+            formDiv.style.display = "block";
+            const verificationDiv = document.getElementById("verification-container");
+            verificationDiv.style.display = "none";
+        }
     </script>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="verification-container">
         <h2>Verifikasi Kode</h2>
         <form onsubmit="verifyCode(event)">
             <label for="kode">Masukkan Kode Verifikasi:</label>
@@ -148,10 +178,24 @@
             <button type="submit">Lanjutkan</button>
         </form>
         <p id="error-message" class="error"></p>
-        <p>Pastikan Anda telah mendapatkan kode verifikasi dari <a href="mailto:admin@example.com" class="contact-admin-link">admin</a> untuk melanjutkan.</p>
+        <p>Pastikan Anda telah mendapatkan kode verifikasi dari <span class="contact-admin-link" onclick="showAdminInfo()">admin</span> untuk melanjutkan.</p>
     </div>
+
+    <div id="form-container" style="display:none;" class="container">
+        <h2>Formulir Permintaan Kode Verifikasi</h2>
+        <form action="submit-form.php" method="POST">
+            <label for="name">Nama Anda:</label>
+            <input type="text" id="name" name="name" required placeholder="Masukkan nama Anda"><br>
+            <label for="email">Email Anda:</label>
+            <input type="email" id="email" name="email" required placeholder="Masukkan email Anda"><br>
+            <label for="message">Pesan:</label>
+            <textarea id="message" name="message" rows="4" required placeholder="Masukkan pesan Anda"></textarea><br>
+            <button type="submit">Kirim Permintaan Kode</button>
+        </form>
+    </div>
+
     <div class="footer">
-        <p>Hubungi <a href="mailto:admin@example.com" class="contact-admin-link">admin</a> untuk mendapatkan kode verifikasi.</p>
+        <p>Hubungi <span class="contact-admin-link" onclick="showAdminInfo()">admin</span> untuk mendapatkan kode verifikasi.</p>
     </div>
 </body>
 </html>
