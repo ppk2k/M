@@ -3,71 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masukkan Kode Verifikasi</title>
+    <title>Masukkan Kode</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: "Courier New", monospace;
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
-            background-color: #f4f4f4;
         }
+
         .container {
-            width: 100%;
-            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 90%;
+            max-width: 360px;
             padding: 20px;
-            background-color: #fff;
+            background-color: #1c1c1c;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h2 {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             text-align: center;
         }
-        .form-group {
+
+        h2 {
+            font-size: 24px;
+            color: #66ff66;
             margin-bottom: 20px;
         }
+
         label {
             font-size: 16px;
-            margin-bottom: 8px;
+            color: #e0e0e0;
+            margin-bottom: 10px;
+            text-align: center;
             display: block;
         }
+
+        .input-container {
+            position: relative;
+            width: 100%;
+            max-width: 300px;
+        }
+
         input[type="text"] {
             width: 100%;
             padding: 10px;
             font-size: 16px;
-            border: 1px solid #ccc;
+            background-color: #333;
+            border: 1px solid #666;
+            color: #e0e0e0;
             border-radius: 5px;
+            padding-right: 50px;
+            box-sizing: border-box;
         }
+
         button {
             width: 100%;
+            max-width: 300px;
             padding: 10px;
-            background-color: #4CAF50;
+            background-color: #006400;
             color: white;
             border: none;
             border-radius: 5px;
-            cursor: pointer;
             font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
         }
+
         button:hover {
-            background-color: #45a049;
+            background-color: #004d00;
+        }
+
+        p {
+            font-size: 14px;
+            color: #888;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #999;
+            text-align: center;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Masukkan Kode Verifikasi</h2>
+        <h2>098765</h2>
         <form action="home.html" method="get">
-            <div class="form-group">
-                <label for="kode">Kode Verifikasi:</label>
-                <input type="text" id="kode" name="kode" required>
+            <label for="kode">Masukkan Kode Verifikasi:</label>
+            <div class="input-container">
+                <input type="text" id="kode" name="kode" required placeholder="Masukkan kode yang telah dikirim">
             </div>
-            <p style="text-align: center; color: red; font-size: 14px;">
-                Harap tunggu 1x24 jam untuk mendapatkan kode.
-            </p>
-            <button type="submit">Kirim Kode</button>
+            <button type="submit">Lanjutkan</button>
         </form>
+        <p class="footer">Anda harus menunggu 1x24 jam untuk kode verifikasi.</p>
     </div>
 </body>
 </html>
