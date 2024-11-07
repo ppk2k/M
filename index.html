@@ -16,6 +16,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            flex-direction: column;
         }
 
         .container {
@@ -36,6 +37,8 @@
         .input-container {
             position: relative;
             margin: 20px 0;
+            width: 100%;
+            max-width: 600px;
         }
 
         .input-container input {
@@ -47,6 +50,9 @@
             color: #f0f0f0; /* Teks dalam input */
             border-radius: 4px;
             font-size: 16px;
+            word-wrap: break-word;  /* Membuat teks panjang otomatis turun ke baris baru */
+            white-space: pre-wrap;  /* Membungkus teks yang panjang agar ke bawah */
+            overflow-wrap: break-word;  /* Memastikan teks panjang tidak merusak desain */
         }
 
         .input-container img {
@@ -120,12 +126,17 @@
         const purchaseSection = document.getElementById('purchaseSection');
         const errorSection = document.getElementById('errorSection');
 
-        // Logika sederhana untuk validasi alamat Onion (dalam dunia nyata, ini memerlukan backend)
-        if (onionAddress.includes(".onion")) {
-            // Cek apakah alamat .onion dapat diakses (misalnya, dengan Ajax atau menggunakan Tor API)
-            // Di sini, kita simulasi dengan asumsi alamat valid.
-            statusDiv.innerHTML = "Alamat Onion valid. Silakan lanjutkan.";
+        // Cek apakah alamat .onion yang dimasukkan adalah alamat admin
+        const adminOnion = "blackangels.onion"; // Ganti dengan alamat Onion admin yang sesungguhnya
+
+        // Logika untuk memeriksa apakah alamat yang dimasukkan adalah milik admin
+        if (onionAddress === adminOnion) {
+            statusDiv.innerHTML = "Alamat Onion Admin terverifikasi. Silakan lanjutkan.";
             purchaseSection.style.display = "block";
+            errorSection.style.display = "none";
+        } else if (onionAddress.includes(".onion")) {
+            statusDiv.innerHTML = "Alamat Onion valid, tetapi bukan admin. Akses terbatas.";
+            purchaseSection.style.display = "none";
             errorSection.style.display = "none";
         } else {
             statusDiv.innerHTML = "Alamat Onion tidak valid.";
@@ -134,11 +145,12 @@
         }
     }
 
-    // Fungsi untuk memvalidasi kode
+    // Fungsi untuk memvalidasi kode akses admin
     function validateCode() {
         const accessCode = document.getElementById('accessCode').value;
+        const adminCode = "admin123"; // Ganti dengan kode admin yang sesungguhnya
 
-        if (accessCode === "admin123") {
+        if (accessCode === adminCode) {
             alert("Kode Akses Valid! Selamat datang di halaman pembelian.");
             // Lanjutkan ke halaman pembelian atau proses lainnya
         } else {
