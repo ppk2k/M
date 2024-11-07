@@ -8,182 +8,155 @@
         /* Tema untuk halaman seperti situs Tor */
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #1a1a1a; /* Warna latar belakang gelap */
-            color: #f0f0f0; /* Teks terang */
+            background-color: #1a1a1a;
+            color: white;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
-        }
-
-        .container {
-            background-color: #333; /* Warna kontainer abu-abu gelap */
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            width: 100%;
-            max-width: 600px;
             text-align: center;
         }
 
-        h2, h3 {
-            color: #e0e0e0; /* Judul dengan teks terang */
-        }
-
-        /* Kotak input dengan label .onion di sebelah kiri */
-        .input-container {
-            position: relative;
-            margin: 20px 0;
-            width: 100%;
-            display: flex;
-            justify-content: flex-start; /* Mengatur label ke kiri */
-            align-items: center;
-        }
-
-        .input-container input {
-            padding: 15px 20px 15px 60px; /* Memberikan padding kiri untuk ikon */
-            margin: 10px 0;
-            width: 100%;
-            max-width: 500px; /* Membatasi lebar input */
-            background-color: #222; /* Latar belakang input lebih gelap */
-            border: 1px solid #444;
-            color: #f0f0f0; /* Teks dalam input */
-            border-radius: 4px;
-            font-size: 16px;
-            word-wrap: break-word;  /* Membuat teks panjang otomatis turun ke baris baru */
-            white-space: pre-wrap;  /* Membungkus teks yang panjang agar ke bawah */
-            overflow-wrap: break-word;  /* Memastikan teks panjang tidak merusak desain */
-        }
-
-        .onion-label {
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 16px;
-            font-weight: bold; /* Tulisan tebal */
-            color: #fff; /* Warna putih untuk teks */
-        }
-
-        button {
-            background-color: #555; /* Tombol dengan latar belakang gelap */
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        button:hover {
-            background-color: #888; /* Hover effect untuk tombol */
-        }
-
-        #status {
-            margin-top: 20px;
-            font-weight: bold;
-        }
-
-        #purchaseSection, #errorSection {
+        /* Header */
+        h1 {
+            color: white;
             margin-top: 30px;
         }
 
-        /* Responsif pada perangkat kecil */
-        @media (max-width: 600px) {
+        /* Kontainer utama */
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #333;
+            border-radius: 10px;
+        }
+
+        /* Kotak masukan alamat Onion */
+        .input-container {
+            margin-bottom: 20px;
+        }
+
+        .input-container label {
+            font-size: 16px;
+            display: block;
+            text-align: left;
+            margin-bottom: 10px;
+        }
+
+        .input-container input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #555;
+            background-color: #222;
+            color: white;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .input-container input::placeholder {
+            color: #bbb;
+        }
+
+        /* Menampilkan daftar alamat Onion terdaftar */
+        .onion-list {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .onion-list p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        /* Tombol kirim */
+        .submit-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 15px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        /* Responsif untuk perangkat mobile */
+        @media (max-width: 768px) {
             .container {
+                width: 90%;
                 padding: 15px;
             }
+
             .input-container input {
-                font-size: 14px; /* Menyesuaikan ukuran font pada input untuk perangkat kecil */
+                font-size: 14px;
             }
+
+            .submit-btn {
+                font-size: 16px;
+            }
+        }
+
+        /* Notifikasi error atau validasi */
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
+    <h1>Verifikasi Alamat Onion</h1>
+    <div class="container">
+        <div class="input-container">
+            <label for="onion-address">Masukkan Alamat Onion Anda:</label>
+            <input type="text" id="onion-address" placeholder="Masukkan alamat .onion" oninput="validateOnion()">
+            <p id="error-message" class="error"></p>
+        </div>
 
-<div class="container">
-    <h2>Verifikasi Alamat Onion</h2>
+        <div class="onion-list">
+            <h3>Alamat Onion Terdaftar:</h3>
+            <p>example1.onion</p>
+            <p>example2.onion</p>
+            <p>example3.onion</p>
+            <p><strong>blackangels.onion</strong></p> <!-- Alamat Onion Anda yang terdaftar -->
+        </div>
 
-    <!-- Formulir untuk verifikasi alamat Onion -->
-    <div class="input-container">
-        <span class="onion-label">.onion</span> <!-- Label untuk menunjukkan .onion -->
-        <input type="text" id="onionAddress" placeholder="Masukkan alamat Onion Anda" oninput="checkForSpaces()" />
+        <button class="submit-btn" onclick="verifyOnion()">Verifikasi</button>
     </div>
-    <button onclick="verifyOnion()">Verifikasi Onion</button>
 
-    <div id="status"></div>
+    <script>
+        // Daftar alamat .onion yang telah terdaftar
+        const validOnions = [
+            'example1.onion',
+            'example2.onion',
+            'example3.onion',
+            'blackangels.onion'  // Alamat Onion Anda yang terdaftar
+        ];
 
-    <!-- Formulir untuk memasukkan kode akses (sembunyi hingga Onion terverifikasi) -->
-    <div id="purchaseSection" style="display: none;">
-        <h3>Masukkan Kode Akses</h3>
-        <input type="text" id="accessCode" placeholder="Masukkan Kode Akses" />
-        <button onclick="validateCode()">Masukkan Kode</button>
-    </div>
+        function validateOnion() {
+            const onionInput = document.getElementById('onion-address').value;
+            const errorMessage = document.getElementById('error-message');
 
-    <div id="errorSection" style="display: none;">
-        <h3>Alamat Onion tidak valid atau mengandung spasi.</h3>
-        <p>Pastikan alamat Onion yang Anda masukkan benar dan tanpa spasi.</p>
-    </div>
-</div>
-
-<script>
-    // Fungsi untuk memverifikasi alamat Onion
-    function verifyOnion() {
-        const onionAddress = document.getElementById('onionAddress').value.trim();
-        const statusDiv = document.getElementById('status');
-        const purchaseSection = document.getElementById('purchaseSection');
-        const errorSection = document.getElementById('errorSection');
-
-        // Validasi untuk memastikan tidak ada spasi dalam alamat Onion
-        if (onionAddress.includes(" ")) {
-            statusDiv.innerHTML = "Alamat Onion tidak boleh mengandung spasi. Silakan coba lagi.";
-            purchaseSection.style.display = "none";
-            errorSection.style.display = "block";
-            document.getElementById('onionAddress').value = ''; // Mengosongkan input
-            return;
+            // Periksa apakah ada spasi di alamat onion
+            if (onionInput.includes(' ')) {
+                errorMessage.textContent = 'Alamat Onion tidak boleh mengandung spasi.';
+                return;
+            } else {
+                errorMessage.textContent = '';
+            }
         }
 
-        // Logika untuk memeriksa apakah alamat yang dimasukkan valid (hanya sekedar contoh)
-        const validOnionRegex = /^[a-z2-7]{16,56}\.onion$/;
+        function verifyOnion() {
+            const onionInput = document.getElementById('onion-address').value;
+            const errorMessage = document.getElementById('error-message');
 
-        // Cek apakah alamat .onion yang dimasukkan sesuai format
-        if (validOnionRegex.test(onionAddress)) {
-            statusDiv.innerHTML = "Alamat Onion terverifikasi.";
-            purchaseSection.style.display = "block";
-            errorSection.style.display = "none";
-        } else {
-            statusDiv.innerHTML = "Alamat Onion tidak valid.";
-            purchaseSection.style.display = "none";
-            errorSection.style.display = "block";
-            document.getElementById('onionAddress').value = ''; // Mengosongkan input jika alamat tidak valid
+            // Memeriksa apakah alamat Onion sudah terdaftar
+            if (validOnions.includes(onionInput)) {
+                alert("Alamat .onion valid dan terdaftar!");
+                // Lanjutkan ke halaman berikutnya atau proses verifikasi
+            } else {
+                errorMessage.textContent = 'Alamat Onion tidak valid atau tidak terdaftar.';
+            }
         }
-    }
-
-    // Fungsi untuk memvalidasi kode akses admin
-    function validateCode() {
-        const accessCode = document.getElementById('accessCode').value;
-        const adminCode = "admin123"; // Ganti dengan kode admin yang sesungguhnya
-
-        if (accessCode === adminCode) {
-            alert("Kode Akses Valid! Selamat datang di halaman pembelian.");
-            // Lanjutkan ke halaman pembelian atau proses lainnya
-        } else {
-            alert("Kode Akses Salah! Coba lagi.");
-        }
-    }
-
-    // Fungsi untuk mendeteksi jika ada spasi di input dan mengosongkan field jika ada
-    function checkForSpaces() {
-        const onionAddress = document.getElementById('onionAddress').value;
-        if (onionAddress.includes(" ")) {
-            document.getElementById('onionAddress').value = ''; // Kosongkan field jika ada spasi
-            alert("Alamat Onion tidak boleh mengandung spasi. Silakan masukkan kembali.");
-        }
-    }
-</script>
-
+    </script>
 </body>
 </html>
