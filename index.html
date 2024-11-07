@@ -7,7 +7,7 @@
     <style>
         /* Tema untuk halaman seperti situs Tor */
         body {
-            font-family: 'Arial', sans-serif; /* Menggunakan font yang lebih jelas */
+            font-family: 'Arial', sans-serif;
             background-color: #1a1a1a; /* Warna latar belakang gelap */
             color: #f0f0f0; /* Teks terang */
             margin: 0;
@@ -33,14 +33,13 @@
             color: #e0e0e0; /* Judul dengan teks terang */
         }
 
-        /* Kotak input dengan ikon .onion */
+        /* Kotak input dengan label .onion di sebelah kiri */
         .input-container {
             position: relative;
             margin: 20px 0;
-            width: 100%; /* Memastikan input tidak melebar */
-            max-width: 600px;
+            width: 100%;
             display: flex;
-            justify-content: center;
+            justify-content: flex-start; /* Mengatur label ke kiri */
             align-items: center;
         }
 
@@ -97,6 +96,9 @@
             .container {
                 padding: 15px;
             }
+            .input-container input {
+                font-size: 14px; /* Menyesuaikan ukuran font pada input untuk perangkat kecil */
+            }
         }
     </style>
 </head>
@@ -105,16 +107,16 @@
 <div class="container">
     <h2>Verifikasi Alamat Onion</h2>
 
-    <!-- Formulir 1 untuk verifikasi alamat Onion -->
+    <!-- Formulir untuk verifikasi alamat Onion -->
     <div class="input-container">
-        <input type="text" id="onionAddress" placeholder="Masukkan alamat Onion Anda" oninput="checkForSpaces()" />
         <span class="onion-label">.onion</span> <!-- Label untuk menunjukkan .onion -->
+        <input type="text" id="onionAddress" placeholder="Masukkan alamat Onion Anda" oninput="checkForSpaces()" />
     </div>
     <button onclick="verifyOnion()">Verifikasi Onion</button>
 
     <div id="status"></div>
 
-    <!-- Formulir 2 untuk memasukkan kode akses (sembunyi hingga Onion terverifikasi) -->
+    <!-- Formulir untuk memasukkan kode akses (sembunyi hingga Onion terverifikasi) -->
     <div id="purchaseSection" style="display: none;">
         <h3>Masukkan Kode Akses</h3>
         <input type="text" id="accessCode" placeholder="Masukkan Kode Akses" />
