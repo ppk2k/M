@@ -3,107 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halaman Verifikasi Onion</title>
+    <title>Verifikasi Onion</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: "Courier New", monospace;
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
-            background-color: #f4f4f4;
         }
+
         .container {
             width: 100%;
-            max-width: 500px;
+            max-width: 360px; /* Batas lebar maksimum untuk perangkat ponsel */
             padding: 20px;
-            background-color: #fff;
+            margin: 0 10px; /* Ruang seimbang di kiri dan kanan */
+            background-color: #1c1c1c;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             text-align: center;
         }
+
         h2 {
             font-size: 24px;
+            color: #66ff66;
             margin-bottom: 20px;
         }
-        .form-group {
-            margin-bottom: 20px;
-        }
+
         label {
             font-size: 16px;
-            margin-bottom: 8px;
+            color: #e0e0e0;
             display: block;
+            margin-bottom: 10px;
         }
+
+        .input-container {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
         input[type="text"] {
             width: 100%;
             padding: 10px;
+            padding-right: 70px; /* Ruang untuk teks ".onion" */
             font-size: 16px;
-            border: 1px solid #ccc;
+            background-color: #333;
+            border: 1px solid #666;
+            color: #e0e0e0;
             border-radius: 5px;
         }
+
+        .onion-suffix {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #e0e0e0;
+            font-size: 16px;
+            pointer-events: none;
+        }
+
         button {
             width: 100%;
             padding: 10px;
-            background-color: #4CAF50;
+            background-color: #006400;
             color: white;
             border: none;
             border-radius: 5px;
-            cursor: pointer;
             font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
         }
+
         button:hover {
-            background-color: #45a049;
+            background-color: #004d00;
         }
-        p.error {
-            color: red;
+
+        p {
             font-size: 14px;
+            color: #888;
+        }
+
+        p.error {
+            color: #ff6666;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #999;
         }
     </style>
     <script>
-        function validateOnion() {
-            var onionInput = document.getElementById('onion').value;
+        const validDomain = "alamat_onion_anda"; // Ganti dengan nama domain Anda yang sebenarnya tanpa ".onion"
+
+        function validateDomain() {
+            var onionInput = document.getElementById('onion').value.trim();
             var errorMessage = document.getElementById('error-message');
-            // Pastikan inputan sudah ada dan tambahkan ".onion" di belakang jika belum ada
-            if (!onionInput) {
-                errorMessage.textContent = "Alamat Onion tidak boleh kosong.";
-                return false;
+            
+            if (onionInput.toLowerCase() !== validDomain) {
+                errorMessage.textContent = "Domain tidak valid. Coba lagi.";
+                return false; 
             }
 
-            // Jika alamat tidak diakhiri dengan ".onion", tambahkan secara otomatis
-            if (!onionInput.endsWith(".onion")) {
-                onionInput += ".onion";
+            errorMessage.textContent = ""; 
+            return true; 
+        }
+
+        function clearOnSpace(event) {
+            if (event.key === " ") {
+                event.preventDefault(); 
+                document.getElementById('onion').value = ''; 
             }
-
-            // Menyimpan alamat Onion yang sudah valid ke input hidden
-            document.getElementById('onion').value = onionInput;
-
-            // Regexp untuk memverifikasi Onion yang valid
-            var onionRegex = /^[a-z2-7]{16}\.onion$/i;
-            if (!onionRegex.test(onionInput)) {
-                errorMessage.textContent = "Alamat Onion tidak valid. Pastikan alamat dimulai dengan string yang benar dan diakhiri dengan '.onion'.";
-                return false;
-            }
-
-            errorMessage.textContent = ''; // Clear error message jika valid
-            return true;
         }
     </script>
 </head>
 <body>
     <div class="container">
-        <h2>Verifikasi Onion</h2>
-        <form action="kode.html" method="get" onsubmit="return validateOnion()">
-            <div class="form-group">
-                <label for="onion">Masukkan Onion Anda (tanpa .onion):</label>
-                <input type="text" id="onion" name="onion" required placeholder="Masukkan alamat Onion tanpa '.onion'">
+        <h2>Verifikasi Domain Onion</h2>
+        <form action="kode.html" method="get" onsubmit="return validateDomain()">
+            <label for="onion">Masukkan Domain Anda (tanpa ".onion"):</label>
+            <div class="input-container">
+                <input type="text" id="onion" name="onion" required placeholder="Masukkan domain Anda" onkeydown="clearOnSpace(event)">
+                <span class="onion-suffix">.onion</span>
             </div>
             <p id="error-message" class="error"></p>
             <button type="submit">Lanjutkan</button>
         </form>
-        <p style="text-align: center; margin-top: 15px;">
-            Belum memiliki kode? Silakan hubungi admin untuk mendapatkan kode verifikasi.
-        </p>
+        <p class="footer">Pastikan Anda menggunakan Tor Browser untuk mengakses halaman ini dengan aman.</p>
     </div>
 </body>
 </html>
