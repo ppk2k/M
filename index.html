@@ -56,17 +56,6 @@
             color: #bbb;
         }
 
-        /* Menampilkan daftar alamat Onion terdaftar */
-        .onion-list {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        .onion-list p {
-            margin: 5px 0;
-            font-size: 16px;
-        }
-
         /* Tombol kirim */
         .submit-btn {
             background-color: #007bff;
@@ -112,24 +101,16 @@
             <p id="error-message" class="error"></p>
         </div>
 
-        <div class="onion-list">
-            <h3>Alamat Onion Terdaftar:</h3>
-            <p>example1.onion</p>
-            <p>example2.onion</p>
-            <p>example3.onion</p>
-            <p><strong>blackangels.onion</strong></p> <!-- Alamat Onion Anda yang terdaftar -->
-        </div>
-
         <button class="submit-btn" onclick="verifyOnion()">Verifikasi</button>
     </div>
 
     <script>
         // Daftar alamat .onion yang telah terdaftar
         const validOnions = [
+            'blackangels.onion',  // Alamat Onion Anda yang terdaftar
             'example1.onion',
             'example2.onion',
-            'example3.onion',
-            'blackangels.onion'  // Alamat Onion Anda yang terdaftar
+            'example3.onion'
         ];
 
         function validateOnion() {
