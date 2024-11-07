@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verifikasi Alamat Onion - Akses Kode</title>
+    <title>Verifikasi Alamat Onion</title>
     <style>
         /* Tema untuk halaman seperti situs Tor */
         body {
@@ -90,18 +90,47 @@
             font-size: 14px;
             margin-top: 10px;
         }
+
+        /* Style form di tengah layar */
+        .centered {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Style halaman kode setelah verifikasi */
+        .code-container {
+            display: none; /* Menyembunyikan halaman kode pada awalnya */
+        }
+
+        .code-container input {
+            font-size: 18px;
+        }
+
     </style>
 </head>
 <body>
-    <h1>Verifikasi Alamat Onion</h1>
-    <div class="container">
-        <div class="input-container">
-            <label for="onion-address">Masukkan Alamat Onion Anda:</label>
-            <input type="text" id="onion-address" placeholder="Masukkan alamat .onion" oninput="validateOnion()">
-            <p id="error-message" class="error"></p>
+    <div class="centered">
+        <h1>Verifikasi Alamat Onion</h1>
+        <div class="container" id="onion-form">
+            <div class="input-container">
+                <label for="onion-address">Masukkan Alamat Onion Anda:</label>
+                <input type="text" id="onion-address" placeholder=".onion" oninput="validateOnion()">
+                <p id="error-message" class="error"></p>
+            </div>
+
+            <button class="submit-btn" onclick="verifyOnion()">Verifikasi</button>
         </div>
 
-        <button class="submit-btn" onclick="verifyOnion()">Verifikasi</button>
+        <!-- Halaman untuk memasukkan kode setelah verifikasi -->
+        <div class="container code-container" id="code-form">
+            <h2>Masukkan Kode Anda:</h2>
+            <div class="input-container">
+                <input type="text" id="access-code" placeholder="Masukkan kode yang valid">
+            </div>
+            <button class="submit-btn" onclick="submitCode()">Submit Kode</button>
+        </div>
     </div>
 
     <script>
@@ -120,6 +149,7 @@
             // Periksa apakah ada spasi di alamat onion
             if (onionInput.includes(' ')) {
                 errorMessage.textContent = 'Alamat Onion tidak boleh mengandung spasi.';
+                document.getElementById('onion-address').value = ''; // Menghapus input jika ada spasi
                 return;
             } else {
                 errorMessage.textContent = '';
@@ -133,9 +163,21 @@
             // Memeriksa apakah alamat Onion sudah terdaftar
             if (validOnions.includes(onionInput)) {
                 alert("Alamat .onion valid dan terdaftar!");
-                // Lanjutkan ke halaman berikutnya atau proses verifikasi
+                // Menyembunyikan form verifikasi alamat dan menampilkan form kode
+                document.getElementById('onion-form').style.display = 'none';
+                document.getElementById('code-form').style.display = 'block';
             } else {
                 errorMessage.textContent = 'Alamat Onion tidak valid atau tidak terdaftar.';
+            }
+        }
+
+        function submitCode() {
+            const accessCode = document.getElementById('access-code').value;
+            // Cek validitas kode
+            if (accessCode === "123456") {
+                alert("Kode valid! Akses berhasil.");
+            } else {
+                alert("Kode salah. Silakan coba lagi.");
             }
         }
     </script>
