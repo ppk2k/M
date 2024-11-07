@@ -89,18 +89,54 @@
             color: #999;
             text-align: center;
         }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
     </style>
+    <script>
+        // 10 Kode Verifikasi yang Diberikan oleh Admin
+        const validCodes = [
+            "A1b2C3d4E5", "F6g7H8i9J0", "K1l2M3n4O5", "P6q7R8s9T0", "U1v2W3x4Y5",
+            "Z6a7B8c9D0", "E1f2G3h4I5", "J6k7L8m9N0", "O1p2Q3r4S5", "T6u7V8w9X0"
+        ];
+
+        // Fungsi untuk memverifikasi kode
+        function verifyCode(event) {
+            event.preventDefault(); // Menghentikan pengiriman form sebelum verifikasi
+
+            const userCode = document.getElementById("kode").value.trim();
+            const errorMessage = document.getElementById("error-message");
+
+            // Periksa apakah kode yang dimasukkan valid
+            if (validCodes.includes(userCode)) {
+                // Jika kode valid, ganti input dengan 🔥
+                document.getElementById("kode").value = "🔥".repeat(userCode.length);
+                errorMessage.textContent = ""; // Hapus pesan error jika valid
+                // Redirect setelah 1 detik untuk transisi yang halus
+                setTimeout(() => {
+                    window.location.href = "home.html"; // Arahkan ke halaman home setelah verifikasi
+                }, 1000);
+            } else {
+                // Jika kode salah, tampilkan pesan error
+                errorMessage.textContent = "Kode yang Anda masukkan salah. Coba lagi.";
+            }
+        }
+    </script>
 </head>
 <body>
     <div class="container">
         <h2>Verifikasi Kode</h2>
-        <form action="home.html" method="get">
+        <form onsubmit="verifyCode(event)">
             <label for="kode">Masukkan Kode Verifikasi:</label>
             <div class="input-container">
                 <input type="text" id="kode" name="kode" required placeholder="Masukkan kode yang telah dikirim">
             </div>
             <button type="submit">Lanjutkan</button>
         </form>
+        <p id="error-message" class="error"></p>
         <p class="footer">Anda harus menunggu 1x24 jam untuk kode verifikasi.</p>
     </div>
 </body>
