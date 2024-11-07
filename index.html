@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verifikasi Onion - Akses Kode</title>
+    <title>Verifikasi Alamat Onion - Akses Kode</title>
     <style>
         /* Tema untuk halaman seperti situs Tor */
         body {
@@ -44,7 +44,7 @@
         .input-container input {
             padding: 15px 20px 15px 40px; /* Memberikan padding kiri untuk ikon */
             margin: 10px 0;
-            width: 100%;
+            width: 80%;
             background-color: #222; /* Latar belakang input lebih gelap */
             border: 1px solid #444;
             color: #f0f0f0; /* Teks dalam input */
@@ -55,12 +55,13 @@
             overflow-wrap: break-word;  /* Memastikan teks panjang tidak merusak desain */
         }
 
-        .input-container img {
+        .onion-label {
             position: absolute;
-            left: 15px;
+            right: 10px;
             top: 50%;
             transform: translateY(-50%);
-            width: 20px;
+            font-size: 16px;
+            color: #888;
         }
 
         button {
@@ -98,14 +99,16 @@
 
 <div class="container">
     <h2>Verifikasi Alamat Onion</h2>
+    <!-- Formulir 1 untuk verifikasi alamat Onion -->
     <div class="input-container">
-        <!-- Input untuk memasukkan alamat Onion dengan ikon -->
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tor_Logo_2019.svg/2048px-Tor_Logo_2019.svg.png" alt="Onion Logo">
         <input type="text" id="onionAddress" placeholder="Masukkan alamat Onion Anda" />
+        <span class="onion-label">.onion</span> <!-- Label untuk menunjukkan .onion -->
     </div>
     <button onclick="verifyOnion()">Verifikasi Onion</button>
 
     <div id="status"></div>
+    
+    <!-- Formulir 2 untuk memasukkan kode akses (sembunyi hingga Onion terverifikasi) -->
     <div id="purchaseSection" style="display: none;">
         <h3>Masukkan Kode Akses</h3>
         <input type="text" id="accessCode" placeholder="Masukkan Kode Akses" />
@@ -121,10 +124,19 @@
 <script>
     // Fungsi untuk memverifikasi alamat Onion
     function verifyOnion() {
-        const onionAddress = document.getElementById('onionAddress').value;
+        const onionAddress = document.getElementById('onionAddress').value.trim();
         const statusDiv = document.getElementById('status');
         const purchaseSection = document.getElementById('purchaseSection');
         const errorSection = document.getElementById('errorSection');
+
+        // Validasi untuk memastikan tidak ada spasi dalam alamat Onion
+        if (onionAddress.includes(" ")) {
+            statusDiv.innerHTML = "Alamat Onion tidak boleh mengandung spasi.";
+            purchaseSection.style.display = "none";
+            errorSection.style.display = "block";
+            document.getElementById('onionAddress').value = ''; // Mengosongkan input
+            return;
+        }
 
         // Cek apakah alamat .onion yang dimasukkan adalah alamat admin
         const adminOnion = "blackangels.onion"; // Ganti dengan alamat Onion admin yang sesungguhnya
@@ -142,6 +154,7 @@
             statusDiv.innerHTML = "Alamat Onion tidak valid.";
             purchaseSection.style.display = "none";
             errorSection.style.display = "block";
+            document.getElementById('onionAddress').value = ''; // Mengosongkan input jika alamat tidak valid
         }
     }
 
