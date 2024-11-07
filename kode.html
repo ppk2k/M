@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Masukkan Kode Verifikasi</title>
     <style>
-        /* CSS yang telah Anda buat sebelumnya */
         body {
             font-family: "Courier New", monospace;
             background-color: #121212;
@@ -96,6 +95,17 @@
             font-size: 14px;
             margin-top: 10px;
         }
+
+        .get-code-link {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #66ff66;
+            text-decoration: none;
+        }
+
+        .get-code-link:hover {
+            text-decoration: underline;
+        }
     </style>
     <script>
         const validCodes = [
@@ -132,6 +142,8 @@
         </form>
         <p id="error-message" class="error"></p>
         <p class="footer">Anda harus menunggu 1x24 jam untuk kode verifikasi.</p>
+        <!-- Link ke halaman untuk mendapatkan kode verifikasi -->
+        <a href="getcode.html" class="get-code-link">Klik di sini untuk mendapatkan kode verifikasi dari admin.</a>
     </div>
 </body>
 </html>
