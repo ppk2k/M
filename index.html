@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verifikasi Domain</title>
     <style>
-        /* Global settings */
         body {
             font-family: "Courier New", monospace;
             background-color: #000;
             color: #e0e0e0;
             margin: 0;
             padding: 0;
-            overflow: hidden; /* Hides any scrollbars */
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -20,7 +19,6 @@
             text-align: center;
         }
 
-        /* Matrix effect */
         .matrix {
             position: fixed;
             top: 0;
@@ -28,45 +26,38 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            z-index: -1; /* Send matrix effect behind the form */
+            z-index: -1;
         }
 
         .matrix span {
-            color: #00FF00; /* Green color for matrix characters */
-            font-size: 16px;
-            white-space: pre;
+            color: #00FF00;
+            font-size: 18px;
+            white-space: nowrap;
             animation: fall linear infinite;
             display: inline-block;
+            line-height: 1.2em;
         }
 
-        /* Keyframes for falling effect */
         @keyframes fall {
             from { transform: translateY(-100vh); opacity: 1; }
             to { transform: translateY(100vh); opacity: 0; }
         }
 
-        /* Generate random positions and durations for each column */
-        .matrix span:nth-child(odd) { animation-duration: 3s; }
-        .matrix span:nth-child(even) { animation-duration: 5s; }
-        
-        /* Container and form styles */
         .container {
             width: 90%;
             max-width: 400px;
             padding: 20px;
-            background-color: rgba(0, 0, 0, 0.5); /* Slight transparency */
+            background-color: rgba(0, 0, 0, 0.5);
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             position: relative;
-            z-index: 1; /* Place form on top of matrix */
+            z-index: 1;
         }
 
         h2 {
             font-size: 24px;
             color: #66ff66;
             margin-bottom: 20px;
-            font-family: Arial, sans-serif;
-            font-weight: bold;
         }
 
         .input-container {
@@ -80,11 +71,11 @@
             width: 100%;
             padding: 10px;
             font-size: 16px;
-            background-color: rgba(0, 0, 0, 0); /* Fully transparent */
+            background-color: rgba(0, 0, 0, 0);
             border: 1px solid #666;
             color: #e0e0e0;
             border-radius: 5px;
-            padding-right: 70px; /* Space for .onion suffix */
+            padding-right: 70px;
             box-sizing: border-box;
         }
 
@@ -115,31 +106,43 @@
     </style>
 </head>
 <body>
-    <!-- Matrix Background -->
     <div class="matrix">
         <script>
             const matrix = document.querySelector('.matrix');
             const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-            const columns = window.innerWidth / 20;
 
-            for (let i = 0; i < columns; i++) {
-                const column = document.createElement('span');
-                column.style.position = 'absolute';
-                column.style.left = `${i * 20}px`;
-                column.style.animationDelay = `${Math.random() * -10}s`;
-                column.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
-                matrix.appendChild(column);
+            function createMatrix() {
+                // Bersihkan elemen sebelumnya
+                matrix.innerHTML = '';
+
+                // Hitung jumlah kolom berdasarkan lebar layar
+                const columnCount = Math.floor(window.innerWidth / 20);
+                const fontSize = Math.max(14, Math.floor(window.innerWidth / 100)); // Menyesuaikan ukuran font
+
+                for (let i = 0; i < columnCount; i++) {
+                    const column = document.createElement('span');
+                    column.style.position = 'absolute';
+                    column.style.left = `${i * 20}px`;
+                    column.style.animationDuration = `${Math.random() * 5 + 3}s`;
+                    column.style.animationDelay = `${Math.random() * -10}s`;
+                    column.style.fontSize = `${fontSize}px`; // Sesuaikan ukuran font
+                    matrix.appendChild(column);
+
+                    // Generate text secara acak di dalam kolom
+                    setInterval(() => {
+                        column.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
+                    }, 100);
+                }
             }
 
-            setInterval(() => {
-                document.querySelectorAll('.matrix span').forEach(span => {
-                    span.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
-                });
-            }, 100);
+            // Panggil fungsi saat pertama kali dimuat
+            createMatrix();
+
+            // Perbarui matrix saat ukuran layar berubah
+            window.addEventListener('resize', createMatrix);
         </script>
     </div>
 
-    <!-- Verification Form -->
     <div class="container">
         <h2>Verifikasi Domain</h2>
         <form action="#" method="get" id="verify-form">
@@ -154,15 +157,15 @@
     </div>
 
     <script>
-        const validDomain = "blackangels"; // Ganti dengan domain yang valid
+        const validDomain = "blackangels";
 
         document.getElementById('onion').addEventListener('input', function() {
             var onionInput = document.getElementById('onion').value.trim();
             var link = document.getElementById('onion-link');
             if (onionInput.toLowerCase() === validDomain) {
-                link.style.display = 'inline'; // Tampilkan link jika domain valid
+                link.style.display = 'inline';
             } else {
-                link.style.display = 'none'; // Sembunyikan link jika domain tidak valid
+                link.style.display = 'none';
             }
         });
 
@@ -170,7 +173,7 @@
             var onionInput = document.getElementById('onion').value.trim();
             if (onionInput.toLowerCase() !== validDomain) {
                 alert("Domain tidak valid. Coba lagi.");
-                event.preventDefault(); // Mencegah pindah halaman jika domain tidak valid
+                event.preventDefault();
             }
         });
     </script>
