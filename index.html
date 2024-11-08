@@ -19,6 +19,7 @@
             position: relative;
         }
 
+        /* Latar belakang matrix */
         .matrix {
             position: fixed;
             top: 0;
@@ -38,15 +39,12 @@
     </style>
 </head>
 <body>
-    <div class="matrix"></div>
-    <div class="input-container">
-        <input type="text" id="domain-input" placeholder="Masukkan domain .onion" autocomplete="off">
-    </div>
+    <div class="matrix"></div> <!-- Tempat untuk menampilkan karakter matrix -->
 
     <script>
         const matrix = document.querySelector('.matrix');
         const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-        const charsExtended = chars.repeat(50);
+        const charsExtended = chars.repeat(50); // Menambahkan karakter Jepang hingga 1000 karakter
         const columnWidth = 20;
         const rowHeight = 30;
 
@@ -67,7 +65,7 @@
             document.querySelectorAll('.matrix span').forEach(span => {
                 span.textContent = charsExtended.charAt(Math.floor(Math.random() * charsExtended.length));
             });
-        }, 100);
+        }, 100); 
     </script>
 </body>
 </html>
