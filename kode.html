@@ -43,7 +43,7 @@
         }
 
         input[type="text"] {
-            width: 100%;
+            width: 300px; /* Ukuran yang pas untuk 20 karakter */
             padding: 10px;
             font-size: 16px;
             background-color: #333;
@@ -52,6 +52,7 @@
             border-radius: 5px;
             box-sizing: border-box;
             text-align: center; /* Center text */
+            margin-bottom: 20px;
         }
 
         .good {
@@ -63,6 +64,22 @@
 
         p.error {
             color: #ff6666;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #006400;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .submit-button:hover {
+            background-color: #004d00;
         }
 
         .admin-link {
@@ -100,10 +117,9 @@
             <label for="code">Masukkan Kode (20 Karakter):</label>
             <input type="text" id="code" name="code" required placeholder="Masukkan kode Anda" maxlength="20" />
             <p id="error-message" class="error"></p>
-            <p id="good-message" class="good" style="display: none;">GOOD</p> <!-- Tampilkan GOOD jika kode benar -->
+            <p id="good-message" class="good" style="display: none;">GOOD</p>
+            <a href="admin.html" class="admin-link">Minggir ke Admin</a>
         </form>
-
-        <a href="admin.html" class="admin-link">Minggir ke Admin</a> <!-- Link ke Admin -->
     </div>
 
     <script>
