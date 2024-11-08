@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matrix dengan Efek Cahaya</title>
+    <title>Matrix Karakter Jepang - Efek Hujan</title>
     <style>
         body {
             font-family: "Courier New", monospace;
             margin: 0;
             padding: 0;
             background-color: black;
-            color: #00FF00; /* Warna hijau neon untuk teks */
+            color: #00FF00; /* Warna hijau neon default untuk teks */
             overflow: hidden;
             height: 100vh;
             display: flex;
@@ -19,6 +19,7 @@
             position: relative;
         }
 
+        /* Latar belakang matrix */
         .matrix {
             position: fixed;
             top: 0;
@@ -26,67 +27,62 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            z-index: -1;
+            z-index: -1; /* Agar matrix berada di belakang input */
         }
 
         .matrix span {
-            color: #00FF00; /* Warna hijau neon untuk karakter */
             font-size: 16px;
             white-space: pre;
             display: inline-block;
             position: absolute;
-            transition: color 0.2s ease; /* Transition untuk perubahan warna */
+            animation: fall 5s linear infinite; /* Animasi jatuh karakter */
         }
 
-        /* Efek cahaya terang pada karakter yang berubah */
-        .highlight {
-            color: #FF00FF; /* Warna terang seperti pelangi saat karakter berubah */
-            text-shadow: 0 0 10px #FF00FF, 0 0 20px #FF00FF, 0 0 30px #FF00FF, 0 0 40px #FF00FF; /* Cahaya pada karakter */
+        /* Animasi untuk karakter yang jatuh */
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh); /* Mulai dari luar layar */
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh); /* Bergerak ke bawah */
+                opacity: 0; /* Karakter menghilang setelah keluar dari layar */
+            }
         }
 
     </style>
 </head>
 <body>
-    <div class="matrix"></div> <!-- Tempat untuk menampilkan karakter matrix -->
+    <!-- Tempat untuk menampilkan karakter matrix -->
+    <div class="matrix"></div>
 
     <script>
         const matrix = document.querySelector('.matrix');
         const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-        const charsExtended = chars.repeat(50); // Mengulang karakter Jepang untuk lebih banyak variasi
-        const columnWidth = 15; // Lebar setiap kolom karakter
-        const rowHeight = 25; // Tinggi setiap baris karakter
+        const charsExtended = chars.repeat(50); // Menambahkan karakter Jepang hingga 1000 karakter
+        const columnWidth = 20; // Lebar setiap kolom karakter
+        const rowHeight = 30; // Tinggi setiap baris karakter
 
         const columns = Math.floor(window.innerWidth / columnWidth);  // Menyesuaikan jumlah kolom dengan lebar layar
         const rows = Math.floor(window.innerHeight / rowHeight);  // Menyesuaikan jumlah baris dengan tinggi layar
 
         // Membuat kolom dan baris untuk efek matrix
         for (let i = 0; i < columns * 2; i++) { // Ganda untuk lebih banyak karakter
-            for (let j = 0; j < rows * 2; j++) { // Ganda untuk lebih banyak karakter yang muncul
+            for (let j = 0; j < rows * 2; j++) { // Ganda untuk lebih banyak karakter jatuh
                 const span = document.createElement('span');
-                span.style.left = `${i * columnWidth}px`; // Tentukan posisi horizontal karakter
-                span.style.top = `${j * rowHeight}px`; // Tentukan posisi vertikal karakter
+                span.style.left = `${Math.random() * window.innerWidth}px`; // Acak posisi horizontal
+                span.style.top = `${Math.random() * -100}px`; // Memulai lebih tinggi dari layar
                 span.textContent = charsExtended.charAt(Math.floor(Math.random() * charsExtended.length)); // Pilih karakter acak
+                span.style.animationDelay = `${Math.random() * 5}s`; // Mengacak waktu animasi
+                span.style.animationDuration = `${Math.random() * 2 + 2}s`; // Acak durasi animasi untuk kecepatan jatuh
                 matrix.appendChild(span);
             }
         }
 
-        // Memperbarui karakter setiap interval waktu untuk efek berubah
+        // Memperbarui karakter setiap interval waktu untuk efek matrix
         setInterval(() => {
             document.querySelectorAll('.matrix span').forEach(span => {
-                // Simpan karakter lama dan pilih karakter baru secara acak
-                const oldChar = span.textContent;
-                const newChar = charsExtended.charAt(Math.floor(Math.random() * charsExtended.length));
-                
-                // Periksa apakah karakter berubah, dan tambahkan efek cahaya
-                if (oldChar !== newChar) {
-                    span.textContent = newChar;
-                    span.classList.add('highlight'); // Tambahkan kelas highlight untuk efek cahaya
-
-                    // Hapus kelas highlight setelah efek selesai
-                    setTimeout(() => {
-                        span.classList.remove('highlight');
-                    }, 200); // Efek cahaya berlangsung selama 200ms
-                }
+                span.textContent = charsExtended.charAt(Math.floor(Math.random() * charsExtended.length));
             });
         }, 100); // Mengubah karakter setiap 100ms
     </script>
