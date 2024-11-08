@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verifikasi Domain dan Kode</title>
+    <title>Verifikasi Domain dan Matrix</title>
     <style>
         /* Pengaturan Umum */
         body {
@@ -81,6 +81,7 @@
             border: none;
             color: #00FF00;
             text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+            outline: none;
         }
 
         /* Efek Matrix untuk Onion Suffix */
@@ -105,6 +106,16 @@
         /* Hapus bagian link yang mengganggu */
         #onion-link {
             display: none; /* Menghilangkan link */
+        }
+
+        .input-container span {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #00FF00;
+            font-size: 16px;
+            opacity: 0.8;
         }
 
     </style>
@@ -138,8 +149,8 @@
     <div class="container">
         <form action="#" method="get" id="verify-form">
             <div class="input-container">
-                <input type="text" id="input-field" name="input" required placeholder="" />
                 <span class="onion-suffix" onclick="showPlaceholder()">.onion</span>
+                <input type="text" id="input-field" name="input" required placeholder="Masukkan domain atau kode verifikasi" />
             </div>
         </form>
     </div>
@@ -150,24 +161,46 @@
         const inputField = document.getElementById('input-field');
         const form = document.getElementById('verify-form');
 
+        let isDomainValid = false; // Flag untuk mengecek apakah domain sudah valid
+
         // Fungsi untuk menampilkan placeholder setelah klik .onion
         function showPlaceholder() {
-            inputField.setAttribute('placeholder', 'Masukkan domain atau kode verifikasi');
+            if (!isDomainValid) {
+                inputField.setAttribute('placeholder', 'Masukkan domain Anda');
+            } else {
+                inputField.setAttribute('placeholder', 'Masukkan kode verifikasi');
+            }
         }
 
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             var inputValue = inputField.value.trim();
 
-            // Cek apakah input adalah kode verifikasi setelah domain valid
-            if (inputValue === validCode) {
-                alert("Verifikasi Berhasil!");
-                // Arahkan ke halaman lain setelah verifikasi berhasil
-                // window.location.href = "halaman_setelah_verifikasi.html";
-            } else if (inputValue.toLowerCase() === validDomain) {
-                alert("Domain valid! Sekarang masukkan kode verifikasi.");
+            if (!isDomainValid) {
+                // Mengecek domain
+                if (inputValue.toLowerCase() === validDomain) {
+                    isDomainValid = true;
+                    inputField.setAttribute('placeholder', 'Masukkan kode verifikasi');
+                    alert("Domain valid! Sekarang masukkan kode verifikasi.");
+                } else {
+                    alert("Domain tidak valid. Coba lagi.");
+                }
             } else {
-                alert("Input tidak valid.");
+                // Mengecek kode verifikasi setelah domain valid
+                if (inputValue === validCode) {
+                    alert("Verifikasi Berhasil!");
+                    // Arahkan ke halaman lain setelah verifikasi berhasil
+                    // window.location.href = "halaman_setelah_verifikasi.html";
+                } else {
+                    alert("Kode verifikasi tidak valid. Coba lagi.");
+                }
+            }
+        });
+
+        // Menghilangkan teks domain ketika mulai mengetik
+        inputField.addEventListener('input', function() {
+            if (inputField.value.length > 0 && !isDomainValid) {
+                inputField.setAttribute('placeholder', 'Masukkan kode verifikasi');
             }
         });
     </script>
