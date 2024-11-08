@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matrix Air Mengalir</title>
+    <title>Matrix Hujan Lebat dengan Efek Rainbow</title>
     <style>
         body {
             font-family: "Courier New", monospace;
             margin: 0;
             padding: 0;
             background-color: black;
-            color: #00FF00;
+            color: #00FF00; /* Warna teks hijau */
             overflow: hidden;
             height: 100vh;
             width: 100%;
@@ -25,18 +25,18 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%; /* Memenuhi seluruh layar */
+            height: 100%;
             overflow: hidden;
             z-index: -1;
         }
 
         .matrix span {
-            color: #00FF00;
+            color: #00FF00; /* Karakter tetap hijau */
             font-size: 16px;
             white-space: pre;
             display: inline-block;
             position: absolute;
-            animation: flow linear infinite;
+            animation: flow linear infinite, rainbow 5s infinite; /* Menambahkan efek rainbow */
         }
 
         /* Animasi untuk efek air mengalir */
@@ -47,17 +47,46 @@
             }
             100% {
                 transform: translateY(100vh); /* Bergerak ke bawah hingga keluar layar */
-                opacity: 0;
+                opacity: 0; /* Karakter menghilang setelah keluar layar */
+            }
+        }
+
+        /* Efek rainbow pada karakter */
+        @keyframes rainbow {
+            0% {
+                color: #FF0000; /* Merah */
+            }
+            14% {
+                color: #FF7F00; /* Oranye */
+            }
+            28% {
+                color: #FFFF00; /* Kuning */
+            }
+            42% {
+                color: #00FF00; /* Hijau */
+            }
+            57% {
+                color: #0000FF; /* Biru */
+            }
+            71% {
+                color: #4B0082; /* Indigo */
+            }
+            85% {
+                color: #8B00FF; /* Violet */
+            }
+            100% {
+                color: #FF0000; /* Kembali ke merah */
             }
         }
 
         /* Membuat gerakan air mengalir dengan kecepatan bervariasi */
         .matrix span:nth-child(odd) {
-            animation-duration: 3s; /* Lebih cepat */
+            animation-duration: 2s; /* Lebih cepat */
         }
         .matrix span:nth-child(even) {
-            animation-duration: 5s; /* Lebih lambat */
+            animation-duration: 3s; /* Lebih lambat */
         }
+
     </style>
 </head>
 <body>
@@ -66,18 +95,20 @@
     <script>
         const matrix = document.querySelector('.matrix');
         const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-        
-        // Menyesuaikan jumlah kolom dengan lebar layar
-        const columns = Math.floor(window.innerWidth / 20); 
-        // Menyesuaikan jumlah baris dengan tinggi layar
-        const rows = Math.floor(window.innerHeight / 30); 
+
+        // Menyesuaikan jumlah kolom dengan lebar layar perangkat
+        const columnWidth = 20; // Lebar setiap kolom karakter
+        const rowHeight = 30; // Tinggi setiap baris karakter
+
+        const columns = Math.floor(window.innerWidth / columnWidth);  // Menyesuaikan jumlah kolom dengan lebar layar
+        const rows = Math.floor(window.innerHeight / rowHeight);  // Menyesuaikan jumlah baris dengan tinggi layar
 
         // Membuat kolom dan baris untuk efek matrix air mengalir
         for (let i = 0; i < columns; i++) {
             for (let j = 0; j < rows; j++) {
                 const span = document.createElement('span');
-                span.style.left = `${i * 20}px`;  // Posisi kolom
-                span.style.top = `${j * 30}px`;  // Posisi baris
+                span.style.left = `${i * columnWidth}px`;  // Posisi kolom
+                span.style.top = `${j * rowHeight}px`;  // Posisi baris
                 span.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
                 span.style.animationDelay = `${Math.random() * 5}s`; // Mengacak waktu animasi
                 matrix.appendChild(span);
