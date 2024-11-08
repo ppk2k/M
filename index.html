@@ -50,14 +50,10 @@
             }
         }
 
-        /* Menyesuaikan jumlah matrix, lebih banyak dengan kecepatan lebih tinggi */
-        .matrix span:nth-child(odd) {
-            animation-duration: 2s;
+        /* Kecepatan animasi yang lebih cepat untuk hujan lebat */
+        .matrix span {
+            animation-duration: 2s; /* Lebih cepat untuk semua karakter */
         }
-        .matrix span:nth-child(even) {
-            animation-duration: 3s;
-        }
-
     </style>
 </head>
 <body>
@@ -77,7 +73,6 @@
                 span.style.top = `${Math.random() * -100}px`; // Memulai lebih tinggi dari layar
                 span.textContent = chars.charAt(Math.floor(Math.random() * chars.length)); // Pilih karakter acak
                 span.style.animationDelay = `${Math.random() * 5}s`; // Mengacak waktu animasi
-                span.style.animationDuration = `${Math.random() * 2 + 2}s`; // Acak durasi animasi untuk kecepatan jatuh
                 matrix.appendChild(span);
             }
         }
