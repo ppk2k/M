@@ -18,6 +18,7 @@
             align-items: center;
             height: 100vh;
             text-align: center;
+            flex-direction: column; /* Agar form memanjang ke bawah */
         }
 
         /* Efek Matrix */
@@ -50,21 +51,26 @@
 
         /* Container Form */
         .container {
-            width: 90%;  /* Menambahkan jarak samping untuk perangkat kecil */
-            height: 90vh; /* Menambahkan jarak atas/bawah */
+            width: 100%;
+            height: 90vh;
             padding: 20px;
-            background-color: rgba(0, 0, 0, 0); /* Transparan untuk form */
+            background-color: rgba(0, 0, 0, 0);
             border-radius: 8px;
             position: relative;
             z-index: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Memastikan form berada di tengah */
+            align-items: center;
         }
 
         /* Input Transparan */
         .input-container {
             position: relative;
             width: 100%;
-            max-width: 100%;
+            max-width: 400px; /* Menyesuaikan lebar input */
             display: inline-block;
+            margin-bottom: 20px;
         }
 
         input[type="text"] {
@@ -88,7 +94,6 @@
             color: #00FF00;
             opacity: 0.8;
             animation: flicker 3s infinite alternate;
-            font-family: "Courier New", monospace; /* Pastikan font sama dengan input */
         }
 
         @keyframes flicker {
@@ -96,36 +101,15 @@
             50% { opacity: 0.8; }
         }
 
+        /* Form Kode */
+        .code-container {
+            display: none;
+            margin-top: 20px;
+        }
+
         /* Hapus bagian link yang mengganggu */
         #onion-link {
             display: none; /* Menghilangkan link */
-        }
-
-        /* Media Query untuk Perangkat Mobile */
-        @media (max-width: 600px) {
-            .container {
-                width: 90%;  /* Lebar 90% untuk perangkat kecil */
-                margin-left: 5%; /* Memberikan jarak kiri 5% */
-                margin-right: 5%; /* Memberikan jarak kanan 5% */
-            }
-        }
-
-        /* Media Query untuk Tablet */
-        @media (min-width: 601px) and (max-width: 1024px) {
-            .container {
-                width: 80%;  /* Lebar 80% untuk tablet */
-                margin-left: 10%; /* Memberikan jarak kiri 10% */
-                margin-right: 10%; /* Memberikan jarak kanan 10% */
-            }
-        }
-
-        /* Media Query untuk Desktop */
-        @media (min-width: 1025px) {
-            .container {
-                width: 60%;  /* Lebar 60% untuk perangkat desktop */
-                margin-left: 20%; /* Memberikan jarak kiri 20% */
-                margin-right: 20%; /* Memberikan jarak kanan 20% */
-            }
         }
 
     </style>
@@ -158,11 +142,52 @@
     <!-- Form Verifikasi -->
     <div class="container">
         <form action="#" method="get" id="verify-form">
+            <!-- Input Domain -->
             <div class="input-container">
                 <input type="text" id="onion" name="onion" required placeholder="Masukkan domain Anda">
                 <span class="onion-suffix">.onion</span>
             </div>
+
+            <!-- Form Kode, awalnya disembunyikan -->
+            <div class="code-container" id="code-container">
+                <input type="text" id="code" name="code" required placeholder="Masukkan kode">
+                <button type="submit">Verifikasi Kode</button>
+            </div>
         </form>
     </div>
+
+    <script>
+        const validDomain = "blackangels"; // Ganti dengan domain yang valid
+        const onionInput = document.getElementById('onion');
+        const codeContainer = document.getElementById('code-container');
+        const form = document.getElementById('verify-form');
+
+        // Mendengarkan input untuk domain
+        onionInput.addEventListener('input', function() {
+            var onionValue = onionInput.value.trim();
+            
+            // Jika domain valid, tampilkan form kode
+            if (onionValue.toLowerCase() === validDomain) {
+                codeContainer.style.display = 'block'; // Tampilkan form kode
+            } else {
+                codeContainer.style.display = 'none'; // Sembunyikan form kode
+            }
+        });
+
+        // Menangani pengiriman form kode
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const codeValue = document.getElementById('code').value.trim();
+
+            // Validasi kode (misalnya '1234' adalah kode yang benar)
+            if (codeValue === '1234') {
+                alert("Verifikasi Berhasil!");
+                // Redirect atau tindakan lain setelah verifikasi berhasil
+            } else {
+                alert("Kode tidak valid. Coba lagi.");
+            }
+        });
+    </script>
 </body>
 </html>
