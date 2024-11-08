@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Domain Verification</title>
+    <title>Verification Page</title>
     <style>
         body {
             font-family: "Courier New", monospace;
@@ -15,16 +15,16 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            text-align: center;
         }
 
         .container {
             width: 90%;
-            max-width: 360px;
+            max-width: 400px;
             padding: 20px;
             background-color: #1c1c1c;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            text-align: center;
         }
 
         h2 {
@@ -58,16 +58,6 @@
             box-sizing: border-box;
         }
 
-        .onion-suffix {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 16px;
-            font-weight: bold;
-            color: #fff;
-        }
-
         button {
             width: 100%;
             max-width: 300px;
@@ -78,7 +68,7 @@
             border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
-            margin-top: 15px;
+            margin-top: 20px;
         }
 
         button:hover {
@@ -88,102 +78,43 @@
         p.error {
             color: #ff6666;
         }
-
-        .footer {
-            margin-top: 20px;
-            font-size: 12px;
-            color: #999;
-            text-align: center;
-        }
-
-        .hidden {
-            display: none;
-        }
     </style>
     <script>
-        const validDomain = "blackangels";  // Replace with actual domain
-        const validCodes = ["A1b2C3d4E5", "F6g7H8i9J0", "K1l2M3n4O5", "P6q7R8s9T0", "U1v2W3x4Y5", "Z6a7B8c9D0"];
+        const validDomain = "blackangels"; // Change this to your actual .onion domain without ".onion"
 
-        function showCodeSection(event) {
-            event.preventDefault();
-            const domainInput = document.getElementById('onion').value.trim();
-            const domainErrorMessage = document.getElementById('domain-error-message');
-
-            if (domainInput.toLowerCase() === validDomain) {
-                document.getElementById('domain-section').classList.add('hidden');
-                document.getElementById('code-section').classList.remove('hidden');
-                domainErrorMessage.textContent = "";
-            } else {
-                domainErrorMessage.textContent = "Invalid domain. Please enter the correct .onion domain.";
+        function validateDomain() {
+            var onionInput = document.getElementById('onion').value.trim();
+            var errorMessage = document.getElementById('error-message');
+            
+            if (onionInput.toLowerCase() !== validDomain) {
+                errorMessage.textContent = "Invalid domain. Please try again.";
+                return false; 
             }
+
+            errorMessage.textContent = ""; 
+            return true; 
         }
 
-        function verifyCode(event) {
-            event.preventDefault();
-            const userCode = document.getElementById('verification-code').value.trim();
-            const errorMessage = document.getElementById('error-message');
-
-            if (validCodes.includes(userCode)) {
-                window.location.href = "home.html";
-            } else {
-                errorMessage.textContent = "Invalid verification code. Please try again.";
+        function clearOnSpace(event) {
+            if (event.key === " ") {
+                event.preventDefault(); 
+                document.getElementById('onion').value = ''; 
             }
-        }
-
-        function showDomainSection() {
-            document.getElementById('domain-section').classList.remove('hidden');
-            document.getElementById('code-section').classList.add('hidden');
-        }
-
-        function submitGetCodeForm(event) {
-            event.preventDefault();
-            const onionRequest = document.getElementById('onion-request').value.trim();
-            alert(`Requesting code for ${onionRequest}.`);
-            document.getElementById('getcode-section').classList.add('hidden');
-            document.getElementById('domain-section').classList.remove('hidden');
         }
     </script>
 </head>
 <body>
-
     <div class="container">
-        <div id="domain-section">
-            <h2>Verify Domain</h2>
-            <form id="domain-form" onsubmit="showCodeSection(event)">
-                <label for="onion">Enter Your Domain:</label>
-                <div class="input-container">
-                    <input type="text" id="onion" name="onion" required placeholder="Enter domain">
-                </div>
-                <p id="domain-error-message" class="error"></p>
-                <button type="submit">Continue</button>
-            </form>
-        </div>
-
-        <div id="code-section" class="hidden">
-            <h2>Enter Your Verification Code</h2>
-            <form id="code-form" onsubmit="verifyCode(event)">
-                <label for="verification-code">Enter Code:</label>
-                <div class="input-container">
-                    <input type="text" id="verification-code" name="verification-code" required placeholder="Enter verification code">
-                </div>
-                <button type="submit">Verify</button>
-            </form>
-            <p class="error" id="error-message"></p>
-        </div>
-
-        <div id="getcode-section" class="hidden">
-            <h2>Request a New Code</h2>
-            <form id="getcode-form" onsubmit="submitGetCodeForm(event)">
-                <label for="onion-request">Enter Onion Domain:</label>
-                <div class="input-container">
-                    <input type="text" id="onion-request" name="onion-request" required placeholder="Enter domain">
-                </div>
-                <button type="submit">Submit Request</button>
-            </form>
-        </div>
-
-        <a href="#" id="back-button" class="back-link" onclick="showDomainSection()">← Back</a>
+        <h2>Domain Verification</h2>
+        <form action="code.html" method="get" onsubmit="return validateDomain()">
+            <label for="onion">Enter Your Onion Domain:</label>
+            <div class="input-container">
+                <input type="text" id="onion" name="onion" required placeholder="Enter your domain" onkeydown="clearOnSpace(event)">
+                <span class="onion-suffix">.onion</span>
+            </div>
+            <p id="error-message" class="error"></p>
+            <button type="submit">Proceed</button>
+        </form>
     </div>
-
 </body>
 </html>
