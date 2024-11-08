@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masukkan Kode</title>
+    <title>Verify Code</title>
     <style>
         body {
             font-family: "Courier New", monospace;
@@ -15,20 +15,19 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            flex-direction: column;
         }
 
         .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             width: 90%;
-            max-width: 400px;
+            max-width: 360px;
             padding: 20px;
             background-color: #1c1c1c;
             border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         h2 {
@@ -50,15 +49,26 @@
             max-width: 300px;
         }
 
-        input[type="text"], input[type="email"] {
+        input[type="text"] {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             font-size: 16px;
             background-color: #333;
             border: 1px solid #666;
             color: #e0e0e0;
             border-radius: 5px;
+            padding-right: 50px;
             box-sizing: border-box;
+        }
+
+        .onion-suffix {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
         }
 
         button {
@@ -84,117 +94,68 @@
             margin-top: 15px;
         }
 
+        p.error {
+            color: #ff6666;
+        }
+
         .footer {
             margin-top: 20px;
             font-size: 12px;
             color: #999;
             text-align: center;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            padding: 10px 0;
-            background-color: #1c1c1c;
         }
 
-        .error {
-            color: red;
-            font-size: 14px;
-            margin-top: 10px;
-        }
-
-        .contact-admin-link {
-            font-size: 14px;
+        .back-arrow {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            font-size: 18px;
             color: #66ff66;
-            margin-top: 10px;
-            display: block;
-            text-decoration: none;
             cursor: pointer;
         }
 
-        .contact-admin-link:hover {
-            text-decoration: underline;
-        }
-
-        .admin-info {
-            display: none;
-            margin-top: 20px;
-            color: #e0e0e0;
-        }
-
-        .admin-form {
-            display: none;
-            margin-top: 20px;
-            color: #e0e0e0;
-            text-align: left;
-        }
-
-        .admin-form input[type="text"], .admin-form input[type="email"] {
-            margin-bottom: 10px;
-        }
-
-        .admin-form button {
-            width: auto;
-            margin-top: 10px;
+        .back-arrow:hover {
+            color: #ffffff;
         }
     </style>
     <script>
-        const validCodes = [
-            "A1b2C3d4E5", "F6g7H8i9J0", "K1l2M3n4O5", "P6q7R8s9T0", "U1v2W3x4Y5",
-            "Z6a7B8c9D0", "E1f2G3h4I5", "J6k7L8m9N0", "O1p2Q3r4S5", "T6u7V8w9X0"
-        ];
+        const validDomain = "blackangels"; // Update with your actual domain name (without ".onion")
 
-        function verifyCode(event) {
-            event.preventDefault();
-            const userCode = document.getElementById("kode").value.trim();
-            const errorMessage = document.getElementById("error-message");
-
-            if (validCodes.includes(userCode)) {
-                document.getElementById("kode").value = "🔥".repeat(userCode.length);
-                errorMessage.textContent = "";
-                setTimeout(() => {
-                    window.location.href = "home.html";
-                }, 1000);
-            } else {
-                errorMessage.textContent = "Kode yang Anda masukkan salah. Coba lagi.";
+        function validateDomain() {
+            var onionInput = document.getElementById('onion').value.trim();
+            var errorMessage = document.getElementById('error-message');
+            
+            if (onionInput.toLowerCase() !== validDomain) {
+                errorMessage.textContent = "Invalid domain. Please try again.";
+                return false; 
             }
+
+            errorMessage.textContent = ""; 
+            return true; 
         }
 
-        function showAdminInfo() {
-            const formDiv = document.getElementById("form-container");
-            formDiv.style.display = "block";
-            const verificationDiv = document.getElementById("verification-container");
-            verificationDiv.style.display = "none";
+        function clearOnSpace(event) {
+            if (event.key === " ") {
+                event.preventDefault(); 
+                document.getElementById('onion').value = ''; 
+            }
         }
     </script>
 </head>
 <body>
-    <div class="container" id="verification-container">
-        <h2>Verifikasi Kode</h2>
-        <form onsubmit="verifyCode(event)">
-            <label for="kode">Masukkan Kode Verifikasi:</label>
+    <div class="container">
+        <span class="back-arrow" onclick="window.location.href='index.html'">← Back</span>
+        <h2>Verify Domain</h2>
+        <form action="code.html" method="get" onsubmit="return validateDomain()">
+            <label for="onion">Enter Your Domain:</label>
             <div class="input-container">
-                <input type="text" id="kode" name="kode" required placeholder="Masukkan kode yang telah dikirim">
+                <input type="text" id="onion" name="onion" required placeholder="Enter your domain" onkeydown="clearOnSpace(event)">
+                <span class="onion-suffix">.onion</span>
             </div>
-            <button type="submit">Lanjutkan</button>
+            <p id="error-message" class="error"></p>
+            <button type="submit">Verify</button>
         </form>
-        <p id="error-message" class="error"></p>
-    </div>
-
-    <div id="form-container" style="display:none;" class="container">
-        <h2>Formulir Permintaan Kode VIP</h2>
-        <form action="submit-form.php" method="POST">
-            <label for="name">Nama Anda:</label>
-            <input type="text" id="name" name="name" required placeholder="Masukkan nama Anda"><br>
-            <label for="email">Email Anda:</label>
-            <input type="email" id="email" name="email" required placeholder="Masukkan email Anda"><br>
-            <label for="message">Pesan:</label>
-            <textarea id="message" name="message" rows="4" required placeholder="Masukkan pesan Anda"></textarea><br>
-            <button type="submit">Kirim Permintaan Kode</button>
-        </form>
-    </div>
-
-    <div class="footer">
-        <p>Hubungi <span class="contact-admin-link" onclick="showAdminInfo()">admin</span> untuk mendapatkan kode verifikasi.</p>
+        <p class="footer">Ensure you're using Tor Browser for secure access.</p>
     </div>
 </body>
 </html>
