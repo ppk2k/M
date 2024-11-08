@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Domain Verification</title>
+    <title>Verifikasi Domain</title>
     <style>
         body {
             font-family: "Courier New", monospace;
@@ -29,7 +29,7 @@
 
         h2 {
             font-size: 24px;
-            color: #66ff66; /* Green color */
+            color: #66ff66;
             margin-bottom: 20px;
             font-family: Arial, sans-serif;
             font-weight: bold;
@@ -40,7 +40,6 @@
             color: #e0e0e0;
             margin-bottom: 10px;
             display: block;
-            font-family: Arial, sans-serif;
         }
 
         .input-container {
@@ -70,73 +69,58 @@
             font-size: 16px;
             font-weight: bold;
             color: #fff;
-            font-family: Arial, sans-serif;
         }
 
-        .proceed-link {
-            width: 100%;
-            max-width: 300px;
-            padding: 10px;
-            background-color: transparent;
-            color: white;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 20px;
-            font-family: Arial, sans-serif;
-            text-decoration: underline;
+        .clickable {
+            color: #66ff66;
             font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
         }
 
-        /* Hover and active state for the link */
-        .proceed-link:hover {
-            color: #66ff66; /* Green on hover */
-        }
-
-        .proceed-link:active {
-            color: #888; /* Gray when clicked */
+        .clickable:hover {
+            color: #cccccc;
         }
 
         p.error {
             color: #ff6666;
         }
     </style>
-    <script>
-        const validDomain = "blackangels"; // Change this to your actual .onion domain without ".onion"
-
-        function validateDomain() {
-            var onionInput = document.getElementById('onion').value.trim();
-            var errorMessage = document.getElementById('error-message');
-            
-            if (onionInput.toLowerCase() !== validDomain) {
-                errorMessage.textContent = "Invalid domain. Please try again.";
-                return false; 
-            }
-
-            errorMessage.textContent = ""; 
-            return true; 
-        }
-
-        function clearOnSpace(event) {
-            if (event.key === " ") {
-                event.preventDefault(); 
-                document.getElementById('onion').value = ''; 
-            }
-        }
-    </script>
 </head>
 <body>
     <div class="container">
-        <h2>Domain Verification</h2>
-        <form action="code.html" method="get" onsubmit="return validateDomain()">
-            <label for="onion">Enter Your Domain:</label>
+        <h2>Verifikasi Domain</h2>
+        <form action="#" method="get" id="verify-form">
+            <label for="onion">Masukkan Domain Anda:</label>
             <div class="input-container">
-                <input type="text" id="onion" name="onion" required placeholder="Enter your domain" onkeydown="clearOnSpace(event)">
+                <input type="text" id="onion" name="onion" required placeholder="Masukkan domain Anda">
                 <span class="onion-suffix">.onion</span>
             </div>
             <p id="error-message" class="error"></p>
-            <a href="code.html" class="proceed-link">Onion</a> <!-- Clickable link instead of button -->
+            <a href="kode.html" id="onion-link" class="clickable" style="display: none;">onion</a>
         </form>
     </div>
+
+    <script>
+        const validDomain = "blackangels"; // Ganti dengan domain yang valid
+
+        document.getElementById('onion').addEventListener('input', function() {
+            var onionInput = document.getElementById('onion').value.trim();
+            var link = document.getElementById('onion-link');
+            if (onionInput.toLowerCase() === validDomain) {
+                link.style.display = 'inline'; // Tampilkan link jika domain valid
+            } else {
+                link.style.display = 'none'; // Sembunyikan link jika domain tidak valid
+            }
+        });
+
+        document.getElementById('onion-link').addEventListener('click', function(event) {
+            var onionInput = document.getElementById('onion').value.trim();
+            if (onionInput.toLowerCase() !== validDomain) {
+                alert("Domain tidak valid. Coba lagi.");
+                event.preventDefault(); // Mencegah pindah halaman jika domain tidak valid
+            }
+        });
+    </script>
 </body>
 </html>
