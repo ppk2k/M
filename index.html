@@ -19,7 +19,7 @@
         }
 
         .matrix {
-            position: fixed;
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
@@ -28,73 +28,58 @@
             z-index: -1;
         }
 
-        /* Efek pergerakan vertical dan horizontal */
         .matrix span {
             position: absolute;
             top: -100%;
             left: 0;
             font-size: 20px;
             color: #00FF00;
-            animation: fall 3s linear infinite, slide 5s linear infinite;
+            animation: fall 5s linear infinite, slide 5s linear infinite;
         }
 
+        /* Animasi karakter jatuh */
         @keyframes fall {
             from { top: -100%; }
             to { top: 100%; }
         }
 
+        /* Animasi karakter bergerak dari kiri ke kanan */
         @keyframes slide {
             from { left: -100%; }
             to { left: 100%; }
         }
-
-        /* Responsif untuk menyesuaikan dengan ukuran layar */
-        @media (max-width: 600px) {
-            .matrix span {
-                font-size: 12px;
-            }
-        }
-
-        @media (min-width: 601px) and (max-width: 1024px) {
-            .matrix span {
-                font-size: 16px;
-            }
-        }
-
-        @media (min-width: 1025px) {
-            .matrix span {
-                font-size: 20px;
-            }
-        }
     </style>
 </head>
 <body>
+    <div class="matrix">
+        <script>
+            const matrix = document.querySelector('.matrix');
+            const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+            const columns = Math.floor(window.innerWidth / 20);  // Menghitung jumlah kolom berdasarkan lebar layar
+            const rows = Math.floor(window.innerHeight / 30);    // Menghitung jumlah baris berdasarkan tinggi layar
 
-<div class="matrix">
-    <script>
-        const matrix = document.querySelector('.matrix');
-        const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-        const columns = Math.floor(window.innerWidth / 20);  // Menyesuaikan jumlah kolom
-        const rows = Math.floor(window.innerHeight / 30);    // Menyesuaikan jumlah baris
-
-        for (let i = 0; i < columns; i++) {
-            for (let j = 0; j < rows; j++) {
-                const char = document.createElement('span');
-                char.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
-                char.style.left = `${i * 20}px`;
-                char.style.animationDelay = `${Math.random() * 5}s`;  // Menyesuaikan delay animasi
-                matrix.appendChild(char);
+            // Membuat elemen untuk setiap karakter
+            for (let i = 0; i < columns; i++) {
+                for (let j = 0; j < rows; j++) {
+                    const char = document.createElement('span');
+                    char.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
+                    char.style.left = `${i * 20}px`;
+                    char.style.animationDelay = `${Math.random() * 5}s`;  // Memberikan delay acak untuk efek lebih alami
+                    matrix.appendChild(char);
+                }
             }
-        }
 
-        // Perbarui karakter setiap beberapa milidetik untuk menciptakan efek perubahan
-        setInterval(() => {
-            document.querySelectorAll('.matrix span').forEach(span => {
-                span.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
-            });
-        }, 100);
-    </script>
-</div>
+            setInterval(() => {
+                document.querySelectorAll('.matrix span').forEach(span => {
+                    span.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
+                });
+            }, 100);
+        </script>
+    </div>
 
+    <!-- Link ke input.html setelah verifikasi selesai -->
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+        <a href="input.html" style="font-size: 24px; color: #00FF00; text-decoration: none;">Klik di sini untuk melanjutkan ke verifikasi</a>
+    </div>
 </body>
 </html>
