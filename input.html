@@ -6,148 +6,57 @@
     <title>Masukkan Domain</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: "Courier New", monospace;
             margin: 0;
             padding: 0;
-            background-color: transparent;
+            background-color: transparent; /* Latar belakang transparan */
             color: #00FF00;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .matrix {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1; /* Matrix berada di belakang */
-        }
-
-        .onion-text {
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
-            z-index: 1;
         }
 
         .input-container {
-            display: none;
             text-align: center;
-            position: relative;
-            z-index: 1;
         }
 
         input {
             padding: 10px;
             font-size: 18px;
             width: 300px;
-            background-color: transparent;
+            background-color: black;
             color: #00FF00;
             border: 2px solid #00FF00;
-            outline: none;
-        }
-
-        .error-message {
-            color: red;
-            font-size: 14px;
-            display: none;
-        }
-
-        .success-message {
-            color: green;
-            font-size: 14px;
-            display: none;
         }
     </style>
 </head>
 <body>
-    <!-- Tempat untuk menampilkan karakter matrix -->
-    <div class="matrix"></div>
-
-    <!-- Teks yang dapat diklik untuk memasukkan domain -->
-    <div class="onion-text" id="onion-text">Masukkan domain .onion</div>
-
-    <!-- Input Form -->
     <div class="input-container">
         <input type="text" id="domain-input" placeholder="Masukkan domain .onion" autocomplete="off">
-        <p id="error-message" class="error-message">Format domain .onion tidak valid!</p>
-        <p id="success-message" class="success-message">Domain valid: <span id="valid-domain"></span></p>
     </div>
 
     <script>
-        const onionText = document.getElementById('onion-text');
-        const inputContainer = document.querySelector('.input-container');
-        const domainInput = document.getElementById('domain-input');
-        const errorMessage = document.getElementById('error-message');
-        const successMessage = document.getElementById('success-message');
-        const validDomainSpan = document.getElementById('valid-domain');
+        const inputField = document.getElementById('domain-input');
 
-        // Regex untuk memvalidasi domain .onion
-        const regex = /^(?=.{16,40}$)[a-z2-7]{16,40}\.onion$/;
-
-        // Deteksi klik pada teks .onion untuk menampilkan input
-        onionText.addEventListener('click', function () {
-            onionText.style.display = 'none'; // Sembunyikan teks .onion
-            inputContainer.style.display = 'block'; // Tampilkan input domain
-            domainInput.focus(); // Fokuskan input
-        });
-
-        // Deteksi input dan validasi domain
-        domainInput.addEventListener('input', function () {
-            const domain = domainInput.value.trim();
-
-            // Cek apakah domain valid
-            if (regex.test(domain)) {
-                errorMessage.style.display = 'none';
-                successMessage.style.display = 'block';
-                validDomainSpan.textContent = domain;
+        // Validasi domain .onion
+        inputField.addEventListener('input', function () {
+            const domain = inputField.value;
+            if (domain.endsWith('.onion')) {
+                inputField.style.borderColor = '#00FF00'; // Border hijau jika valid
             } else {
-                errorMessage.style.display = 'block';
-                successMessage.style.display = 'none';
+                inputField.style.borderColor = 'red'; // Border merah jika tidak valid
             }
         });
 
-        // Jika klik di luar input, reset dan tampilkan kembali 'onion'
-        domainInput.addEventListener('blur', function () {
-            domainInput.value = ''; // Mengosongkan input
-            successMessage.style.display = 'none'; // Menyembunyikan pesan sukses
-            errorMessage.style.display = 'none'; // Menyembunyikan pesan error
-            onionText.style.display = 'block'; // Menampilkan kembali teks .onion
-            inputContainer.style.display = 'none'; // Menyembunyikan input
-        });
-
-        // Karakter matrix untuk background
-        const matrix = document.querySelector('.matrix');
-        const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-        const charsExtended = chars.repeat(50);
-        const columnWidth = 20;
-        const rowHeight = 30;
-
-        const columns = Math.floor(window.innerWidth / columnWidth);
-        const rows = Math.floor(window.innerHeight / rowHeight);
-
-        // Membuat kolom dan baris untuk efek matrix
-        for (let i = 0; i < columns * 2; i++) {
-            for (let j = 0; j < rows * 2; j++) {
-                const span = document.createElement('span');
-                span.style.left = `${i * columnWidth}px`;
-                span.style.top = `${j * rowHeight}px`;
-                span.textContent = charsExtended.charAt(Math.floor(Math.random() * charsExtended.length));
-                matrix.appendChild(span);
+        // Fungsi untuk menghapus input dan kembali ke halaman index jika klik di luar
+        document.body.addEventListener('click', function(event) {
+            const inputContainer = document.querySelector('.input-container');
+            if (!inputContainer.contains(event.target)) {
+                inputField.value = ''; // Reset input
+                window.location.href = 'index.html'; // Kembali ke index.html
             }
-        }
-
-        // Memperbarui karakter setiap interval waktu untuk efek matrix
-        setInterval(() => {
-            document.querySelectorAll('.matrix span').forEach(span => {
-                span.textContent = charsExtended.charAt(Math.floor(Math.random() * charsExtended.length));
-            });
-        }, 100);
+        });
     </script>
 </body>
 </html>
