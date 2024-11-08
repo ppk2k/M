@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matrix Karakter Jepang - Masukkan Domain</title>
+    <title>Masukkan Domain .onion</title>
     <style>
         body {
             font-family: "Courier New", monospace;
@@ -18,7 +18,6 @@
             position: relative;
         }
 
-        /* Background matrix */
         .matrix {
             position: fixed;
             top: 0;
@@ -29,26 +28,25 @@
         }
 
         .matrix span {
-            color: #00FF00; /* Warna hijau neon untuk karakter */
-            font-size: 18px; /* Ukuran font default */
+            color: #00FF00;
+            font-size: 16px;
             white-space: pre;
             display: inline-block;
             position: absolute;
         }
 
-        /* Teks .onion yang akan ditampilkan */
         .onion {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 30px; /* Ukuran font default untuk .onion */
+            font-size: 24px; /* Ukuran font lebih besar */
             font-family: 'Courier New', monospace;
-            color: #00FF00; /* Warna hijau neon untuk teks */
-            pointer-events: none; /* Menghindari gangguan pada klik */
+            color: #00FF00;
+            cursor: pointer; /* Menambahkan cursor pointer agar terlihat bisa diklik */
+            z-index: 1;
         }
 
-        /* Input container */
         .input-container {
             text-align: center;
             position: absolute;
@@ -64,52 +62,13 @@
             width: 300px;
             background-color: black;
             color: #00FF00;
-            border: 2px solid #00FF00;
+            border: none;
             outline: none;
-        }
-
-        /* Media Queries untuk Responsivitas */
-        @media (max-width: 768px) {
-            /* Ukuran font matrix pada perangkat kecil */
-            .matrix span {
-                font-size: 14px;
-            }
-
-            /* Ukuran font .onion di perangkat kecil */
-            .onion {
-                font-size: 20px;
-            }
-
-            /* Ukuran input untuk perangkat kecil */
-            input {
-                font-size: 16px;
-                width: 250px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            /* Ukuran font matrix pada ponsel */
-            .matrix span {
-                font-size: 12px;
-            }
-
-            /* Ukuran font .onion pada ponsel */
-            .onion {
-                font-size: 16px;
-            }
-
-            /* Ukuran input untuk ponsel */
-            input {
-                font-size: 14px;
-                width: 220px;
-            }
         }
     </style>
 </head>
 <body>
-    <div class="matrix"></div>
-
-    <!-- Teks Onion yang akan tampil dengan efek matrix -->
+    <!-- Teks Onion yang bisa diklik -->
     <div class="onion">.onion</div>
 
     <!-- Input untuk memasukkan domain -->
@@ -118,23 +77,22 @@
     </div>
 
     <script>
-        // Karakter Jepang untuk matrix
+        // Karakter Jepang untuk efek matrix
         const matrix = document.querySelector('.matrix');
         const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-        const charsExtended = chars.repeat(50); // Menambahkan karakter Jepang hingga 1000 karakter
-        const columnWidth = 20; // Lebar setiap kolom karakter
-        const rowHeight = 30; // Tinggi setiap baris karakter
+        const columnWidth = 20;
+        const rowHeight = 30;
 
-        const columns = Math.floor(window.innerWidth / columnWidth);  // Menyesuaikan jumlah kolom dengan lebar layar
-        const rows = Math.floor(window.innerHeight / rowHeight);  // Menyesuaikan jumlah baris dengan tinggi layar
+        const columns = Math.floor(window.innerWidth / columnWidth);  
+        const rows = Math.floor(window.innerHeight / rowHeight);  
 
         // Membuat kolom dan baris untuk efek matrix
-        for (let i = 0; i < columns * 2; i++) { // Ganda untuk lebih banyak karakter
-            for (let j = 0; j < rows * 2; j++) { // Ganda untuk lebih banyak karakter
+        for (let i = 0; i < columns * 2; i++) { 
+            for (let j = 0; j < rows * 2; j++) { 
                 const span = document.createElement('span');
-                span.style.left = `${i * columnWidth}px`; // Posisi horizontal tetap
-                span.style.top = `${j * rowHeight}px`; // Posisi vertikal tetap
-                span.textContent = charsExtended.charAt(Math.floor(Math.random() * charsExtended.length)); // Pilih karakter acak
+                span.style.left = `${i * columnWidth}px`; 
+                span.style.top = `${j * rowHeight}px`; 
+                span.textContent = chars.charAt(Math.floor(Math.random() * chars.length)); 
                 matrix.appendChild(span);
             }
         }
@@ -142,23 +100,23 @@
         // Memperbarui karakter setiap interval waktu untuk efek matrix
         setInterval(() => {
             document.querySelectorAll('.matrix span').forEach(span => {
-                span.textContent = charsExtended.charAt(Math.floor(Math.random() * charsExtended.length));
+                span.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
             });
-        }, 100); // Mengubah karakter setiap 100ms
+        }, 100); 
 
-        // Fungsi untuk menampilkan input dan menyembunyikan teks .onion
+        // Fungsi untuk menampilkan input saat .onion diklik
         document.querySelector('.onion').addEventListener('click', function() {
-            document.querySelector('.onion').style.display = 'none'; // Sembunyikan teks .onion
+            document.querySelector('.onion').style.display = 'none'; // Sembunyikan .onion
             document.querySelector('.input-container').style.display = 'block'; // Tampilkan input
             document.getElementById('domain-input').focus(); // Fokus pada input
         });
 
-        // Fungsi untuk menyembunyikan input dan mengembalikan teks .onion jika pengguna mengklik di luar input
+        // Fungsi untuk menyembunyikan input saat pengguna mengklik di luar input
         document.addEventListener('click', function(e) {
             const inputField = document.getElementById('domain-input');
             if (!inputField.contains(e.target) && !e.target.classList.contains('onion')) {
                 document.querySelector('.input-container').style.display = 'none'; // Sembunyikan input
-                document.querySelector('.onion').style.display = 'block'; // Tampilkan kembali teks .onion
+                document.querySelector('.onion').style.display = 'block'; // Tampilkan kembali .onion
                 inputField.value = ''; // Kosongkan input
             }
         });
@@ -166,9 +124,9 @@
         // Deteksi jika domain valid dan ambil nilai input
         document.getElementById('domain-input').addEventListener('input', function() {
             const input = this.value;
-            const validDomain = /^[a-zA-Z0-9-]{2,256}\.onion$/;  // Pola domain valid .onion
+            const validDomain = /^[a-zA-Z0-9-]{2,256}\.onion$/;
             if (validDomain.test(input)) {
-                console.log('Domain valid:', input); // Jika valid, akan tercetak di konsol
+                console.log('Domain valid:', input); 
             } else {
                 console.log('Domain tidak valid');
             }
@@ -177,8 +135,8 @@
         // Jika Enter ditekan, input akan dihapus dan .onion muncul kembali
         document.getElementById('domain-input').addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
-                this.value = '';  // Kosongkan input
-                document.querySelector('.onion').style.display = 'block';  // Tampilkan kembali .onion
+                this.value = '';  
+                document.querySelector('.onion').style.display = 'block'; 
             }
         });
     </script>
