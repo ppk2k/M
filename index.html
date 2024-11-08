@@ -9,10 +9,10 @@
         body {
             font-family: "Courier New", monospace;
             background-color: #000;
-            color: #00FF00;
+            color: #00FF00; /* Hijau untuk teks matrix */
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            overflow: hidden; /* Menyembunyikan scrollbar */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -20,7 +20,7 @@
             text-align: center;
         }
 
-        /* Matrix */
+        /* Efek Matrix */
         .matrix {
             position: fixed;
             top: 0;
@@ -28,78 +28,87 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            z-index: -1;
+            z-index: -1; /* Di belakang form */
         }
 
         .matrix span {
-            color: #00FF00;
+            color: #00FF00; /* Hijau untuk karakter matrix */
             font-size: 16px;
             white-space: pre;
             animation: fall linear infinite;
             display: inline-block;
         }
 
+        /* Animasi efek jatuh (air terjun) */
         @keyframes fall {
             from { transform: translateY(-100vh); opacity: 1; }
             to { transform: translateY(100vh); opacity: 0; }
         }
 
-        /* Input untuk Domain dan Matrix */
+        .matrix span:nth-child(odd) { animation-duration: 3s; }
+        .matrix span:nth-child(even) { animation-duration: 5s; }
+
+        /* Container Form */
+        .container {
+            width: 100%;
+            height: 100vh; /* Penuh layar */
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0); /* Transparan untuk form */
+            border-radius: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Input Transparan */
         .input-container {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            display: inline-block;
+        }
+
+        /* Penyembunyian input */
+        input[type="text"] {
+            position: absolute;
+            top: -9999px; /* Menyembunyikan input */
+        }
+
+        /* Menu matrix untuk memilih jumlah baris */
+        .matrix-menu {
+            display: none; /* Menyembunyikan menu awal */
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            display: inline-block;
-            width: 100%;
-            max-width: 600px;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            background-color: rgba(0, 0, 0, 0);
-            border: none;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 8px;
             color: #00FF00;
-            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
         }
 
-        /* Menu untuk memilih jumlah baris matrix */
-        .matrix-options {
+        /* Verifikasi domain */
+        .verified-message {
             display: none;
-            text-align: center;
             color: #00FF00;
             margin-top: 20px;
-        }
-
-        .matrix-options select {
-            background-color: rgba(0, 0, 0, 0.5);
-            color: #00FF00;
-            border: 1px solid #00FF00;
-            padding: 5px;
         }
     </style>
 </head>
 <body>
-    <!-- Matrix -->
+    <!-- Matrix Background -->
     <div class="matrix">
         <script>
             const matrix = document.querySelector('.matrix');
-            const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+            const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789abcdefghijklmnopqrstuvwxyz';
             const columns = window.innerWidth / 20;
-            const rows = Math.max(Math.min(Math.floor(window.innerHeight / 40), 50), 30); // Menyesuaikan baris antara 30 dan 50
 
             for (let i = 0; i < columns; i++) {
-                for (let j = 0; j < rows; j++) {
-                    const column = document.createElement('span');
-                    column.style.position = 'absolute';
-                    column.style.left = `${i * 20}px`;
-                    column.style.top = `${j * 40}px`;
-                    column.style.animationDelay = `${Math.random() * -10}s`;
-                    column.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
-                    matrix.appendChild(column);
-                }
+                const column = document.createElement('span');
+                column.style.position = 'absolute';
+                column.style.left = `${i * 20}px`;
+                column.style.animationDelay = `${Math.random() * -10}s`;  // Kecepatan animasi acak
+                column.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
+                matrix.appendChild(column);
             }
 
             setInterval(() => {
@@ -110,47 +119,40 @@
         </script>
     </div>
 
-    <!-- Form Input Domain -->
-    <div class="input-container">
-        <input type="text" id="onion" name="onion" placeholder="Masukkan domain Anda" autocomplete="off">
-        <div class="matrix-options">
-            <label for="matrixRows">Pilih jumlah baris Matrix:</label>
-            <select id="matrixRows">
-                <option value="10">10 Baris</option>
-                <option value="20">20 Baris</option>
-                <option value="30">30 Baris</option>
-                <option value="40">40 Baris</option>
-                <option value="50">50 Baris</option>
-            </select>
-        </div>
+    <!-- Form Verifikasi -->
+    <div class="container">
+        <form action="#" method="get" id="verify-form">
+            <!-- Input yang disembunyikan -->
+            <input type="text" id="input-domain" name="domain" required placeholder="Masukkan domain Anda" oninput="checkDomain(this.value)">
+            <!-- Menu Pilihan Matrix -->
+            <div class="matrix-menu" id="matrix-menu">
+                <p>Masukkan jumlah baris matrix (30-50):</p>
+                <input type="number" id="matrix-lines" min="30" max="50" placeholder="Jumlah baris">
+            </div>
+            <!-- Pesan Verifikasi Domain -->
+            <div class="verified-message" id="verified-message">
+                <p>Domain terverifikasi. Silakan masukkan kode.</p>
+            </div>
+        </form>
     </div>
 
     <script>
-        const inputField = document.getElementById('onion');
-        const matrixOptions = document.querySelector('.matrix-options');
-
-        inputField.addEventListener('focus', function() {
-            // Ketika kolom input di fokuskan, hapus placeholder
-            inputField.placeholder = '';
-        });
-
-        inputField.addEventListener('input', function() {
-            const domainValue = inputField.value.trim();
-
-            // Jika ada input, tampilkan pilihan jumlah baris matrix
-            if (domainValue) {
-                matrixOptions.style.display = 'block';
+        // Fungsi untuk memeriksa domain dan menampilkan menu matrix
+        function checkDomain(value) {
+            const domain = value.trim();
+            if (domain && domain.endsWith(".onion")) {
+                // Jika domain valid, tampilkan pesan verifikasi dan lanjut ke matrix
+                document.getElementById("verified-message").style.display = "block";
+                document.getElementById("matrix-menu").style.display = "block";
             } else {
-                matrixOptions.style.display = 'none';
+                // Sembunyikan pesan dan menu matrix jika domain tidak valid
+                document.getElementById("verified-message").style.display = "none";
+                document.getElementById("matrix-menu").style.display = "none";
             }
-        });
 
-        inputField.addEventListener('blur', function() {
-            // Ketika kolom input kehilangan fokus, tampilkan kembali placeholder
-            if (!inputField.value) {
-                inputField.placeholder = 'Masukkan domain Anda';
-            }
-        });
+            // Menyembunyikan .onion setelah mengetik
+            document.getElementById("input-domain").placeholder = "";
+        }
     </script>
 </body>
 </html>
