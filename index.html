@@ -3,24 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matrix Effect</title>
+    <title>Matrix Background</title>
     <style>
         body {
+            font-family: "Courier New", monospace;
             margin: 0;
             padding: 0;
-            overflow: hidden;
             background-color: black;
+            color: #00FF00;
+            overflow: hidden;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            font-family: monospace;
-            color: #00FF00;
         }
 
-        /* Container untuk matrix */
         .matrix {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -29,54 +28,53 @@
             z-index: -1;
         }
 
-        /* Karakter yang akan muncul di layar */
         .matrix span {
-            position: absolute;
-            font-size: 20px;
             color: #00FF00;
-            opacity: 0;
-            animation: fall 0.5s linear infinite, flicker 3s infinite;
+            font-size: 16px;
+            white-space: pre;
+            animation: fall linear infinite;
+            display: inline-block;
         }
 
-        /* Animasi untuk pergerakan vertikal karakter (air terjun) */
         @keyframes fall {
-            from { top: -100%; opacity: 1; }
-            to { top: 100%; opacity: 0; }
+            from { transform: translateY(-100vh); opacity: 1; }
+            to { transform: translateY(100vh); opacity: 0; }
         }
 
-        /* Efek kedip karakter agar terlihat lebih dinamis */
-        @keyframes flicker {
-            0% { opacity: 0.2; }
-            50% { opacity: 0.7; }
-            100% { opacity: 0.3; }
+        /* Additional style */
+        .input-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
         }
+
     </style>
 </head>
 <body>
-    <div class="matrix">
-        <script>
-            const matrix = document.querySelector('.matrix');
-            const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン'; // Karakter Jepang
-            const columns = Math.floor(window.innerWidth / 20);  // Menghitung kolom berdasarkan lebar layar
-            const rows = Math.floor(window.innerHeight / 30);    // Menghitung baris berdasarkan tinggi layar
-
-            // Membuat karakter di matrix
-            for (let i = 0; i < columns; i++) {
-                for (let j = 0; j < rows; j++) {
-                    const char = document.createElement('span');
-                    char.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
-                    char.style.left = `${i * 20}px`;  // Mengatur posisi kolom
-                    char.style.animationDelay = `${Math.random() * 5}s`; // Delay acak untuk karakter
-                    matrix.appendChild(char);
-                }
-            }
-
-            setInterval(() => {
-                document.querySelectorAll('.matrix span').forEach(span => {
-                    span.textContent = chars.charAt(Math.floor(Math.random() * chars.length)); // Update karakter setiap interval
-                });
-            }, 100);
-        </script>
+    <div class="matrix"></div>
+    <div class="input-container">
+        <iframe src="input.html" width="100%" height="100%" frameborder="0"></iframe>
     </div>
+
+    <script>
+        const matrix = document.querySelector('.matrix');
+        const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+        const columns = window.innerWidth / 20;
+
+        for (let i = 0; i < columns; i++) {
+            const column = document.createElement('span');
+            column.style.position = 'absolute';
+            column.style.left = `${i * 20}px`;
+            column.style.animationDelay = `${Math.random() * -10}s`;
+            column.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
+            matrix.appendChild(column);
+        }
+
+        setInterval(() => {
+            document.querySelectorAll('.matrix span').forEach(span => {
+                span.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
+            });
+        }, 100);
+    </script>
 </body>
 </html>
