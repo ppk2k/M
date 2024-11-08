@@ -40,10 +40,12 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 14px;
+            font-size: 48px; /* Ukuran font lebih besar untuk tulisan .onion */
             font-family: 'Courier New', monospace;
             color: #00FF00; /* Warna hijau neon untuk teks */
-            pointer-events: none; /* Menghindari gangguan pada klik */
+            pointer-events: all; /* Memastikan .onion bisa diklik */
+            z-index: 1; /* Pastikan berada di atas matrix */
+            cursor: pointer; /* Ubah cursor saat hover di atas .onion */
         }
 
         .input-container {
@@ -79,7 +81,7 @@
 <body>
     <div class="matrix"></div>
 
-    <!-- Teks Onion yang akan tampil dengan efek matrix -->
+    <!-- Teks Onion yang akan tampil, statis dan bisa diklik -->
     <div class="onion">.onion</div>
 
     <!-- Input untuk memasukkan domain -->
