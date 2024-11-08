@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verifikasi Domain</title>
+    <title>Verifikasi Domain dan Kode</title>
     <style>
         /* Pengaturan Umum */
         body {
@@ -94,17 +94,12 @@
             color: #00FF00;
             opacity: 0.8;
             animation: flicker 3s infinite alternate;
+            cursor: pointer;
         }
 
         @keyframes flicker {
             0%, 100% { opacity: 0.3; }
             50% { opacity: 0.8; }
-        }
-
-        /* Form Kode */
-        .code-container {
-            display: none;
-            margin-top: 20px;
         }
 
         /* Hapus bagian link yang mengganggu */
@@ -142,50 +137,37 @@
     <!-- Form Verifikasi -->
     <div class="container">
         <form action="#" method="get" id="verify-form">
-            <!-- Input Domain -->
             <div class="input-container">
-                <input type="text" id="onion" name="onion" required placeholder="Masukkan domain Anda">
-                <span class="onion-suffix">.onion</span>
-            </div>
-
-            <!-- Form Kode, awalnya disembunyikan -->
-            <div class="code-container" id="code-container">
-                <input type="text" id="code" name="code" required placeholder="Masukkan kode">
-                <button type="submit">Verifikasi Kode</button>
+                <input type="text" id="input-field" name="input" required placeholder="" />
+                <span class="onion-suffix" onclick="showPlaceholder()">.onion</span>
             </div>
         </form>
     </div>
 
     <script>
-        const validDomain = "blackangels"; // Ganti dengan domain yang valid
-        const onionInput = document.getElementById('onion');
-        const codeContainer = document.getElementById('code-container');
+        const validDomain = "matrix"; // Ganti dengan domain yang valid
+        const validCode = "1234"; // Ganti dengan kode yang valid
+        const inputField = document.getElementById('input-field');
         const form = document.getElementById('verify-form');
 
-        // Mendengarkan input untuk domain
-        onionInput.addEventListener('input', function() {
-            var onionValue = onionInput.value.trim();
-            
-            // Jika domain valid, tampilkan form kode
-            if (onionValue.toLowerCase() === validDomain) {
-                codeContainer.style.display = 'block'; // Tampilkan form kode
-            } else {
-                codeContainer.style.display = 'none'; // Sembunyikan form kode
-            }
-        });
+        // Fungsi untuk menampilkan placeholder setelah klik .onion
+        function showPlaceholder() {
+            inputField.setAttribute('placeholder', 'Masukkan domain atau kode verifikasi');
+        }
 
-        // Menangani pengiriman form kode
         form.addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            const codeValue = document.getElementById('code').value.trim();
+            var inputValue = inputField.value.trim();
 
-            // Validasi kode (misalnya '1234' adalah kode yang benar)
-            if (codeValue === '1234') {
+            // Cek apakah input adalah kode verifikasi setelah domain valid
+            if (inputValue === validCode) {
                 alert("Verifikasi Berhasil!");
-                // Redirect atau tindakan lain setelah verifikasi berhasil
+                // Arahkan ke halaman lain setelah verifikasi berhasil
+                // window.location.href = "halaman_setelah_verifikasi.html";
+            } else if (inputValue.toLowerCase() === validDomain) {
+                alert("Domain valid! Sekarang masukkan kode verifikasi.");
             } else {
-                alert("Kode tidak valid. Coba lagi.");
+                alert("Input tidak valid.");
             }
         });
     </script>
