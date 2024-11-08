@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verifikasi Domain</title>
     <style>
+        /* Pengaturan Umum */
         body {
             font-family: "Courier New", monospace;
             background-color: #000;
-            color: #e0e0e0;
+            color: #00FF00; /* Hijau untuk teks matrix */
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            overflow: hidden; /* Menyembunyikan scrollbar */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -19,6 +20,7 @@
             text-align: center;
         }
 
+        /* Efek Matrix */
         .matrix {
             position: fixed;
             top: 0;
@@ -26,40 +28,38 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            z-index: -1;
+            z-index: -1; /* Di belakang form */
         }
 
         .matrix span {
-            color: #00FF00;
-            font-size: 18px;
-            white-space: nowrap;
+            color: #00FF00; /* Hijau untuk karakter matrix */
+            font-size: 16px;
+            white-space: pre;
             animation: fall linear infinite;
             display: inline-block;
-            line-height: 1.2em;
         }
 
+        /* Animasi efek jatuh */
         @keyframes fall {
             from { transform: translateY(-100vh); opacity: 1; }
             to { transform: translateY(100vh); opacity: 0; }
         }
 
+        .matrix span:nth-child(odd) { animation-duration: 3s; }
+        .matrix span:nth-child(even) { animation-duration: 5s; }
+
+        /* Container Form */
         .container {
             width: 90%;
             max-width: 400px;
             padding: 20px;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0); /* Transparan untuk form */
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             position: relative;
             z-index: 1;
         }
 
-        h2 {
-            font-size: 24px;
-            color: #66ff66;
-            margin-bottom: 20px;
-        }
-
+        /* Input Transparan */
         .input-container {
             position: relative;
             width: 100%;
@@ -71,14 +71,13 @@
             width: 100%;
             padding: 10px;
             font-size: 16px;
-            background-color: rgba(0, 0, 0, 0);
-            border: 1px solid #666;
-            color: #e0e0e0;
-            border-radius: 5px;
-            padding-right: 70px;
-            box-sizing: border-box;
+            background-color: rgba(0, 0, 0, 0); /* Transparan */
+            border: none;
+            color: #00FF00;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
         }
 
+        /* Efek Matrix untuk Onion Suffix */
         .onion-suffix {
             position: absolute;
             right: 10px;
@@ -86,96 +85,50 @@
             transform: translateY(-50%);
             font-size: 16px;
             font-weight: bold;
-            color: #fff;
+            color: #00FF00;
+            opacity: 0.8;
+            animation: flicker 3s infinite alternate;
         }
 
-        .clickable {
-            color: #66ff66;
-            font-weight: bold;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .clickable:hover {
-            color: #cccccc;
-        }
-
-        p.error {
-            color: #ff6666;
+        @keyframes flicker {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
         }
     </style>
 </head>
 <body>
+    <!-- Matrix Background -->
     <div class="matrix">
         <script>
             const matrix = document.querySelector('.matrix');
             const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+            const columns = window.innerWidth / 20;
 
-            function createMatrix() {
-                // Bersihkan elemen sebelumnya
-                matrix.innerHTML = '';
-
-                // Hitung jumlah kolom berdasarkan lebar layar
-                const columnCount = Math.floor(window.innerWidth / 20);
-                const fontSize = Math.max(14, Math.floor(window.innerWidth / 100)); // Menyesuaikan ukuran font
-
-                for (let i = 0; i < columnCount; i++) {
-                    const column = document.createElement('span');
-                    column.style.position = 'absolute';
-                    column.style.left = `${i * 20}px`;
-                    column.style.animationDuration = `${Math.random() * 5 + 3}s`;
-                    column.style.animationDelay = `${Math.random() * -10}s`;
-                    column.style.fontSize = `${fontSize}px`; // Sesuaikan ukuran font
-                    matrix.appendChild(column);
-
-                    // Generate text secara acak di dalam kolom
-                    setInterval(() => {
-                        column.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
-                    }, 100);
-                }
+            for (let i = 0; i < columns; i++) {
+                const column = document.createElement('span');
+                column.style.position = 'absolute';
+                column.style.left = `${i * 20}px`;
+                column.style.animationDelay = `${Math.random() * -10}s`;
+                column.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
+                matrix.appendChild(column);
             }
 
-            // Panggil fungsi saat pertama kali dimuat
-            createMatrix();
-
-            // Perbarui matrix saat ukuran layar berubah
-            window.addEventListener('resize', createMatrix);
+            setInterval(() => {
+                document.querySelectorAll('.matrix span').forEach(span => {
+                    span.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
+                });
+            }, 100);
         </script>
     </div>
 
+    <!-- Form Verifikasi -->
     <div class="container">
-        <h2>Verifikasi Domain</h2>
         <form action="#" method="get" id="verify-form">
-            <label for="onion">Masukkan Domain Anda:</label>
             <div class="input-container">
                 <input type="text" id="onion" name="onion" required placeholder="Masukkan domain Anda">
                 <span class="onion-suffix">.onion</span>
             </div>
-            <p id="error-message" class="error"></p>
-            <a href="kode.html" id="onion-link" class="clickable" style="display: none;">onion</a>
         </form>
     </div>
-
-    <script>
-        const validDomain = "blackangels";
-
-        document.getElementById('onion').addEventListener('input', function() {
-            var onionInput = document.getElementById('onion').value.trim();
-            var link = document.getElementById('onion-link');
-            if (onionInput.toLowerCase() === validDomain) {
-                link.style.display = 'inline';
-            } else {
-                link.style.display = 'none';
-            }
-        });
-
-        document.getElementById('onion-link').addEventListener('click', function(event) {
-            var onionInput = document.getElementById('onion').value.trim();
-            if (onionInput.toLowerCase() !== validDomain) {
-                alert("Domain tidak valid. Coba lagi.");
-                event.preventDefault();
-            }
-        });
-    </script>
 </body>
 </html>
