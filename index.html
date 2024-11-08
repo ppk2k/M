@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matrix Effect</title>
+    <title>Matrix Effect with Korean Characters</title>
     <style>
         body {
             margin: 0;
             overflow: hidden;
-            background-color: black;
+            background-color: #ffffff; /* Latar belakang putih */
         }
 
         .matrix {
             position: absolute;
-            color: #0F0;
+            color: #000000; /* Warna teks hitam */
             font-family: 'Courier New', monospace;
             font-size: 24px;
             white-space: nowrap;
@@ -27,9 +27,13 @@
 </head>
 <body>
     <script>
-        // Daftar karakter untuk matrix
-        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=<>?;:,. ";
-        
+        // Daftar karakter untuk matrix (Karakter Korea/Hangeul)
+        const chars = "가나다라마바사아자차카타파하" + 
+                      "거너더러머버서어저처커터퍼허" + 
+                      "기니디리미비시이지치키티피히" +
+                      "고노도로모보소오조초코토포호" + 
+                      "구누두루무부수우주추쿠투푸후";
+
         // Ukuran font
         const fontSize = 24;
 
