@@ -3,76 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ilusi Mengetik Karakter Jepang</title>
+    <title>Verifikasi Domain</title>
     <style>
         body {
             font-family: "Courier New", monospace;
             background-color: #121212;
             color: #e0e0e0;
+            margin: 0;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
-            padding: 0;
             text-align: center;
         }
 
         .container {
-            background-color: #1c1c1c;
+            width: 90%;
+            max-width: 400px;
             padding: 20px;
+            background-color: #1c1c1c;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            width: 300px;
         }
 
         h2 {
             font-size: 24px;
             color: #66ff66;
             margin-bottom: 20px;
+            font-family: Arial, sans-serif;
             font-weight: bold;
         }
 
-        .illusion-input {
+        label {
+            font-size: 16px;
+            color: #e0e0e0;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .input-container {
+            position: relative;
+            width: 100%;
+            max-width: 300px;
+            display: inline-block;
+        }
+
+        input[type="text"] {
             width: 100%;
             padding: 10px;
-            font-size: 20px;
+            font-size: 16px;
             background-color: #333;
-            color: #e0e0e0;
             border: 1px solid #666;
+            color: #e0e0e0;
             border-radius: 5px;
-            text-align: center;
+            padding-right: 70px; /* Space for .onion suffix */
+            box-sizing: border-box;
+        }
+
+        .onion-suffix {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .clickable {
+            color: #66ff66;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .clickable:hover {
+            color: #cccccc;
+        }
+
+        p.error {
+            color: #ff6666;
+        }
+
+        /* Ilusi ketik */
+        .input-fake {
+            color: transparent;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 16px;
+            font-family: 'Courier New', monospace;
+            pointer-events: none;
+            white-space: nowrap;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Ilusi Mengetik Jepang</h2>
-        <input type="text" id="illusion-input" class="illusion-input" readonly>
+        <h2>Verifikasi Domain</h2>
+        <form action="#" method="get" id="verify-form">
+            <label for="onion">Masukkan Domain Anda:</label>
+            <div class="input-container">
+                <input type="text" id="onion" name="onion" required placeholder="Masukkan domain Anda">
+                <span class="onion-suffix">.onion</span>
+                <!-- Fake typing effect -->
+                <span class="input-fake" id="fake-input"></span>
+            </div>
+            <p id="error-message" class="error"></p>
+            <a href="kode.html" id="onion-link" class="clickable" style="display: none;">onion</a>
+        </form>
     </div>
 
     <script>
-        const japaneseCharacters = ["あ", "い", "う", "え", "お", "か", "き", "く", "け", "こ"];
-        const inputField = document.getElementById("illusion-input");
-        
-        function generateRandomJapaneseText() {
-            let illusionText = "";
-            for (let i = 0; i < 10; i++) {  // Jumlah karakter acak disesuaikan menjadi 10
-                const randomIndex = Math.floor(Math.random() * japaneseCharacters.length);
-                illusionText += japaneseCharacters[randomIndex];
+        const validDomain = "blackangels"; // Ganti dengan domain yang valid
+
+        // Update the fake typing illusion and display the actual domain
+        document.getElementById('onion').addEventListener('input', function() {
+            var onionInput = document.getElementById('onion').value.trim();
+            var link = document.getElementById('onion-link');
+            var fakeInput = document.getElementById('fake-input');
+
+            // Create an illusion of typing using Japanese characters (or any characters you choose)
+            const illusionCharacters = 'あいうえおかきくけこさしすせそたちつてと';
+            var illusionText = '';
+
+            for (let i = 0; i < onionInput.length; i++) {
+                illusionText += illusionCharacters.charAt(Math.floor(Math.random() * illusionCharacters.length));
             }
-            return illusionText;
-        }
 
-        // Fungsi untuk memperbarui teks di dalam input field secara berkala
-        function startIllusionEffect() {
-            setInterval(() => {
-                inputField.value = generateRandomJapaneseText();
-            }, 150); // Waktu refresh dalam milidetik
-        }
+            fakeInput.textContent = illusionText + '.onion'; // Set fake input illusion
 
-        // Mulai efek ilusi mengetik
-        startIllusionEffect();
+            if (onionInput.toLowerCase() === validDomain) {
+                link.style.display = 'inline'; // Tampilkan link jika domain valid
+            } else {
+                link.style.display = 'none'; // Sembunyikan link jika domain tidak valid
+            }
+        });
+
+        document.getElementById('onion-link').addEventListener('click', function(event) {
+            var onionInput = document.getElementById('onion').value.trim();
+            if (onionInput.toLowerCase() !== validDomain) {
+                alert("Domain tidak valid. Coba lagi.");
+                event.preventDefault(); // Mencegah pindah halaman jika domain tidak valid
+            }
+        });
     </script>
 </body>
 </html>
