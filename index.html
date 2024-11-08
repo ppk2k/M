@@ -9,10 +9,10 @@
         body {
             font-family: "Courier New", monospace;
             background-color: #000;
-            color: #00FF00; /* Hijau untuk teks matrix */
+            color: #00FF00;
             margin: 0;
             padding: 0;
-            overflow: hidden; /* Menyembunyikan scrollbar */
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -28,11 +28,11 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            z-index: -1; /* Di belakang form */
+            z-index: -1;
         }
 
         .matrix span {
-            color: #00FF00; /* Hijau untuk karakter matrix */
+            color: #00FF00;
             font-size: 16px;
             white-space: pre;
             animation: fall linear infinite;
@@ -48,44 +48,41 @@
         .matrix span:nth-child(odd) { animation-duration: 3s; }
         .matrix span:nth-child(even) { animation-duration: 5s; }
 
-        /* Container Form */
+        /* Form penuh lebar */
         .container {
             width: 100%;
+            padding: 0 10px; /* Menyisakan sedikit ruang di kiri dan kanan */
+            background-color: rgba(0, 0, 0, 0); /* Transparan */
+            display: flex;
+            justify-content: center;
+            align-items: center;
             height: 100vh; /* Penuh layar */
-            padding: 20px;
-            background-color: rgba(0, 0, 0, 0); /* Transparan untuk form */
-            border-radius: 8px;
-            position: relative;
             z-index: 1;
         }
 
-        /* Input Transparan */
+        /* Input penuh lebar */
         .input-container {
-            position: relative;
             width: 100%;
-            max-width: 100%;
-            display: inline-block;
+            max-width: 100%; /* Maksimal lebar penuh perangkat */
+            display: flex;
+            justify-content: center;
         }
 
         input[type="text"] {
             width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            background-color: rgba(0, 0, 0, 0); /* Transparan */
+            padding: 15px;
+            font-size: 18px;
+            background-color: rgba(0, 0, 0, 0);
             border: none;
             color: #00FF00;
             text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+            outline: none;
         }
 
-        /* Efek Matrix untuk Onion Suffix */
         .onion-suffix {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 16px;
-            font-weight: bold;
+            font-size: 18px;
             color: #00FF00;
+            margin-left: 5px;
             opacity: 0.8;
             animation: flicker 3s infinite alternate;
         }
@@ -93,11 +90,6 @@
         @keyframes flicker {
             0%, 100% { opacity: 0.3; }
             50% { opacity: 0.8; }
-        }
-
-        /* Hapus bagian link yang mengganggu */
-        #onion-link {
-            display: none; /* Menghilangkan link */
         }
     </style>
 </head>
@@ -128,12 +120,10 @@
 
     <!-- Form Verifikasi -->
     <div class="container">
-        <form action="#" method="get" id="verify-form">
-            <div class="input-container">
-                <input type="text" id="onion" name="onion" required placeholder="Masukkan domain Anda">
-                <span class="onion-suffix">.onion</span>
-            </div>
-        </form>
+        <div class="input-container">
+            <input type="text" id="onion" name="onion" required placeholder="Masukkan domain Anda">
+            <span class="onion-suffix">.onion</span>
+        </div>
     </div>
 </body>
 </html>
