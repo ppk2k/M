@@ -3,63 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dark Web Entry</title>
+    <title>Onion Domain</title>
     <style>
         body {
-            background-color: black;
-            color: white;
-            font-family: 'Courier New', Courier, monospace;
-            text-align: center;
+            background-color: #000;
+            color: #00FF00;
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
         }
-        #onion-text {
-            font-size: 50px;
+        #onion {
+            font-size: 40px;
+            text-align: center;
             cursor: pointer;
-            margin-top: 50px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
-        input {
-            background: transparent;
-            border: none;
-            border-bottom: 2px solid white;
-            color: white;
-            font-size: 30px;
-            width: 400px;
+        #inputContainer, #infoContainer {
+            display: none;
             text-align: center;
-            margin-top: 30px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            color: #FFFFFF;
+        }
+        #inputField {
+            font-size: 20px;
+            color: #00FF00;
+            background: none;
+            border: none;
+            outline: none;
+            text-align: center;
+            width: 60%;
+        }
+        #backButton {
+            font-size: 20px;
+            margin-top: 20px;
+            color: #FFFFFF;
+            cursor: pointer;
+        }
+        #infoContainer {
+            font-size: 20px;
+            color: #FFFFFF;
+            width: 80%;
+            top: 40%;
+            left: 10%;
+            position: absolute;
         }
     </style>
 </head>
 <body>
+    <div id="onion" onclick="startInput()">ONION</div>
 
-<div id="onion-text" onclick="showInput()">.onion</div>
-<input type="text" id="user-input" placeholder="Enter domain or type 'info'" onfocus="this.value='';" style="display:none;">
+    <div id="inputContainer">
+        <input type="text" id="inputField" placeholder="Enter Domain or Info" oninput="convertText()">
+    </div>
 
-<script>
-    // Menampilkan input saat klik pada ".onion"
-    function showInput() {
-        document.getElementById('user-input').style.display = 'block';
-    }
+    <div id="infoContainer">
+        <p>Dark web adalah jaringan internet yang tidak terindeks oleh mesin pencari biasa. ...</p>
+        <p>Tekan 'Back' untuk kembali.</p>
+    </div>
 
-    document.getElementById('user-input').addEventListener('input', function(e) {
-        let input = e.target.value;
-        let newValue = '';
+    <div id="backButton" onclick="goBack()">Back</div>
 
-        // Membuat karakter Jepang secara acak
-        for (let i = 0; i < input.length; i++) {
-            newValue += String.fromCharCode(0x3040 + Math.floor(Math.random() * 0x5F));
-        }
-        e.target.value = newValue;
-
-        // Pengecekan jika input adalah 'info'
-        if (input.trim().toLowerCase() === 'info') {
-            window.location.href = 'info.html';  // Arahkan ke info.html
+    <script>
+        function startInput() {
+            document.getElementById('onion').style.display = 'none';
+            document.getElementById('inputContainer').style.display = 'block';
         }
 
-        // Pengecekan jika input adalah domain yang terverifikasi
-        if (input.trim().toLowerCase() === 'blackangels') {
-            window.location.href = 'kode.html';  // Arahkan ke kode.html jika domain valid
-        }
-    });
-</script>
+        function convertText() {
+            const inputField = document.getElementById('inputField');
+            const inputText = inputField.value;
 
+            // Simulate Japanese characters for each keystroke
+            let convertedText = '';
+            for (let i = 0; i < inputText.length; i++) {
+                const randomChar = String.fromCharCode(0x3040 + Math.floor(Math.random() * 96)); // Random Japanese char
+                convertedText += randomChar;
+            }
+            inputField.value = convertedText; // Update input with Japanese text
+        }
+
+        function goBack() {
+            document.getElementById('infoContainer').style.display = 'none';
+            document.getElementById('inputContainer').style.display = 'none';
+            document.getElementById('onion').style.display = 'block';
+        }
+    </script>
 </body>
 </html>
