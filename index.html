@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verifikasi Domain</title>
     <style>
-        /* Menghilangkan margin dan padding dari body */
+        /* Pengaturan Umum */
         body {
             font-family: "Courier New", monospace;
             background-color: #000;
@@ -16,22 +16,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh; /* Mengisi seluruh layar */
+            height: 100vh;
             text-align: center;
-            position: absolute; /* Menghilangkan ruang atas dan bawah */
-            top: 0;
-            left: 0;
-            width: 100%;
         }
 
-        /* Menghilangkan bar browser dan tampilan status */
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-
-        /* Matrix effect */
+        /* Efek Matrix */
         .matrix {
             position: fixed;
             top: 0;
@@ -39,7 +28,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            z-index: -1; /* Mengirimkan efek matrix ke belakang form */
+            z-index: -1; /* Di belakang form */
         }
 
         .matrix span {
@@ -50,7 +39,7 @@
             display: inline-block;
         }
 
-        /* Animasi untuk efek jatuh */
+        /* Animasi efek jatuh */
         @keyframes fall {
             from { transform: translateY(-100vh); opacity: 1; }
             to { transform: translateY(100vh); opacity: 0; }
@@ -59,18 +48,18 @@
         .matrix span:nth-child(odd) { animation-duration: 3s; }
         .matrix span:nth-child(even) { animation-duration: 5s; }
 
-        /* Container form */
+        /* Container Form */
         .container {
             width: 100%;
-            height: 100vh; /* Mengisi seluruh layar */
+            height: 100vh; /* Penuh layar */
             padding: 20px;
-            background-color: rgba(0, 0, 0, 0); /* Transparan */
+            background-color: rgba(0, 0, 0, 0); /* Transparan untuk form */
             border-radius: 8px;
             position: relative;
-            z-index: 1; /* Menempatkan form di atas matrix */
+            z-index: 1;
         }
 
-        /* Input transparan */
+        /* Input Transparan */
         .input-container {
             position: relative;
             width: 100%;
@@ -88,7 +77,7 @@
             text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
         }
 
-        /* Onion Suffix */
+        /* Efek Matrix untuk Onion Suffix */
         .onion-suffix {
             position: absolute;
             right: 10px;
@@ -106,9 +95,9 @@
             50% { opacity: 0.8; }
         }
 
-        /* Menyembunyikan link yang tidak diperlukan */
+        /* Hapus bagian link yang mengganggu */
         #onion-link {
-            display: none;
+            display: none; /* Menghilangkan link */
         }
     </style>
 </head>
