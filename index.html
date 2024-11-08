@@ -29,9 +29,8 @@
 
         h2 {
             font-size: 24px;
-            color: #66ff66;
+            color: white; /* White text color for title */
             margin-bottom: 20px;
-            font-family: Arial, sans-serif; /* Regular font for the title */
         }
 
         label {
@@ -66,7 +65,7 @@
             top: 50%;
             transform: translateY(-50%);
             font-size: 16px;
-            font-weight: normal; /* Regular font for the .onion suffix */
+            font-weight: normal; /* Normal font weight */
             color: #fff;
         }
 
@@ -76,16 +75,17 @@
             padding: 10px;
             background-color: transparent; /* Transparent background */
             color: white;
-            border: 1px solid #006400; /* Border color */
+            border: 1px solid #fff; /* White border */
             border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
             margin-top: 20px;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
         button:hover {
-            background-color: transparent; /* No effect on hover */
-            color: white; /* Keep text white */
+            background-color: rgba(255, 255, 255, 0.1); /* Slight hover effect */
+            border-color: #66ff66; /* Greenish border on hover */
         }
 
         p.error {
@@ -120,9 +120,9 @@
     <div class="container">
         <h2>Domain Verification</h2>
         <form action="code.html" method="get" onsubmit="return validateDomain()">
-            <label for="onion">Enter Your Onion Domain:</label>
+            <label for="onion">Enter Your v.onion Domain:</label>
             <div class="input-container">
-                <input type="text" id="onion" name="onion" required placeholder="v.onion" onkeydown="clearOnSpace(event)">
+                <input type="text" id="onion" name="onion" required placeholder="Enter your domain" onkeydown="clearOnSpace(event)">
                 <span class="onion-suffix">.onion</span>
             </div>
             <p id="error-message" class="error"></p>
