@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matrix Karakter Jepang - Efek Hujan</title>
+    <title>Matrix Karakter Jepang - Latar Diam</title>
     <style>
         body {
             font-family: "Courier New", monospace;
@@ -26,28 +26,15 @@
             left: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden;
             z-index: -1; /* Agar matrix berada di belakang input */
         }
 
         .matrix span {
+            color: #00FF00; /* Warna hijau neon untuk karakter */
             font-size: 16px;
             white-space: pre;
             display: inline-block;
             position: absolute;
-            animation: fall 5s linear infinite; /* Animasi jatuh karakter */
-        }
-
-        /* Animasi untuk karakter yang jatuh */
-        @keyframes fall {
-            0% {
-                transform: translateY(-100vh); /* Mulai dari luar layar */
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh); /* Bergerak ke bawah */
-                opacity: 0; /* Karakter menghilang setelah keluar dari layar */
-            }
         }
 
     </style>
@@ -55,6 +42,11 @@
 <body>
     <!-- Tempat untuk menampilkan karakter matrix -->
     <div class="matrix"></div>
+
+    <!-- Input Form -->
+    <div class="input-container">
+        <input type="text" id="domain-input" placeholder="Masukkan domain .onion" autocomplete="off">
+    </div>
 
     <script>
         const matrix = document.querySelector('.matrix');
@@ -68,13 +60,11 @@
 
         // Membuat kolom dan baris untuk efek matrix
         for (let i = 0; i < columns * 2; i++) { // Ganda untuk lebih banyak karakter
-            for (let j = 0; j < rows * 2; j++) { // Ganda untuk lebih banyak karakter jatuh
+            for (let j = 0; j < rows * 2; j++) { // Ganda untuk lebih banyak karakter
                 const span = document.createElement('span');
-                span.style.left = `${Math.random() * window.innerWidth}px`; // Acak posisi horizontal
-                span.style.top = `${Math.random() * -100}px`; // Memulai lebih tinggi dari layar
+                span.style.left = `${i * columnWidth}px`; // Posisi horizontal tetap
+                span.style.top = `${j * rowHeight}px`; // Posisi vertikal tetap
                 span.textContent = charsExtended.charAt(Math.floor(Math.random() * charsExtended.length)); // Pilih karakter acak
-                span.style.animationDelay = `${Math.random() * 5}s`; // Mengacak waktu animasi
-                span.style.animationDuration = `${Math.random() * 2 + 2}s`; // Acak durasi animasi untuk kecepatan jatuh
                 matrix.appendChild(span);
             }
         }
