@@ -3,99 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Onion Domain</title>
+    <title>Matrix Effect</title>
     <style>
         body {
-            background-color: #000;
-            color: #00FF00;
-            font-family: 'Courier New', monospace;
             margin: 0;
-            padding: 0;
             overflow: hidden;
+            background-color: black;
         }
-        #onion {
-            font-size: 40px;
-            text-align: center;
-            cursor: pointer;
+
+        .matrix {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            color: #0F0;
+            font-family: 'Courier New', monospace;
+            font-size: 24px;
+            white-space: nowrap;
         }
-        #inputContainer, #infoContainer {
-            display: none;
-            text-align: center;
+
+        .column {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            height: 100%;
-            color: #FFFFFF;
-        }
-        #inputField {
-            font-size: 20px;
-            color: #00FF00;
-            background: none;
-            border: none;
-            outline: none;
-            text-align: center;
-            width: 60%;
-        }
-        #backButton {
-            font-size: 20px;
-            margin-top: 20px;
-            color: #FFFFFF;
-            cursor: pointer;
-        }
-        #infoContainer {
-            font-size: 20px;
-            color: #FFFFFF;
-            width: 80%;
-            top: 40%;
-            left: 10%;
-            position: absolute;
+            top: -1000px;
         }
     </style>
 </head>
 <body>
-    <div id="onion" onclick="startInput()">ONION</div>
-
-    <div id="inputContainer">
-        <input type="text" id="inputField" placeholder="Enter Domain or Info" oninput="convertText()">
-    </div>
-
-    <div id="infoContainer">
-        <p>Dark web adalah jaringan internet yang tidak terindeks oleh mesin pencari biasa. ...</p>
-        <p>Tekan 'Back' untuk kembali.</p>
-    </div>
-
-    <div id="backButton" onclick="goBack()">Back</div>
-
     <script>
-        function startInput() {
-            document.getElementById('onion').style.display = 'none';
-            document.getElementById('inputContainer').style.display = 'block';
+        // Daftar karakter untuk matrix
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=<>?;:,. ";
+        
+        // Ukuran font
+        const fontSize = 24;
+
+        // Membuat array untuk posisi karakter
+        const columns = Math.floor(window.innerWidth / fontSize);
+        const rows = Math.floor(window.innerHeight / fontSize);
+
+        // Membuat array untuk menyimpan posisi y tiap kolom
+        const yPositions = Array(columns).fill(0);
+
+        // Membuat elemen kolom untuk setiap kolom
+        const columnsArray = [];
+        for (let i = 0; i < columns; i++) {
+            const column = document.createElement('div');
+            column.className = 'column';
+            column.style.left = `${i * fontSize}px`;
+            document.body.appendChild(column);
+            columnsArray.push(column);
         }
 
-        function convertText() {
-            const inputField = document.getElementById('inputField');
-            const inputText = inputField.value;
-
-            // Simulate Japanese characters for each keystroke
-            let convertedText = '';
-            for (let i = 0; i < inputText.length; i++) {
-                const randomChar = String.fromCharCode(0x3040 + Math.floor(Math.random() * 96)); // Random Japanese char
-                convertedText += randomChar;
-            }
-            inputField.value = convertedText; // Update input with Japanese text
+        function getRandomChar() {
+            return chars.charAt(Math.floor(Math.random() * chars.length));
         }
 
-        function goBack() {
-            document.getElementById('infoContainer').style.display = 'none';
-            document.getElementById('inputContainer').style.display = 'none';
-            document.getElementById('onion').style.display = 'block';
+        function updateMatrix() {
+            columnsArray.forEach((column, index) => {
+                let randomChar = getRandomChar();
+                let charNode = document.createTextNode(randomChar);
+                
+                // Menambahkan karakter baru di atas setiap kolom
+                if (column.childNodes.length > rows) {
+                    column.removeChild(column.firstChild);
+                }
+
+                column.insertBefore(charNode, column.firstChild);
+
+                // Perbarui posisi y untuk efek jatuh
+                yPositions[index] += fontSize;
+                if (yPositions[index] > window.innerHeight) {
+                    yPositions[index] = -fontSize;
+                }
+            });
+
+            requestAnimationFrame(updateMatrix); // Memanggil update secara berulang
         }
+
+        updateMatrix(); // Menjalankan efek matrix
     </script>
 </body>
 </html>
