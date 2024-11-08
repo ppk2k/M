@@ -29,9 +29,10 @@
 
         h2 {
             font-size: 24px;
-            color: white; /* White text color for title */
+            color: white;
             margin-bottom: 20px;
-            font-weight: normal; /* Regular font style */
+            font-family: Arial, sans-serif;
+            font-weight: bold;
         }
 
         label {
@@ -39,7 +40,7 @@
             color: #e0e0e0;
             margin-bottom: 10px;
             display: block;
-            font-weight: normal; /* Regular font style */
+            font-family: Arial, sans-serif;
         }
 
         .input-container {
@@ -59,7 +60,6 @@
             border-radius: 5px;
             padding-right: 70px; /* Space for .onion suffix */
             box-sizing: border-box;
-            font-weight: normal; /* Regular font style */
         }
 
         .onion-suffix {
@@ -68,26 +68,28 @@
             top: 50%;
             transform: translateY(-50%);
             font-size: 16px;
-            font-weight: normal; /* Regular font style */
+            font-weight: bold;
             color: #fff;
+            font-family: Arial, sans-serif;
         }
 
-        button {
+        .proceed-link {
             width: 100%;
             max-width: 300px;
             padding: 10px;
-            background-color: #006400;
+            background-color: transparent;
             color: white;
-            border: none; /* No border */
-            border-radius: 5px;
+            border: none;
             font-size: 16px;
             cursor: pointer;
             margin-top: 20px;
-            font-weight: normal; /* Regular font style */
+            font-family: Arial, sans-serif;
+            text-decoration: underline;
+            font-weight: bold;
         }
 
-        button:hover {
-            background-color: #004d00;
+        .proceed-link:hover {
+            color: #66ff66;
         }
 
         p.error {
@@ -122,13 +124,13 @@
     <div class="container">
         <h2>Domain Verification</h2>
         <form action="code.html" method="get" onsubmit="return validateDomain()">
-            <label for="onion">Enter Your v.onion Domain:</label>
+            <label for="onion">Enter Your Domain:</label>
             <div class="input-container">
                 <input type="text" id="onion" name="onion" required placeholder="Enter your domain" onkeydown="clearOnSpace(event)">
                 <span class="onion-suffix">.onion</span>
             </div>
             <p id="error-message" class="error"></p>
-            <button type="submit">Proceed</button>
+            <a href="code.html" class="proceed-link">Onion</a> <!-- Clickable link instead of button -->
         </form>
     </div>
 </body>
