@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Domain Verification</title>
+    <title>Verify Domain</title>
     <style>
         body {
             font-family: "Courier New", monospace;
@@ -40,7 +40,6 @@
             font-size: 16px;
             color: #e0e0e0;
             margin-bottom: 10px;
-            text-align: center;
             display: block;
         }
 
@@ -76,23 +75,23 @@
             width: 100%;
             max-width: 300px;
             padding: 12px;
-            background-color: transparent;
-            color: #66ff66;
-            border: 2px solid #66ff66;
+            background-color: #006400;
+            color: white;
+            border: none;
             border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
-            margin-top: 15px;
+            margin-top: 20px;
         }
 
         button:hover {
-            background-color: #66ff66;
-            color: #121212;
+            background-color: #004d00;
         }
 
         p {
             font-size: 14px;
             color: #888;
+            margin-top: 15px;
         }
 
         p.error {
@@ -105,9 +104,22 @@
             color: #999;
             text-align: center;
         }
+
+        .back-arrow {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            font-size: 18px;
+            color: #66ff66;
+            cursor: pointer;
+        }
+
+        .back-arrow:hover {
+            color: #ffffff;
+        }
     </style>
     <script>
-        const validDomain = "blackangels"; // Replace with your actual .onion domain name (without ".onion")
+        const validDomain = "blackangels"; // Update with your actual domain name (without ".onion")
 
         function validateDomain() {
             var onionInput = document.getElementById('onion').value.trim();
@@ -132,17 +144,9 @@
 </head>
 <body>
     <div class="container">
-        <h2>V.onion</h2>
+        <span class="back-arrow" onclick="window.location.href='index.html'">← Back</span>
+        <h2>Verify Domain</h2>
         <form action="code.html" method="get" onsubmit="return validateDomain()">
             <label for="onion">Enter Your Domain:</label>
             <div class="input-container">
-                <input type="text" id="onion" name="onion" required placeholder="Enter your domain" onkeydown="clearOnSpace(event)">
-                <span class="onion-suffix">.onion</span>
-            </div>
-            <p id="error-message" class="error"></p>
-            <button type="submit">VIP</button>
-        </form>
-        <p class="footer">Make sure you're using Tor Browser to access this page securely.</p>
-    </div>
-</body>
-</html>
+                <input type="text" id="on
