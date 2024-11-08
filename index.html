@@ -1,75 +1,139 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matrix Onion Input</title>
+    <title>Matrix Karakter Jepang - Masukkan Domain</title>
     <style>
         body {
-            background-color: #000;
+            font-family: "Courier New", monospace;
+            margin: 0;
+            padding: 0;
+            background-color: black;
             color: #00FF00;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 20px;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .matrix span {
+            color: #00FF00;
+            font-size: 16px;
+            white-space: pre;
+            display: inline-block;
+            position: absolute;
+        }
+
+        .onion {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 40px;
+            font-family: 'Courier New', monospace;
+            color: white;
+            cursor: pointer;
+        }
+
+        .input-container {
             text-align: center;
-        }
-        input {
-            background-color: transparent;
-            border: none;
-            outline: none;
-            color: #00FF00;
-            font-size: 20px;
-            font-family: 'Courier New', Courier, monospace;
-        }
-        .hidden {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             display: none;
         }
-        .onion {
-            font-size: 30px;
+
+        input {
+            padding: 10px;
+            font-size: 18px;
+            width: 300px;
+            background-color: black;
             color: #00FF00;
-            cursor: pointer;
+            border: none;
+            outline: none;
         }
     </style>
 </head>
 <body>
-    <!-- Onion Text -->
-    <div>
-        <span class="onion" onclick="showInput()">.onion</span>
-    </div>
 
-    <!-- Input Section -->
-    <div id="input-section" class="hidden">
-        <input type="text" id="user-input" placeholder="Enter domain or info" autofocus />
-    </div>
+    <div class="matrix"></div>
 
-    <!-- Information Section -->
-    <div id="info-section" class="hidden">
-        <iframe src="info.html" width="100%" height="500px"></iframe>
+    <!-- Teks Onion yang akan tampil dengan efek matrix -->
+    <div class="onion">.onion</div>
+
+    <!-- Input untuk memasukkan domain -->
+    <div class="input-container">
+        <input type="text" id="domain-input" placeholder="Masukkan domain .onion" autocomplete="off">
     </div>
 
     <script>
-        // Function to show the input section when ".onion" is clicked
-        function showInput() {
-            document.querySelector('.onion').classList.add('hidden');
-            document.getElementById('input-section').classList.remove('hidden');
+        const matrix = document.querySelector('.matrix');
+        const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+        const charsExtended = chars.repeat(50);
+        const columnWidth = 20;
+        const rowHeight = 30;
+
+        const columns = Math.floor(window.innerWidth / columnWidth);
+        const rows = Math.floor(window.innerHeight / rowHeight);
+
+        for (let i = 0; i < columns * 2; i++) {
+            for (let j = 0; j < rows * 2; j++) {
+                const span = document.createElement('span');
+                span.style.left = `${i * columnWidth}px`;
+                span.style.top = `${j * rowHeight}px`;
+                span.textContent = charsExtended.charAt(Math.floor(Math.random() * charsExtended.length));
+                matrix.appendChild(span);
+            }
         }
 
-        // Add event listener to check the user's input
-        document.getElementById('user-input').addEventListener('input', function(event) {
-            const userInput = event.target.value.trim();
-            
-            // Check if input is 'info' to show the info section
-            if (userInput.toLowerCase() === 'info') {
-                document.getElementById('input-section').classList.add('hidden');
-                document.getElementById('info-section').classList.remove('hidden');
-            } 
-            // Check if input is a valid domain, like 'blackangels', to go to the kode.html
-            else if (userInput.toLowerCase() === 'blackangels') {
-                window.location.href = 'kode.html'; // Go to the kode.html page
-            } 
-            // If invalid input, hide the info section and stay in the input section
-            else {
-                document.getElementById('input-section').classList.remove('hidden');
-                document.getElementById('info-section').classList.add('hidden');
+        setInterval(() => {
+            document.querySelectorAll('.matrix span').forEach(span => {
+                span.textContent = charsExtended.charAt(Math.floor(Math.random() * charsExtended.length));
+            });
+        }, 100);
+
+        document.querySelector('.onion').addEventListener('click', function() {
+            document.querySelector('.onion').style.display = 'none';
+            document.querySelector('.input-container').style.display = 'block';
+            document.getElementById('domain-input').focus();
+        });
+
+        document.addEventListener('click', function(e) {
+            const inputField = document.getElementById('domain-input');
+            if (!inputField.contains(e.target) && !e.target.classList.contains('onion')) {
+                document.querySelector('.input-container').style.display = 'none';
+                document.querySelector('.onion').style.display = 'block';
+                inputField.value = '';
+            }
+        });
+
+        document.getElementById('domain-input').addEventListener('input', function() {
+            const input = this.value;
+            const validDomain = /^[a-zA-Z0-9-]{2,256}\.onion$/;
+            const verifiedDomain = 'blackangels.onion'; 
+
+            if (validDomain.test(input)) {
+                if (input === verifiedDomain) {
+                    window.location.href = "kode.html";  // Arahkan ke kode.html jika domain valid
+                } else if (input === "info") {
+                    window.location.href = "info.html";  // Arahkan ke info.html jika ketik 'info'
+                } else {
+                    console.log('Domain tidak valid atau tidak terverifikasi');
+                }
+            } else {
+                console.log('Masukkan domain yang valid');
             }
         });
     </script>
