@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matrix Diam dengan Karakter Berubah</title>
+    <title>Matrix dengan Efek Cahaya</title>
     <style>
         body {
             font-family: "Courier New", monospace;
@@ -35,16 +35,13 @@
             white-space: pre;
             display: inline-block;
             position: absolute;
+            transition: color 0.2s ease; /* Transition untuk perubahan warna */
         }
 
-        /* Animasi untuk efek berubah karakter */
-        @keyframes changeCharacter {
-            0% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0.1;
-            }
+        /* Efek cahaya terang pada karakter yang berubah */
+        .highlight {
+            color: #FF00FF; /* Warna terang seperti pelangi saat karakter berubah */
+            text-shadow: 0 0 10px #FF00FF, 0 0 20px #FF00FF, 0 0 30px #FF00FF, 0 0 40px #FF00FF; /* Cahaya pada karakter */
         }
 
     </style>
@@ -69,7 +66,6 @@
                 span.style.left = `${i * columnWidth}px`; // Tentukan posisi horizontal karakter
                 span.style.top = `${j * rowHeight}px`; // Tentukan posisi vertikal karakter
                 span.textContent = charsExtended.charAt(Math.floor(Math.random() * charsExtended.length)); // Pilih karakter acak
-                span.style.animation = `changeCharacter 1s infinite`; // Buat karakter berubah setiap detik
                 matrix.appendChild(span);
             }
         }
@@ -77,7 +73,20 @@
         // Memperbarui karakter setiap interval waktu untuk efek berubah
         setInterval(() => {
             document.querySelectorAll('.matrix span').forEach(span => {
-                span.textContent = charsExtended.charAt(Math.floor(Math.random() * charsExtended.length));
+                // Simpan karakter lama dan pilih karakter baru secara acak
+                const oldChar = span.textContent;
+                const newChar = charsExtended.charAt(Math.floor(Math.random() * charsExtended.length));
+                
+                // Periksa apakah karakter berubah, dan tambahkan efek cahaya
+                if (oldChar !== newChar) {
+                    span.textContent = newChar;
+                    span.classList.add('highlight'); // Tambahkan kelas highlight untuk efek cahaya
+
+                    // Hapus kelas highlight setelah efek selesai
+                    setTimeout(() => {
+                        span.classList.remove('highlight');
+                    }, 200); // Efek cahaya berlangsung selama 200ms
+                }
             });
         }, 100); // Mengubah karakter setiap 100ms
     </script>
