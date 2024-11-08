@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verification Page</title>
+    <title>Domain Verification</title>
     <style>
         body {
             font-family: "Courier New", monospace;
@@ -44,6 +44,7 @@
             position: relative;
             width: 100%;
             max-width: 300px;
+            display: inline-block;
         }
 
         input[type="text"] {
@@ -54,8 +55,18 @@
             border: 1px solid #666;
             color: #e0e0e0;
             border-radius: 5px;
-            padding-right: 50px;
+            padding-right: 70px; /* Space for .onion suffix */
             box-sizing: border-box;
+        }
+
+        .onion-suffix {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
         }
 
         button {
