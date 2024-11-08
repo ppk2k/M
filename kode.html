@@ -1,191 +1,49 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>コードの確認</title>
+    <title>Input Kode Verifikasi</title>
     <style>
         body {
             font-family: "Courier New", monospace;
-            background-color: #121212;
-            color: #e0e0e0;
-            margin: 0;
-            padding: 0;
+            background-color: black;
+            color: #00FF00;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            text-align: center;
+            margin: 0;
+            overflow: hidden;
         }
 
-        .container {
-            width: 90%;
+        .input-container {
+            position: relative;
+            width: 100%;
             max-width: 400px;
-            padding: 20px;
-            background-color: #1c1c1c;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
-
-        h2 {
-            font-size: 24px;
-            color: #66ff66;
-            margin-bottom: 20px;
-            font-family: Arial, sans-serif;
-            font-weight: bold;
-        }
-
-        label {
-            font-size: 16px;
-            color: #e0e0e0;
-            margin-bottom: 10px;
-            display: block;
         }
 
         input[type="text"] {
-            width: 300px;
-            padding: 10px;
-            font-size: 16px;
-            background-color: #333;
-            border: 1px solid #666;
-            color: #e0e0e0;
-            border-radius: 5px;
-            box-sizing: border-box;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .good {
-            color: #66ff66;
-            font-size: 18px;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-
-        p.error {
-            color: #ff6666;
-        }
-
-        .submit-button {
             width: 100%;
             padding: 10px;
-            background-color: #006400;
-            color: white;
-            border: none;
-            border-radius: 5px;
             font-size: 16px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-
-        .submit-button:hover {
-            background-color: #004d00;
-        }
-
-        .admin-link {
-            color: #66ff66;
-            font-weight: bold;
-            text-decoration: none;
-            margin-top: 20px;
-            display: block;
-        }
-
-        .admin-link:hover {
-            color: #cccccc;
-        }
-
-        .back-button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #444;
-            color: white;
+            color: #00FF00;
+            background-color: transparent;
             border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .back-button:hover {
-            background-color: #222;
+            border-bottom: 1px solid #00FF00;
+            outline: none;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>コードの確認</h2>
-        <form id="verify-code-form">
-            <label for="code">コードを入力してください（20文字）：</label>
-            <input type="text" id="code" name="code" required placeholder="コードを入力" maxlength="20" />
-            <p id="error-message" class="error"></p>
-            <p id="good-message" class="good" style="display: none;">良い</p>
-            <a href="admin.html" class="admin-link">サービス</a>
-        </form>
+    <div class="input-container">
+        <input type="text" id="code-input" placeholder="Masukkan kode verifikasi" autocomplete="off">
     </div>
 
     <script>
-        // Kode valid yang disembunyikan
-        const validCode = "abv777z8h2w3n9a0d1f"; 
-
-        // Fungsi untuk mengacak karakter input dan menampilkan karakter Jepang
-        function randomizeInput(input) {
-            const possibleChars = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよわをん";
-            let randomizedCode = "";
-            for (let i = 0; i < input.length; i++) {
-                // Menggantikan setiap karakter dengan karakter acak dari karakter Jepang
-                randomizedCode += possibleChars.charAt(Math.floor(Math.random() * possibleChars.length));
-            }
-            return randomizedCode;
-        }
-
-        // Fungsi untuk mengacak dan menampilkan karakter secara dinamis
-        function updateInput(input) {
-            const possibleChars = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよわをん";
-            let randomizedCode = "";
-            for (let i = 0; i < input.length; i++) {
-                // Menggantikan setiap karakter dengan karakter acak yang berbeda setiap detik
-                randomizedCode += possibleChars.charAt(Math.floor(Math.random() * possibleChars.length));
-            }
-            document.getElementById('code').value = randomizedCode;
-        }
-
-        // Fungsi untuk mengacak dan mengganti karakter secara terus menerus
-        function startRandomization() {
-            const input = document.getElementById('code');
-            setInterval(function() {
-                const possibleChars = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよわを";
-                let randomizedCode = "";
-                for (let i = 0; i < 20; i++) {
-                    randomizedCode += possibleChars.charAt(Math.floor(Math.random() * possibleChars.length));
-                }
-                input.value = randomizedCode;
-            }, 100); // Mengganti setiap 100ms
-        }
-
-        // Fungsi untuk memulai randomisasi saat halaman dimuat
-        window.onload = startRandomization;
-
-        // Event listener untuk input pengguna
-        document.getElementById('code').addEventListener('input', function() {
-            var codeInput = document.getElementById('code').value.trim();
-            var goodMessage = document.getElementById('good-message');
-
-            // Jika panjang input sudah 20 karakter
-            if (codeInput.length <= 20) {
-                // Update karakter yang tampil terus menerus
-                updateInput(codeInput);
-
-                // Verifikasi apakah kode yang dimasukkan sesuai dengan kode yang valid
-                if (codeInput === validCode) {
-                    goodMessage.style.display = 'block';  // Tampilkan pesan GOOD jika kode benar
-                    setTimeout(function() {
-                        window.location.href = "home.html";  // Arahkan ke halaman home setelah beberapa detik
-                    }, 500); 
-                } else {
-                    goodMessage.style.display = 'none';  // Tidak tampilkan pesan GOOD jika kode salah
-                }
-            } else {
-                goodMessage.style.display = 'none';  // Tidak tampilkan pesan GOOD jika panjang kode tidak tepat
-            }
+        document.getElementById('code-input').addEventListener('focus', function() {
+            this.value = '';
         });
     </script>
 </body>
