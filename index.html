@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verifikasi Domain</title>
     <style>
+        /* Pengaturan Umum */
         body {
             font-family: "Courier New", monospace;
             background-color: #000;
@@ -16,9 +17,10 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            position: relative;
+            text-align: center;
         }
 
+        /* Matrix */
         .matrix {
             position: fixed;
             top: 0;
@@ -42,14 +44,15 @@
             to { transform: translateY(100vh); opacity: 0; }
         }
 
-        .matrix span:nth-child(odd) { animation-duration: 3s; }
-        .matrix span:nth-child(even) { animation-duration: 5s; }
-
+        /* Input untuk Domain dan Matrix */
         .input-container {
-            position: relative;
-            width: 100%;
-            max-width: 100%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             display: inline-block;
+            width: 100%;
+            max-width: 600px;
         }
 
         input[type="text"] {
@@ -60,55 +63,43 @@
             border: none;
             color: #00FF00;
             text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
-            border-bottom: 2px solid #00FF00;
         }
 
-        .onion-suffix {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 16px;
-            font-weight: bold;
-            color: #00FF00;
-            opacity: 0.8;
-            animation: flicker 3s infinite alternate;
-        }
-
-        @keyframes flicker {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.8; }
-        }
-
-        .onion-suffix.hidden {
+        /* Menu untuk memilih jumlah baris matrix */
+        .matrix-options {
             display: none;
+            text-align: center;
+            color: #00FF00;
+            margin-top: 20px;
         }
 
-        .container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            text-align: center;
-            z-index: 1;
+        .matrix-options select {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #00FF00;
+            border: 1px solid #00FF00;
+            padding: 5px;
         }
     </style>
 </head>
 <body>
+    <!-- Matrix -->
     <div class="matrix">
         <script>
             const matrix = document.querySelector('.matrix');
             const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
             const columns = window.innerWidth / 20;
+            const rows = Math.max(Math.min(Math.floor(window.innerHeight / 40), 50), 30); // Menyesuaikan baris antara 30 dan 50
 
             for (let i = 0; i < columns; i++) {
-                const column = document.createElement('span');
-                column.style.position = 'absolute';
-                column.style.left = `${i * 20}px`;
-                column.style.animationDelay = `${Math.random() * -10}s`;
-                column.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
-                matrix.appendChild(column);
+                for (let j = 0; j < rows; j++) {
+                    const column = document.createElement('span');
+                    column.style.position = 'absolute';
+                    column.style.left = `${i * 20}px`;
+                    column.style.top = `${j * 40}px`;
+                    column.style.animationDelay = `${Math.random() * -10}s`;
+                    column.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
+                    matrix.appendChild(column);
+                }
             }
 
             setInterval(() => {
@@ -119,27 +110,45 @@
         </script>
     </div>
 
-    <div class="container">
-        <div class="input-container">
-            <input type="text" id="onion" name="onion" required>
-            <span class="onion-suffix" id="onion-suffix">.onion</span>
+    <!-- Form Input Domain -->
+    <div class="input-container">
+        <input type="text" id="onion" name="onion" placeholder="Masukkan domain Anda" autocomplete="off">
+        <div class="matrix-options">
+            <label for="matrixRows">Pilih jumlah baris Matrix:</label>
+            <select id="matrixRows">
+                <option value="10">10 Baris</option>
+                <option value="20">20 Baris</option>
+                <option value="30">30 Baris</option>
+                <option value="40">40 Baris</option>
+                <option value="50">50 Baris</option>
+            </select>
         </div>
     </div>
 
     <script>
-        const onionInput = document.getElementById('onion');
-        const onionSuffix = document.getElementById('onion-suffix');
+        const inputField = document.getElementById('onion');
+        const matrixOptions = document.querySelector('.matrix-options');
 
-        onionSuffix.addEventListener('click', function() {
-            onionSuffix.classList.add('hidden');
-            onionInput.focus();
+        inputField.addEventListener('focus', function() {
+            // Ketika kolom input di fokuskan, hapus placeholder
+            inputField.placeholder = '';
         });
 
-        onionInput.addEventListener('input', function() {
-            if (onionInput.value.trim() !== '') {
-                onionSuffix.classList.add('hidden');
+        inputField.addEventListener('input', function() {
+            const domainValue = inputField.value.trim();
+
+            // Jika ada input, tampilkan pilihan jumlah baris matrix
+            if (domainValue) {
+                matrixOptions.style.display = 'block';
             } else {
-                onionSuffix.classList.remove('hidden');
+                matrixOptions.style.display = 'none';
+            }
+        });
+
+        inputField.addEventListener('blur', function() {
+            // Ketika kolom input kehilangan fokus, tampilkan kembali placeholder
+            if (!inputField.value) {
+                inputField.placeholder = 'Masukkan domain Anda';
             }
         });
     </script>
