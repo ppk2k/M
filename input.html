@@ -3,58 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Input Verifikasi Domain</title>
+    <title>Matrix Dengan Karakter Bercahaya Pelangi</title>
     <style>
         body {
             font-family: "Courier New", monospace;
+            margin: 0;
+            padding: 0;
             background-color: black;
-            color: #00FF00;
+            color: #00FF00; /* Warna karakter default hijau */
+            overflow: hidden;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-        }
-
-        .input-container {
             position: relative;
-            width: 100%;
-            max-width: 400px;
         }
 
-        input[type="text"] {
+        .matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            padding: 10px;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .matrix span {
+            color: #00FF00; /* Warna default karakter */
             font-size: 16px;
-            color: #00FF00;
-            background-color: transparent;
-            border: none;
-            border-bottom: 1px solid #00FF00;
-            outline: none;
-            text-align: center;
-        }
-
-        .onion-suffix {
+            white-space: pre;
+            display: inline-block;
             position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 16px;
-            color: #00FF00;
+            animation: rainbowGlow 5s infinite, fall 3s linear infinite; /* Animasi pelangi dan jatuh */
         }
+
+        /* Animasi pelangi */
+        @keyframes rainbowGlow {
+            0% {
+                color: #FF0000; /* Merah */
+                text-shadow: 0 0 10px #FF0000, 0 0 20px #FF0000, 0 0 30px #FF0000, 0 0 40px #FF0000;
+            }
+            14% {
+                color: #FF7F00; /* Oranye */
+                text-shadow: 0 0 10px #FF7F00, 0 0 20px #FF7F00, 0 0 30px #FF7F00, 0 0 40px #FF7F00;
+            }
+            28% {
+                color: #FFFF00; /* Kuning */
+                text-shadow: 0 0 10px #FFFF00, 0 0 20px #FFFF00, 0 0 30px #FFFF00, 0 0 40px #FFFF00;
+            }
+            42% {
+                color: #00FF00; /* Hijau */
+                text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00, 0 0 30px #00FF00, 0 0 40px #00FF00;
+            }
+            57% {
+                color: #0000FF; /* Biru */
+                text-shadow: 0 0 10px #0000FF, 0 0 20px #0000FF, 0 0 30px #0000FF, 0 0 40px #0000FF;
+            }
+            71% {
+                color: #4B0082; /* Indigo */
+                text-shadow: 0 0 10px #4B0082, 0 0 20px #4B0082, 0 0 30px #4B0082, 0 0 40px #4B0082;
+            }
+            85% {
+                color: #8B00FF; /* Violet */
+                text-shadow: 0 0 10px #8B00FF, 0 0 20px #8B00FF, 0 0 30px #8B00FF, 0 0 40px #8B00FF;
+            }
+            100% {
+                color: #FF0000; /* Merah */
+                text-shadow: 0 0 10px #FF0000, 0 0 20px #FF0000, 0 0 30px #FF0000, 0 0 40px #FF0000;
+            }
+        }
+
+        /* Animasi jatuh karakter */
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh); /* Karakter mulai di atas layar */
+            }
+            100% {
+                transform: translateY(100vh); /* Karakter bergerak ke bawah layar */
+            }
+        }
+
     </style>
 </head>
 <body>
-    <div class="input-container">
-        <input type="text" id="domain-input" placeholder="Masukkan domain" autocomplete="off">
-        <span class="onion-suffix">.onion</span>
-    </div>
+    <div class="matrix"></div> <!-- Tempat untuk menampilkan karakter matrix -->
 
     <script>
-        document.getElementById('domain-input').addEventListener('focus', function() {
-            this.value = '';
-        });
+        const matrix = document.querySelector('.matrix');
+        const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+
+        const columnWidth = 20; // Lebar setiap kolom karakter
+        const rowHeight = 30; // Tinggi setiap baris karakter
+
+        const columns = Math.floor(window.innerWidth / columnWidth);  // Menyesuaikan jumlah kolom dengan lebar layar
+        const rows = Math.floor(window.innerHeight / rowHeight);  // Menyesuaikan jumlah baris dengan tinggi layar
+
+        // Membuat kolom dan baris untuk efek matrix
+        for (let i = 0; i < columns; i++) {
+            for (let j = 0; j < rows; j++) {
+                const span = document.createElement('span');
+                span.style.left = `${i * columnWidth}px`;  // Posisi kolom
+                span.style.top = `${j * rowHeight}px`;  // Posisi baris
+                span.textContent = chars.charAt(Math.floor(Math.random() * chars.length)); // Pilih karakter acak
+                matrix.appendChild(span);
+            }
+        }
+
+        // Memperbarui karakter setiap interval waktu untuk efek matrix
+        setInterval(() => {
+            document.querySelectorAll('.matrix span').forEach(span => {
+                span.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
+            });
+        }, 100); // Mengubah karakter setiap 100ms
     </script>
 </body>
 </html>
