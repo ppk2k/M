@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matrix Domain</title>
+    <title>Matrix Karakter Jepang - Masukkan Domain</title>
     <style>
         body {
-            font-family: 'Courier New', monospace;
+            font-family: "Courier New", monospace;
+            margin: 0;
+            padding: 0;
             background-color: black;
-            color: #00FF00; /* Warna hijau neon untuk teks */
+            color: #00FF00;
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -38,9 +40,11 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 32px;
-            color: #B0B0B0; /* Warna abu-abu */
-            pointer-events: none;
+            font-size: 36px;
+            font-family: 'Courier New', monospace;
+            color: #C0C0C0; /* Warna abu-abu untuk membedakan dengan teks matrix */
+            pointer-events: auto; /* Agar dapat diklik */
+            cursor: pointer; /* Menampilkan kursor klik */
         }
 
         .input-container {
@@ -56,30 +60,35 @@
             padding: 10px;
             font-size: 18px;
             width: 300px;
-            background-color: black;
+            background-color: transparent;
             color: #00FF00;
             border: none;
             outline: none;
         }
+
     </style>
 </head>
 <body>
     <div class="matrix"></div>
     <div class="onion">.onion</div>
+
+    <!-- Input untuk memasukkan domain -->
     <div class="input-container">
         <input type="text" id="domain-input" placeholder="Masukkan domain .onion" autocomplete="off">
     </div>
 
     <script>
-        // Matrix effect
+        // Karakter Jepang untuk matrix
         const matrix = document.querySelector('.matrix');
         const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
         const charsExtended = chars.repeat(50);
         const columnWidth = 20;
         const rowHeight = 30;
+
         const columns = Math.floor(window.innerWidth / columnWidth);
         const rows = Math.floor(window.innerHeight / rowHeight);
 
+        // Membuat kolom dan baris untuk efek matrix
         for (let i = 0; i < columns * 2; i++) {
             for (let j = 0; j < rows * 2; j++) {
                 const span = document.createElement('span');
@@ -90,38 +99,46 @@
             }
         }
 
+        // Memperbarui karakter setiap interval waktu untuk efek matrix
         setInterval(() => {
             document.querySelectorAll('.matrix span').forEach(span => {
                 span.textContent = charsExtended.charAt(Math.floor(Math.random() * charsExtended.length));
             });
         }, 100);
 
-        // Click onion to show input
+        // Fungsi untuk menampilkan input dan menyembunyikan teks .onion
         document.querySelector('.onion').addEventListener('click', function() {
-            document.querySelector('.onion').style.display = 'none';
-            document.querySelector('.input-container').style.display = 'block';
-            document.getElementById('domain-input').focus();
+            document.querySelector('.onion').style.display = 'none'; // Sembunyikan teks .onion
+            document.querySelector('.input-container').style.display = 'block'; // Tampilkan input
+            document.getElementById('domain-input').focus(); // Fokus pada input
         });
 
-        // Hide input when clicking outside
+        // Fungsi untuk menyembunyikan input dan mengembalikan teks .onion jika pengguna mengklik di luar input
         document.addEventListener('click', function(e) {
             const inputField = document.getElementById('domain-input');
             if (!inputField.contains(e.target) && !e.target.classList.contains('onion')) {
-                document.querySelector('.input-container').style.display = 'none';
-                document.querySelector('.onion').style.display = 'block';
-                inputField.value = '';
+                document.querySelector('.input-container').style.display = 'none'; // Sembunyikan input
+                document.querySelector('.onion').style.display = 'block'; // Tampilkan kembali teks .onion
+                inputField.value = ''; // Kosongkan input
             }
         });
 
-        // Domain validation and redirect
+        // Deteksi jika domain valid dan ambil nilai input
         document.getElementById('domain-input').addEventListener('input', function() {
             const input = this.value;
-            const validDomain = /^[a-zA-Z0-9-]{2,256}\.onion$/;
+            const validDomain = /^[a-zA-Z0-9-]{2,256}\.onion$/;  // Pola domain valid .onion
             if (validDomain.test(input)) {
-                setTimeout(function() {
-                    alert("Domain terverifikasi!");
-                    window.location.href = "kode.html"; // Redirect to kode.html
-                }, 500);
+                console.log('Domain valid:', input); // Jika valid, akan tercetak di konsol
+            } else {
+                console.log('Domain tidak valid');
+            }
+        });
+
+        // Jika Enter ditekan, input akan dihapus dan .onion muncul kembali
+        document.getElementById('domain-input').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                this.value = '';  // Kosongkan input
+                document.querySelector('.onion').style.display = 'block';  // Tampilkan kembali .onion
             }
         });
     </script>
