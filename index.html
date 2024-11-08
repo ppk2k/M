@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: "Courier New", monospace;
-            background-color: black;
+            background-color: #121212;
             color: #e0e0e0;
             margin: 0;
             padding: 0;
@@ -16,37 +16,9 @@
             align-items: center;
             height: 100vh;
             text-align: center;
-            overflow: hidden;
-        }
-
-        #matrix {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        .matrix-line {
-            position: absolute;
-            font-size: 2vw; /* Ukuran font fleksibel berdasarkan lebar tampilan */
-            white-space: nowrap;
-            animation: matrix 10s linear infinite;
-        }
-
-        @keyframes matrix {
-            0% {
-                top: -100%;
-            }
-            100% {
-                top: 100%;
-            }
         }
 
         .container {
-            position: relative;
-            z-index: 1;
             width: 90%;
             max-width: 400px;
             padding: 20px;
@@ -83,10 +55,15 @@
             font-size: 16px;
             background-color: #333;
             border: 1px solid #666;
-            color: #e0e0e0;
+            color: #00ff00; /* Warna hijau untuk teks input */
             border-radius: 5px;
             padding-right: 70px; /* Space for .onion suffix */
             box-sizing: border-box;
+            text-align: center;
+        }
+
+        input[type="text"]::placeholder {
+            color: #00ff00; /* Warna hijau untuk placeholder */
         }
 
         .onion-suffix {
@@ -116,8 +93,6 @@
     </style>
 </head>
 <body>
-    <div id="matrix"></div>
-
     <div class="container">
         <h2>Verifikasi Domain</h2>
         <form action="#" method="get" id="verify-form">
@@ -133,31 +108,6 @@
 
     <script>
         const validDomain = "blackangels"; // Ganti dengan domain yang valid
-
-        // Karakter Jepang untuk efek Matrix (1000 karakter lebih)
-        const chars = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんアイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン一二三四五六七八九十百千万億田山川川木日月火水土天人子女力光音色空地宇島国幸富永東西南北大中小山川田海天木石水火風光陰力元子女楽音楽体育育治病医家心愛喜悲希望楽天本出入星空一二三四五六七八九十百千..."; 
-
-        function createMatrixEffect() {
-            const matrixContainer = document.getElementById('matrix');
-            const numberOfLines = window.innerWidth / 20; // Menentukan berapa banyak garis yang muncul sesuai lebar layar
-            const lines = [];
-
-            for (let i = 0; i < numberOfLines; i++) {
-                const line = document.createElement('div');
-                line.classList.add('matrix-line');
-                line.style.left = `${(i * 20)}px`;
-                matrixContainer.appendChild(line);
-
-                // Generate karakter acak untuk setiap baris
-                setInterval(() => {
-                    let randomChar = chars.charAt(Math.floor(Math.random() * chars.length));
-                    line.textContent = randomChar;
-                }, 100);
-            }
-        }
-
-        // Mulai efek Matrix saat halaman dimuat
-        createMatrixEffect();
 
         document.getElementById('onion').addEventListener('input', function() {
             var onionInput = document.getElementById('onion').value.trim();
