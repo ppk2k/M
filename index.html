@@ -10,7 +10,7 @@
             margin: 0;
             padding: 0;
             background-color: black;
-            color: #00FF00; /* Warna hijau neon default untuk teks */
+            color: #00FF00;
             overflow: hidden;
             height: 100vh;
             display: flex;
@@ -19,31 +19,26 @@
             position: relative;
         }
 
-        /* Latar belakang matrix */
         .matrix {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1; /* Agar matrix berada di belakang input */
+            z-index: -1;
         }
 
         .matrix span {
-            color: #00FF00; /* Warna hijau neon untuk karakter */
+            color: #00FF00;
             font-size: 16px;
             white-space: pre;
             display: inline-block;
             position: absolute;
         }
-
     </style>
 </head>
 <body>
-    <!-- Tempat untuk menampilkan karakter matrix -->
     <div class="matrix"></div>
-
-    <!-- Input Form -->
     <div class="input-container">
         <input type="text" id="domain-input" placeholder="Masukkan domain .onion" autocomplete="off">
     </div>
@@ -51,30 +46,28 @@
     <script>
         const matrix = document.querySelector('.matrix');
         const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-        const charsExtended = chars.repeat(50); // Menambahkan karakter Jepang hingga 1000 karakter
-        const columnWidth = 20; // Lebar setiap kolom karakter
-        const rowHeight = 30; // Tinggi setiap baris karakter
+        const charsExtended = chars.repeat(50);
+        const columnWidth = 20;
+        const rowHeight = 30;
 
-        const columns = Math.floor(window.innerWidth / columnWidth);  // Menyesuaikan jumlah kolom dengan lebar layar
-        const rows = Math.floor(window.innerHeight / rowHeight);  // Menyesuaikan jumlah baris dengan tinggi layar
+        const columns = Math.floor(window.innerWidth / columnWidth);
+        const rows = Math.floor(window.innerHeight / rowHeight);
 
-        // Membuat kolom dan baris untuk efek matrix
-        for (let i = 0; i < columns * 2; i++) { // Ganda untuk lebih banyak karakter
-            for (let j = 0; j < rows * 2; j++) { // Ganda untuk lebih banyak karakter
+        for (let i = 0; i < columns * 2; i++) {
+            for (let j = 0; j < rows * 2; j++) {
                 const span = document.createElement('span');
-                span.style.left = `${i * columnWidth}px`; // Posisi horizontal tetap
-                span.style.top = `${j * rowHeight}px`; // Posisi vertikal tetap
-                span.textContent = charsExtended.charAt(Math.floor(Math.random() * charsExtended.length)); // Pilih karakter acak
+                span.style.left = `${i * columnWidth}px`;
+                span.style.top = `${j * rowHeight}px`;
+                span.textContent = charsExtended.charAt(Math.floor(Math.random() * charsExtended.length));
                 matrix.appendChild(span);
             }
         }
 
-        // Memperbarui karakter setiap interval waktu untuk efek matrix
         setInterval(() => {
             document.querySelectorAll('.matrix span').forEach(span => {
                 span.textContent = charsExtended.charAt(Math.floor(Math.random() * charsExtended.length));
             });
-        }, 100); // Mengubah karakter setiap 100ms
+        }, 100);
     </script>
 </body>
 </html>
