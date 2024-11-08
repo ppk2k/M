@@ -116,12 +116,11 @@
             <label for="code">Masukkan Kode (20 Karakter):</label>
             <input type="text" id="code" name="code" required placeholder="Masukkan kode Anda" maxlength="20" />
             <p id="error-message" class="error"></p>
-            <button type="submit" class="submit-button" id="submit-button">Verifikasi Kode</button>
+            <button type="submit" class="submit-button" id="submit-button" disabled>Verifikasi Kode</button> <!-- Sesuaikan dengan tombol di index -->
             <p id="good-message" class="good" style="display: none;">GOOD</p>
         </form>
 
         <a href="admin.html" class="admin-link">Minggir ke Admin</a> <!-- Link ke Admin -->
-        <button class="back-button" onclick="window.history.back();">Kembali</button> <!-- Tombol Kembali -->
     </div>
 
     <script>
