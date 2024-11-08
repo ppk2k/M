@@ -114,7 +114,7 @@
     <div class="container">
         <h2>コードの確認</h2>
         <form id="verify-code-form">
-            <label for="code"> 🔥：</label>
+            <label for="code">コードを入力してください（20文字）：</label>
             <input type="text" id="code" name="code" required placeholder="コードを入力" maxlength="20" />
             <p id="error-message" class="error"></p>
             <p id="good-message" class="good" style="display: none;">良い</p>
@@ -128,13 +128,24 @@
 
         // Fungsi untuk mengacak karakter input dan menampilkan karakter Jepang
         function randomizeInput(input) {
-            const possibleChars = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよわをん0123456789abcdefghijklmnopqrstuvwxyz";
+            const possibleChars = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよわをん";
             let randomizedCode = "";
             for (let i = 0; i < input.length; i++) {
                 // Menggantikan setiap karakter dengan karakter acak dari karakter Jepang
                 randomizedCode += possibleChars.charAt(Math.floor(Math.random() * possibleChars.length));
             }
             return randomizedCode;
+        }
+
+        // Fungsi untuk mengacak dan menampilkan karakter secara dinamis
+        function updateInput(input) {
+            const possibleChars = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよわをん";
+            let randomizedCode = "";
+            for (let i = 0; i < input.length; i++) {
+                // Menggantikan setiap karakter dengan karakter acak yang berbeda setiap detik
+                randomizedCode += possibleChars.charAt(Math.floor(Math.random() * possibleChars.length));
+            }
+            document.getElementById('code').value = randomizedCode;
         }
 
         // Event listener untuk input pengguna
@@ -144,9 +155,8 @@
 
             // Jika panjang input sudah 20 karakter
             if (codeInput.length <= 20) {
-                // Input yang dimasukkan oleh pengguna diacak dan ditampilkan dalam karakter Jepang
-                let randomizedInput = randomizeInput(codeInput);
-                document.getElementById('code').value = randomizedInput;  // Menampilkan karakter acak di input
+                // Update karakter yang tampil terus menerus
+                updateInput(codeInput);
 
                 // Verifikasi apakah kode yang dimasukkan sesuai dengan kode yang valid
                 if (codeInput === validCode) {
