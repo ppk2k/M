@@ -3,32 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masukkan Domain</title>
+    <title>Masukkan Domain .onion</title>
     <style>
         body {
             font-family: "Courier New", monospace;
             margin: 0;
             padding: 0;
-            background-color: black;
+            background: transparent; /* Pastikan latar belakang transparan */
             color: #00FF00;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            position: relative;
+            overflow: hidden;
         }
 
-        .onion-text {
-            font-size: 32px;
+        .matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .matrix span {
             color: #00FF00;
-            z-index: 1;
-            cursor: pointer;
+            font-size: 16px;
+            white-space: pre;
+            display: inline-block;
+            position: absolute;
         }
 
         .input-container {
-            display: none;
             text-align: center;
-            position: absolute;
+            position: relative;
+            z-index: 1;
         }
 
         input {
@@ -37,38 +47,87 @@
             width: 300px;
             background-color: black;
             color: #00FF00;
-            border: 2px solid #00FF00;
+            border: none;
+            outline: none;
         }
 
-        /* Transparansi untuk memastikan tidak menghalangi matrix */
-        .transparent-bg {
+        .onion-text {
+            font-size: 36px;
+            color: #00FF00;
+            font-weight: bold;
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8); /* transparan tapi sedikit gelap */
         }
     </style>
 </head>
 <body>
-    <!-- Teks Onion yang tampil pertama kali -->
-    <div class="onion-text" id="onion-text">onion</div>
-
-    <!-- Kontainer untuk input form -->
-    <div class="input-container" id="input-container">
-        <input type="text" id="domain-input" placeholder="Masukkan domain .onion" autocomplete="off">
+    <div class="matrix"></div>
+    
+    <div class="input-container">
+        <div id="onion-text" class="onion-text">example.onion</div>
+        <input type="text" id="domain-input" autocomplete="off" placeholder="Masukkan domain .onion">
+        <p id="error-message" style="color:red;"></p>
     </div>
 
-    <!-- Transparansi latar belakang -->
-    <div class="transparent-bg" id="transparent-bg"></div>
-
     <script>
-        // Mengubah tampilan setelah klik teks "onion"
-        document.getElementById('onion-text').addEventListener('click', function() {
-            document.getElementById('onion-text').style.display = 'none'; // Sembunyikan teks onion
-            document.getElementById('input-container').style.display = 'block'; // Tampilkan form input
-            document.getElementById('transparent-bg').style.display = 'block'; // Tampilkan latar belakang transparan
+        const matrix = document.querySelector('.matrix');
+        const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+        const charsExtended = chars.repeat(50);
+        const columnWidth = 20;
+        const rowHeight = 30;
+
+        const columns = Math.floor(window.innerWidth / columnWidth);
+        const rows = Math.floor(window.innerHeight / rowHeight);
+
+        for (let i = 0; i < columns * 2; i++) {
+            for (let j = 0; j < rows * 2; j++) {
+                const span = document.createElement('span');
+                span.style.left = `${i * columnWidth}px`;
+                span.style.top = `${j * rowHeight}px`;
+                span.textContent = charsExtended.charAt(Math.floor(Math.random() * charsExtended.length));
+                matrix.appendChild(span);
+            }
+        }
+
+        setInterval(() => {
+            document.querySelectorAll('.matrix span').forEach(span => {
+                span.textContent = charsExtended.charAt(Math.floor(Math.random() * charsExtended.length));
+            });
+        }, 100);
+
+        // Fungsi untuk memvalidasi format domain .onion
+        function validateOnionDomain(domain) {
+            const regex = /^(?=.{16,40}$)[a-z2-7]{16,40}\.onion$/;
+            return regex.test(domain);
+        }
+
+        // Menangani input dan validasi
+        const inputField = document.getElementById('domain-input');
+        const onionText = document.getElementById('onion-text');
+        const errorMessage = document.getElementById('error-message');
+
+        // Menghapus teks onion setelah input diklik
+        inputField.addEventListener('focus', function() {
+            onionText.style.display = 'none'; // Menyembunyikan "onion" ketika input diklik
+            inputField.value = ''; // Menghapus isi input field
+        });
+
+        // Menampilkan kembali onion jika klik di luar input
+        document.addEventListener('click', function(event) {
+            if (!inputField.contains(event.target)) {
+                onionText.style.display = 'block'; // Menampilkan "onion" kembali
+                inputField.value = ''; // Menghapus input
+            }
+        });
+
+        // Validasi domain .onion
+        inputField.addEventListener('input', function() {
+            const domain = inputField.value.trim();
+
+            if (domain && !validateOnionDomain(domain)) {
+                errorMessage.textContent = 'Format domain .onion tidak valid!';
+            } else {
+                errorMessage.textContent = '';
+            }
         });
     </script>
 </body>
