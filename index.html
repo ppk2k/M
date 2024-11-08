@@ -54,6 +54,7 @@
         .matrix span {
             animation-duration: 2s; /* Lebih cepat untuk semua karakter */
         }
+
     </style>
 </head>
 <body>
@@ -72,7 +73,8 @@
                 span.style.left = `${Math.random() * window.innerWidth}px`; // Acak posisi horizontal
                 span.style.top = `${Math.random() * -100}px`; // Memulai lebih tinggi dari layar
                 span.textContent = chars.charAt(Math.floor(Math.random() * chars.length)); // Pilih karakter acak
-                span.style.animationDelay = `${Math.random() * 5}s`; // Mengacak waktu animasi
+                span.style.animationDelay = `${Math.random() * 2}s`; // Mengacak waktu animasi untuk start
+                span.style.animationDuration = `${Math.random() * 2 + 2}s`; // Mengacak durasi animasi
                 matrix.appendChild(span);
             }
         }
