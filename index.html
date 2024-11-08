@@ -5,22 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verifikasi Domain</title>
     <style>
-        /* Pengaturan Umum */
         body {
             font-family: "Courier New", monospace;
             background-color: #000;
-            color: #00FF00; /* Hijau untuk teks matrix */
+            color: #00FF00;
             margin: 0;
             padding: 0;
-            overflow: hidden; /* Menyembunyikan scrollbar */
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            text-align: center;
+            position: relative;
         }
 
-        /* Efek Matrix */
         .matrix {
             position: fixed;
             top: 0;
@@ -28,43 +26,29 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            z-index: -1; /* Di belakang form */
+            z-index: -1;
         }
 
         .matrix span {
-            color: #00FF00; /* Hijau untuk karakter matrix */
+            color: #00FF00;
             font-size: 16px;
             white-space: pre;
             animation: fall linear infinite;
             display: inline-block;
         }
 
-        /* Animasi efek jatuh */
         @keyframes fall {
             from { transform: translateY(-100vh); opacity: 1; }
             to { transform: translateY(100vh); opacity: 0; }
         }
 
-        /* Menyesuaikan durasi animasi berdasarkan elemen */
         .matrix span:nth-child(odd) { animation-duration: 3s; }
         .matrix span:nth-child(even) { animation-duration: 5s; }
 
-        /* Container Form */
-        .container {
-            width: 100%;
-            height: 100vh; /* Penuh layar */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Input Transparan */
         .input-container {
             position: relative;
             width: 100%;
-            max-width: 90%;
+            max-width: 100%;
             display: inline-block;
         }
 
@@ -72,14 +56,13 @@
             width: 100%;
             padding: 10px;
             font-size: 16px;
-            background-color: rgba(0, 0, 0, 0); /* Transparan */
+            background-color: rgba(0, 0, 0, 0);
             border: none;
             color: #00FF00;
             text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
-            text-align: center;
+            border-bottom: 2px solid #00FF00;
         }
 
-        /* Efek Matrix untuk Onion Suffix */
         .onion-suffix {
             position: absolute;
             right: 10px;
@@ -97,26 +80,22 @@
             50% { opacity: 0.8; }
         }
 
-        /* Input Kode terpisah setelah verifikasi domain */
-        #code-input {
+        .onion-suffix.hidden {
             display: none;
-            margin-top: 20px;
-            padding: 10px;
-            font-size: 16px;
-            background-color: rgba(0, 0, 0, 0.8);
-            border: 1px solid #00FF00;
-            color: #00FF00;
-            text-align: center;
         }
 
-        /* Hapus bagian link yang mengganggu */
-        #onion-link {
-            display: none; /* Menghilangkan link */
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            text-align: center;
+            z-index: 1;
         }
     </style>
 </head>
 <body>
-    <!-- Matrix Background -->
     <div class="matrix">
         <script>
             const matrix = document.querySelector('.matrix');
@@ -140,39 +119,29 @@
         </script>
     </div>
 
-    <!-- Form Verifikasi -->
     <div class="container">
-        <form action="#" method="get" id="verify-form">
-            <div class="input-container">
-                <input type="text" id="onion" name="onion" required placeholder="Masukkan domain Anda" oninput="toggleOnion()" autocomplete="off">
-                <span class="onion-suffix">.onion</span>
-            </div>
-            <input type="text" id="code-input" name="code" placeholder="Masukkan Kode" autocomplete="off">
-        </form>
+        <div class="input-container">
+            <input type="text" id="onion" name="onion" required>
+            <span class="onion-suffix" id="onion-suffix">.onion</span>
+        </div>
     </div>
 
     <script>
-        const validDomain = "blackangels"; // Ganti dengan domain yang valid
+        const onionInput = document.getElementById('onion');
+        const onionSuffix = document.getElementById('onion-suffix');
 
-        function toggleOnion() {
-            const onionInput = document.getElementById('onion').value.trim();
-            const onionSuffix = document.querySelector('.onion-suffix');
-            const codeInput = document.getElementById('code-input');
+        onionSuffix.addEventListener('click', function() {
+            onionSuffix.classList.add('hidden');
+            onionInput.focus();
+        });
 
-            // Jika pengguna mengetikkan domain yang valid, tampilkan input kode
-            if (onionInput.toLowerCase() === validDomain) {
-                codeInput.style.display = 'block'; // Menampilkan input kode
+        onionInput.addEventListener('input', function() {
+            if (onionInput.value.trim() !== '') {
+                onionSuffix.classList.add('hidden');
             } else {
-                codeInput.style.display = 'none'; // Sembunyikan input kode
+                onionSuffix.classList.remove('hidden');
             }
-
-            // Menghilangkan suffix .onion saat mengetik
-            if (onionInput.length > 0) {
-                onionSuffix.style.display = 'none';
-            } else {
-                onionSuffix.style.display = 'block'; // Tampilkan kembali .onion
-            }
-        }
+        });
     </script>
 </body>
 </html>
