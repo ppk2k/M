@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masukkan Domain</title>
+    <title>Matrix Karakter Jepang</title>
     <style>
         body {
             font-family: "Courier New", monospace;
@@ -11,11 +11,12 @@
             padding: 0;
             background-color: black;
             color: #00FF00;
+            overflow: hidden;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            overflow: hidden;
+            position: relative;
         }
 
         .matrix {
@@ -27,49 +28,41 @@
             z-index: -1;
         }
 
-        .matrix span {
-            color: #00FF00;
-            font-size: 16px;
-            white-space: pre;
-            display: inline-block;
-            position: absolute;
-        }
-
-        .input-container {
-            text-align: center;
+        .onion-text {
+            font-size: 50px;
+            font-family: Arial, sans-serif; /* Font biasa untuk tulisan .onion */
+            font-weight: bold;
+            cursor: pointer;
             z-index: 1;
-            position: relative;
-        }
-
-        input {
-            padding: 10px;
-            font-size: 18px;
-            width: 300px;
-            background-color: black;
-            color: #00FF00;
-            border: none;
-            outline: none;
         }
     </style>
 </head>
 <body>
+    <!-- Teks .onion yang dapat diklik untuk mengarah ke input.html -->
+    <div class="onion-text" id="onion-text">.onion</div>
+
+    <!-- Tempat untuk menampilkan karakter matrix -->
     <div class="matrix"></div>
 
-    <div class="input-container">
-        <input type="text" id="domain-input" placeholder="Masukkan domain .onion" autocomplete="off">
-        <p id="error-message" style="color:red;"></p>
-    </div>
-
     <script>
+        const onionText = document.getElementById('onion-text');
+
+        // Menambahkan event listener pada teks .onion untuk mengarahkan ke input.html saat diklik
+        onionText.addEventListener('click', function () {
+            window.location.href = 'input.html'; // Pindah ke input.html saat teks diklik
+        });
+
+        // Fungsi untuk membuat efek matrix
         const matrix = document.querySelector('.matrix');
         const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-        const charsExtended = chars.repeat(50);
+        const charsExtended = chars.repeat(50); // Menambahkan karakter Jepang hingga 1000 karakter
         const columnWidth = 20;
         const rowHeight = 30;
 
-        const columns = Math.floor(window.innerWidth / columnWidth);
-        const rows = Math.floor(window.innerHeight / rowHeight);
+        const columns = Math.floor(window.innerWidth / columnWidth);  
+        const rows = Math.floor(window.innerHeight / rowHeight);  
 
+        // Membuat kolom dan baris untuk efek matrix
         for (let i = 0; i < columns * 2; i++) {
             for (let j = 0; j < rows * 2; j++) {
                 const span = document.createElement('span');
@@ -80,31 +73,12 @@
             }
         }
 
+        // Memperbarui karakter setiap interval waktu untuk efek matrix
         setInterval(() => {
             document.querySelectorAll('.matrix span').forEach(span => {
                 span.textContent = charsExtended.charAt(Math.floor(Math.random() * charsExtended.length));
             });
-        }, 100);
-
-        // Fungsi untuk memvalidasi format domain .onion
-        function validateOnionDomain(domain) {
-            const regex = /^(?=.{16,40}$)[a-z2-7]{16,40}\.onion$/;
-            return regex.test(domain);
-        }
-
-        // Menangani input dan validasi
-        const inputField = document.getElementById('domain-input');
-        const errorMessage = document.getElementById('error-message');
-
-        inputField.addEventListener('input', function() {
-            const domain = inputField.value.trim();
-
-            if (domain && !validateOnionDomain(domain)) {
-                errorMessage.textContent = 'Format domain .onion tidak valid!';
-            } else {
-                errorMessage.textContent = '';
-            }
-        });
+        }, 100); // Mengubah karakter setiap 100ms
     </script>
 </body>
 </html>
