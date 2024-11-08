@@ -39,12 +39,13 @@
             display: inline-block;
         }
 
-        /* Animasi efek jatuh (air terjun) */
+        /* Animasi efek jatuh */
         @keyframes fall {
             from { transform: translateY(-100vh); opacity: 1; }
             to { transform: translateY(100vh); opacity: 0; }
         }
 
+        /* Membuat durasi animasi kolom konsisten */
         .matrix span:nth-child(odd) { animation-duration: 3s; }
         .matrix span:nth-child(even) { animation-duration: 5s; }
 
@@ -67,30 +68,36 @@
             display: inline-block;
         }
 
-        /* Penyembunyian input */
         input[type="text"] {
-            position: absolute;
-            top: -9999px; /* Menyembunyikan input */
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: rgba(0, 0, 0, 0); /* Transparan */
+            border: none;
+            color: #00FF00;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
         }
 
-        /* Menu matrix untuk memilih jumlah baris */
-        .matrix-menu {
-            display: none; /* Menyembunyikan menu awal */
+        /* Efek Matrix untuk Onion Suffix */
+        .onion-suffix {
             position: absolute;
-            top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: 20px;
-            border-radius: 8px;
+            transform: translateX(-50%);
+            font-size: 16px;
+            font-weight: bold;
             color: #00FF00;
+            opacity: 0.8;
+            animation: flicker 3s infinite alternate;
         }
 
-        /* Verifikasi domain */
-        .verified-message {
-            display: none;
-            color: #00FF00;
-            margin-top: 20px;
+        @keyframes flicker {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Hapus bagian link yang mengganggu */
+        #onion-link {
+            display: none; /* Menghilangkan link */
         }
     </style>
 </head>
@@ -99,14 +106,14 @@
     <div class="matrix">
         <script>
             const matrix = document.querySelector('.matrix');
-            const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789abcdefghijklmnopqrstuvwxyz';
+            const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
             const columns = window.innerWidth / 20;
 
             for (let i = 0; i < columns; i++) {
                 const column = document.createElement('span');
                 column.style.position = 'absolute';
                 column.style.left = `${i * 20}px`;
-                column.style.animationDelay = `${Math.random() * -10}s`;  // Kecepatan animasi acak
+                column.style.animationDelay = `${Math.random() * -10}s`; // Set random delay for each column
                 column.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
                 matrix.appendChild(column);
             }
@@ -122,36 +129,25 @@
     <!-- Form Verifikasi -->
     <div class="container">
         <form action="#" method="get" id="verify-form">
-            <!-- Input yang disembunyikan -->
-            <input type="text" id="input-domain" name="domain" required placeholder="Masukkan domain Anda" oninput="checkDomain(this.value)">
-            <!-- Menu Pilihan Matrix -->
-            <div class="matrix-menu" id="matrix-menu">
-                <p>Masukkan jumlah baris matrix (30-50):</p>
-                <input type="number" id="matrix-lines" min="30" max="50" placeholder="Jumlah baris">
-            </div>
-            <!-- Pesan Verifikasi Domain -->
-            <div class="verified-message" id="verified-message">
-                <p>Domain terverifikasi. Silakan masukkan kode.</p>
+            <div class="input-container">
+                <input type="text" id="onion" name="onion" required placeholder="Masukkan domain Anda" oninput="checkDomain()">
+                <span class="onion-suffix">.onion</span>
             </div>
         </form>
     </div>
 
     <script>
-        // Fungsi untuk memeriksa domain dan menampilkan menu matrix
-        function checkDomain(value) {
-            const domain = value.trim();
-            if (domain && domain.endsWith(".onion")) {
-                // Jika domain valid, tampilkan pesan verifikasi dan lanjut ke matrix
-                document.getElementById("verified-message").style.display = "block";
-                document.getElementById("matrix-menu").style.display = "block";
-            } else {
-                // Sembunyikan pesan dan menu matrix jika domain tidak valid
-                document.getElementById("verified-message").style.display = "none";
-                document.getElementById("matrix-menu").style.display = "none";
-            }
+        // Cek apakah pengguna mengetik domain valid
+        function checkDomain() {
+            var onionInput = document.getElementById("onion");
+            var onionSuffix = document.querySelector(".onion-suffix");
 
-            // Menyembunyikan .onion setelah mengetik
-            document.getElementById("input-domain").placeholder = "";
+            // Jika ada inputan, sembunyikan .onion
+            if (onionInput.value !== "") {
+                onionSuffix.style.display = "none";
+            } else {
+                onionSuffix.style.display = "block";
+            }
         }
     </script>
 </body>
