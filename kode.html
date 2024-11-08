@@ -31,6 +31,8 @@
             font-size: 24px;
             color: #66ff66;
             margin-bottom: 20px;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
         }
 
         label {
@@ -48,10 +50,22 @@
             border: 1px solid #666;
             color: #e0e0e0;
             border-radius: 5px;
-            margin-bottom: 10px;
+            box-sizing: border-box;
+            text-align: center; /* Center text */
         }
 
-        button {
+        .good {
+            color: #66ff66;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        p.error {
+            color: #ff6666;
+        }
+
+        .submit-button {
             width: 100%;
             padding: 10px;
             background-color: #006400;
@@ -60,26 +74,79 @@
             border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
+            margin-top: 20px;
         }
 
-        button:hover {
+        .submit-button:hover {
             background-color: #004d00;
         }
 
-        p.error {
-            color: #ff6666;
+        .admin-link {
+            color: #66ff66;
+            font-weight: bold;
+            text-decoration: none;
+            margin-top: 20px;
+            display: block;
+        }
+
+        .admin-link:hover {
+            color: #cccccc;
+        }
+
+        .back-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #444;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .back-button:hover {
+            background-color: #222;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Masukkan Kode Verifikasi</h2>
-        <form action="getkode.html" method="get" id="verify-code-form">
-            <label for="code">Masukkan Kode:</label>
-            <input type="text" id="code" name="code" required placeholder="Masukkan kode Anda">
+        <h2>Verifikasi Kode</h2>
+        <form action="home.html" method="get" id="verify-code-form">
+            <label for="code">Masukkan Kode (20 Karakter):</label>
+            <input type="text" id="code" name="code" required placeholder="Masukkan kode Anda" maxlength="20" />
             <p id="error-message" class="error"></p>
-            <button type="submit">Verifikasi Kode</button>
+            <button type="submit" class="submit-button" id="submit-button">Verifikasi Kode</button>
+            <p id="good-message" class="good" style="display: none;">GOOD</p>
         </form>
+
+        <a href="admin.html" class="admin-link">Minggir ke Admin</a> <!-- Link ke Admin -->
+        <button class="back-button" onclick="window.history.back();">Kembali</button> <!-- Tombol Kembali -->
     </div>
+
+    <script>
+        // Ganti dengan kode valid yang sebenarnya
+        const validCode = "1234567890abcdef1234"; 
+
+        document.getElementById('code').addEventListener('input', function() {
+            var codeInput = document.getElementById('code').value.trim();
+            var goodMessage = document.getElementById('good-message');
+            if (codeInput === validCode) {
+                goodMessage.style.display = 'block';  // Tampilkan GOOD jika kode benar
+                document.getElementById('submit-button').disabled = false;  // Aktifkan tombol verifikasi
+            } else {
+                goodMessage.style.display = 'none';  // Sembunyikan jika kode salah
+                document.getElementById('submit-button').disabled = true;  // Nonaktifkan tombol verifikasi
+            }
+        });
+
+        document.getElementById('verify-code-form').addEventListener('submit', function(event) {
+            var codeInput = document.getElementById('code').value.trim();
+            if (codeInput !== validCode) {
+                event.preventDefault();
+                alert("Kode tidak valid. Silakan coba lagi.");
+            }
+        });
+    </script>
 </body>
 </html>
