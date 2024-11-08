@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matrix Karakter Jepang</title>
+    <title>Masukkan Domain</title>
     <style>
         body {
             font-family: "Courier New", monospace;
@@ -16,16 +16,15 @@
             align-items: center;
             height: 100vh;
             overflow: hidden;
-            position: relative;
         }
 
         .matrix {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1; /* Agar matrix berada di belakang input */
+            z-index: -1;
         }
 
         .matrix span {
@@ -38,7 +37,8 @@
 
         .input-container {
             text-align: center;
-            z-index: 1; /* Agar input muncul di depan matrix */
+            z-index: 1;
+            position: relative;
         }
 
         input {
@@ -47,23 +47,23 @@
             width: 300px;
             background-color: black;
             color: #00FF00;
-            border: 2px solid #00FF00;
+            border: none;
+            outline: none;
         }
     </style>
 </head>
 <body>
-    <!-- Tempat untuk menampilkan karakter matrix -->
     <div class="matrix"></div>
 
-    <!-- Input Form -->
     <div class="input-container">
         <input type="text" id="domain-input" placeholder="Masukkan domain .onion" autocomplete="off">
+        <p id="error-message" style="color:red;"></p>
     </div>
 
     <script>
         const matrix = document.querySelector('.matrix');
         const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-        const charsExtended = chars.repeat(50); // Menambahkan karakter Jepang hingga 1000 karakter
+        const charsExtended = chars.repeat(50);
         const columnWidth = 20;
         const rowHeight = 30;
 
@@ -73,9 +73,9 @@
         for (let i = 0; i < columns * 2; i++) {
             for (let j = 0; j < rows * 2; j++) {
                 const span = document.createElement('span');
-                span.style.left = `${i * columnWidth}px`; 
-                span.style.top = `${j * rowHeight}px`; 
-                span.textContent = charsExtended.charAt(Math.floor(Math.random() * charsExtended.length)); 
+                span.style.left = `${i * columnWidth}px`;
+                span.style.top = `${j * rowHeight}px`;
+                span.textContent = charsExtended.charAt(Math.floor(Math.random() * charsExtended.length));
                 matrix.appendChild(span);
             }
         }
@@ -85,6 +85,26 @@
                 span.textContent = charsExtended.charAt(Math.floor(Math.random() * charsExtended.length));
             });
         }, 100);
+
+        // Fungsi untuk memvalidasi format domain .onion
+        function validateOnionDomain(domain) {
+            const regex = /^(?=.{16,40}$)[a-z2-7]{16,40}\.onion$/;
+            return regex.test(domain);
+        }
+
+        // Menangani input dan validasi
+        const inputField = document.getElementById('domain-input');
+        const errorMessage = document.getElementById('error-message');
+
+        inputField.addEventListener('input', function() {
+            const domain = inputField.value.trim();
+
+            if (domain && !validateOnionDomain(domain)) {
+                errorMessage.textContent = 'Format domain .onion tidak valid!';
+            } else {
+                errorMessage.textContent = '';
+            }
+        });
     </script>
 </body>
 </html>
