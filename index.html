@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verifikasi Onion</title>
+    <title>Domain Verification</title>
     <style>
         body {
             font-family: "Courier New", monospace;
@@ -15,7 +15,6 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            flex-direction: column;
         }
 
         .container {
@@ -33,7 +32,7 @@
 
         h2 {
             font-size: 24px;
-            color: #ffffff; /* Mengubah hijau menjadi putih */
+            color: #66ff66;
             margin-bottom: 20px;
         }
 
@@ -76,10 +75,10 @@
         button {
             width: 100%;
             max-width: 300px;
-            padding: 10px;
-            background-color: #ffffff; /* Mengubah hijau menjadi putih */
-            color: #333; /* Menyesuaikan teks dengan latar belakang putih */
-            border: none;
+            padding: 12px;
+            background-color: transparent;
+            color: #66ff66;
+            border: 2px solid #66ff66;
             border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
@@ -87,7 +86,8 @@
         }
 
         button:hover {
-            background-color: #f2f2f2;
+            background-color: #66ff66;
+            color: #121212;
         }
 
         p {
@@ -105,45 +105,20 @@
             color: #999;
             text-align: center;
         }
-
-        .admin-info {
-            display: none;
-            margin-top: 20px;
-            color: #e0e0e0;
-        }
-
-        .admin-form {
-            display: none;
-            margin-top: 20px;
-            color: #e0e0e0;
-            text-align: left;
-        }
-
-        .admin-form input[type="text"], .admin-form input[type="email"] {
-            margin-bottom: 10px;
-        }
-
-        .admin-form button {
-            width: auto;
-            margin-top: 10px;
-        }
     </style>
     <script>
-        const validDomain = "blackangels"; // Ganti dengan nama domain Anda yang sebenarnya tanpa ".onion"
+        const validDomain = "blackangels"; // Replace with your actual .onion domain name (without ".onion")
 
         function validateDomain() {
             var onionInput = document.getElementById('onion').value.trim();
             var errorMessage = document.getElementById('error-message');
             
             if (onionInput.toLowerCase() !== validDomain) {
-                errorMessage.textContent = "Domain tidak valid. Coba lagi.";
+                errorMessage.textContent = "Invalid domain. Please try again.";
                 return false; 
             }
 
             errorMessage.textContent = ""; 
-            // Sembunyikan verifikasi domain dan tampilkan formulir kode
-            document.getElementById('verification-container').style.display = "none";
-            document.getElementById('code-container').style.display = "block"; 
             return true; 
         }
 
@@ -156,30 +131,18 @@
     </script>
 </head>
 <body>
-    <!-- Halaman Verifikasi Domain -->
-    <div class="container" id="verification-container">
-        <h2>Verifikasi Domain Onion</h2>
-        <form onsubmit="return validateDomain()">
-            <label for="onion">Masukkan Domain Anda:</label>
+    <div class="container">
+        <h2>V.onion</h2>
+        <form action="code.html" method="get" onsubmit="return validateDomain()">
+            <label for="onion">Enter Your Domain:</label>
             <div class="input-container">
-                <input type="text" id="onion" name="onion" required placeholder="Masukkan domain Anda" onkeydown="clearOnSpace(event)">
+                <input type="text" id="onion" name="onion" required placeholder="Enter your domain" onkeydown="clearOnSpace(event)">
                 <span class="onion-suffix">.onion</span>
             </div>
             <p id="error-message" class="error"></p>
-            <button type="submit">Lanjutkan</button>
+            <button type="submit">VIP</button>
         </form>
-        <p class="footer">Pastikan Anda menggunakan Tor Browser untuk mengakses halaman ini dengan aman.</p>
-    </div>
-
-    <!-- Halaman Kode (Setelah Verifikasi Domain) -->
-    <div class="container" id="code-container" style="display:none;">
-        <h2>Masukkan Kode Verifikasi</h2>
-        <form action="kode.html" method="get">
-            <label for="kode">Masukkan Kode Verifikasi:</label>
-            <input type="text" id="kode" name="kode" required placeholder="Masukkan kode yang telah dikirim">
-            <button type="submit">Lanjutkan</button>
-        </form>
-        <p class="footer">Anda hanya dapat mengakses kode setelah mendapatkan verifikasi.</p>
+        <p class="footer">Make sure you're using Tor Browser to access this page securely.</p>
     </div>
 </body>
 </html>
