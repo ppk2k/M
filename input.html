@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Verifikasi Domain</title>
+    <style>
+        body {
+            font-family: "Courier New", monospace;
+            background-color: black;
+            color: #00FF00;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .input-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            color: #00FF00;
+            background-color: transparent;
+            border: none;
+            border-bottom: 1px solid #00FF00;
+            outline: none;
+            text-align: center;
+        }
+
+        .onion-suffix {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: #00FF00;
+        }
+    </style>
+</head>
+<body>
+    <div class="input-container">
+        <input type="text" id="domain-input" placeholder="Masukkan domain" autocomplete="off">
+        <span class="onion-suffix">.onion</span>
+    </div>
+
+    <script>
+        document.getElementById('domain-input').addEventListener('focus', function() {
+            this.value = '';
+        });
+    </script>
+</body>
+</html>
