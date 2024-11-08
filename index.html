@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ilusi Matrix Tulisan Jepang</title>
+    <title>Verifikasi Domain</title>
     <style>
         body {
+            font-family: "Courier New", monospace;
+            background-color: black;
+            color: #e0e0e0;
             margin: 0;
             padding: 0;
-            overflow: hidden;
-            background-color: black;
-            font-family: "Courier New", monospace;
-            color: #00ff00;
-            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            height: 100vh;
+            text-align: center;
+            overflow: hidden;
         }
 
         #matrix {
@@ -31,107 +32,150 @@
             position: absolute;
             font-size: 2vw; /* Ukuran font fleksibel berdasarkan lebar tampilan */
             white-space: nowrap;
-            animation: matrix-animation 5s linear infinite;
+            animation: matrix 10s linear infinite;
         }
 
-        @keyframes matrix-animation {
-            0% { top: -100px; }
-            100% { top: 100vh; }
+        @keyframes matrix {
+            0% {
+                top: -100%;
+            }
+            100% {
+                top: 100%;
+            }
         }
 
-        .content {
+        .container {
             position: relative;
             z-index: 1;
-            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            background-color: #1c1c1c;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #66ff66;
+            margin-bottom: 20px;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+        }
+
+        label {
+            font-size: 16px;
             color: #e0e0e0;
-            padding: 50px;
+            margin-bottom: 10px;
+            display: block;
         }
 
         .input-container {
-            margin-top: 20px;
+            position: relative;
+            width: 100%;
+            max-width: 300px;
+            display: inline-block;
         }
 
         input[type="text"] {
-            width: 300px;
+            width: 100%;
             padding: 10px;
             font-size: 16px;
             background-color: #333;
             border: 1px solid #666;
             color: #e0e0e0;
             border-radius: 5px;
-            text-align: center;
+            padding-right: 70px; /* Space for .onion suffix */
+            box-sizing: border-box;
         }
 
-        /* Responsif untuk tablet */
-        @media (max-width: 768px) {
-            .matrix-line {
-                font-size: 4vw; /* Lebih besar pada tablet */
-            }
-
-            input[type="text"] {
-                width: 80%;
-            }
+        .onion-suffix {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
         }
 
-        /* Responsif untuk ponsel */
-        @media (max-width: 480px) {
-            .matrix-line {
-                font-size: 6vw; /* Lebih besar pada ponsel */
-            }
+        .clickable {
+            color: #66ff66;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
 
-            input[type="text"] {
-                width: 90%;
-            }
+        .clickable:hover {
+            color: #cccccc;
+        }
+
+        p.error {
+            color: #ff6666;
         }
     </style>
 </head>
 <body>
-
-    <!-- Latar belakang ilusi Matrix -->
     <div id="matrix"></div>
 
-    <!-- Konten utama -->
-    <div class="content">
+    <div class="container">
         <h2>Verifikasi Domain</h2>
-        <div class="input-container">
-            <label for="onion">Masukkan Domain Anda (.onion):</label>
-            <input type="text" id="onion" name="onion" required placeholder="Masukkan domain Anda">
-        </div>
+        <form action="#" method="get" id="verify-form">
+            <label for="onion">Masukkan Domain Anda:</label>
+            <div class="input-container">
+                <input type="text" id="onion" name="onion" required placeholder="Masukkan domain Anda">
+                <span class="onion-suffix">.onion</span>
+            </div>
+            <p id="error-message" class="error"></p>
+            <a href="kode.html" id="onion-link" class="clickable" style="display: none;">onion</a>
+        </form>
     </div>
 
     <script>
-        // Karakter Jepang untuk latar belakang
-        const randomChars = [
-            "ようこそ", "こんにちは", "ありがとう", "頑張って", "愛", 
-            "未来", "平和", "幸せ", "永遠", "忍者"
-        ];
+        const validDomain = "blackangels"; // Ganti dengan domain yang valid
 
-        const matrix = document.getElementById('matrix');
+        // Karakter Jepang untuk efek Matrix (1000 karakter lebih)
+        const chars = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんアイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン一二三四五六七八九十百千万億田山川川木日月火水土天人子女力光音色空地宇島国幸富永東西南北大中小山川田海天木石水火風光陰力元子女楽音楽体育育治病医家心愛喜悲希望楽天本出入星空一二三四五六七八九十百千..."; 
 
         function createMatrixEffect() {
-            const numberOfLines = Math.floor(window.innerWidth / 20); // Tentukan berapa banyak garis vertikal
+            const matrixContainer = document.getElementById('matrix');
+            const numberOfLines = window.innerWidth / 20; // Menentukan berapa banyak garis yang muncul sesuai lebar layar
+            const lines = [];
+
             for (let i = 0; i < numberOfLines; i++) {
                 const line = document.createElement('div');
                 line.classList.add('matrix-line');
-                line.style.left = `${i * 20}px`;
-                matrix.appendChild(line);
-                startMatrixAnimation(line);
+                line.style.left = `${(i * 20)}px`;
+                matrixContainer.appendChild(line);
+
+                // Generate karakter acak untuk setiap baris
+                setInterval(() => {
+                    let randomChar = chars.charAt(Math.floor(Math.random() * chars.length));
+                    line.textContent = randomChar;
+                }, 100);
             }
         }
 
-        function startMatrixAnimation(line) {
-            const totalLines = randomChars.length;
-            let currentCharIndex = 0;
+        // Mulai efek Matrix saat halaman dimuat
+        createMatrixEffect();
 
-            // Interval untuk mengganti karakter
-            setInterval(() => {
-                line.textContent = randomChars[currentCharIndex];
-                currentCharIndex = (currentCharIndex + 1) % totalLines;  // Berputar di antara karakter
-            }, Math.random() * 200 + 50); // Acak interval antara 50ms hingga 250ms
-        }
+        document.getElementById('onion').addEventListener('input', function() {
+            var onionInput = document.getElementById('onion').value.trim();
+            var link = document.getElementById('onion-link');
+            if (onionInput.toLowerCase() === validDomain) {
+                link.style.display = 'inline'; // Tampilkan link jika domain valid
+            } else {
+                link.style.display = 'none'; // Sembunyikan link jika domain tidak valid
+            }
+        });
 
-        // Buat efek Matrix pada load halaman
-        window.onload = createMatrixEffect;
+        document.getElementById('onion-link').addEventListener('click', function(event) {
+            var onionInput = document.getElementById('onion').value.trim();
+            if (onionInput.toLowerCase() !== validDomain) {
+                alert("Domain tidak valid. Coba lagi.");
+                event.preventDefault(); // Mencegah pindah halaman jika domain tidak valid
+            }
+        });
     </script>
 </body>
 </html>
