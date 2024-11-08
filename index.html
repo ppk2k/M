@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matrix Karakter Jepang - Masukkan Domain</title>
+    <title>Matrix Karakter Jepang - Masukkan Domain atau Info</title>
     <style>
         body {
             font-family: "Courier New", monospace;
             margin: 0;
             padding: 0;
-            background-color: black;
+            background-color: transparent;
             color: #00FF00; /* Warna hijau neon untuk teks */
             height: 100vh;
             display: flex;
@@ -40,7 +40,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 10px;
+            font-size: 40px; /* Ukuran font onion yang besar */
             font-family: 'Courier New', monospace;
             color: #00FF00; /* Warna hijau neon untuk teks */
             pointer-events: none; /* Menghindari gangguan pada klik */
@@ -52,18 +52,46 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            display: none;
+            display: block;
+            width: 80%;
+            max-width: 400px;
         }
 
         input {
             padding: 10px;
             font-size: 18px;
-            width: 300px;
+            width: 100%;
             background-color: black;
             color: #00FF00;
-            border: 2px solid #00FF00;
+            border: none;
         }
 
+        .info-container {
+            background-color: rgba(0, 0, 0, 0.7); /* Latar belakang sedikit gelap untuk info */
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        /* Responsif untuk perangkat kecil */
+        @media (max-width: 768px) {
+            .onion {
+                font-size: 30px; /* Ukuran font lebih kecil pada perangkat kecil */
+            }
+
+            .input-container input {
+                width: 250px; /* Lebar input lebih kecil pada perangkat kecil */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .onion {
+                font-size: 24px; /* Ukuran font lebih kecil pada ponsel */
+            }
+
+            .input-container input {
+                width: 200px; /* Lebar input lebih kecil pada ponsel */
+            }
+        }
     </style>
 </head>
 <body>
@@ -72,9 +100,9 @@
     <!-- Teks Onion yang akan tampil dengan efek matrix -->
     <div class="onion">.onion</div>
 
-    <!-- Input untuk memasukkan domain -->
+    <!-- Input untuk memasukkan domain dan informasi -->
     <div class="input-container">
-        <input type="text" id="domain-input" placeholder="Masukkan domain .onion" autocomplete="off">
+        <input type="text" id="input" placeholder="Masukkan Domain .onion atau Info" autocomplete="off">
     </div>
 
     <script>
@@ -110,12 +138,12 @@
         document.querySelector('.onion').addEventListener('click', function() {
             document.querySelector('.onion').style.display = 'none'; // Sembunyikan teks .onion
             document.querySelector('.input-container').style.display = 'block'; // Tampilkan input
-            document.getElementById('domain-input').focus(); // Fokus pada input
+            document.getElementById('input').focus(); // Fokus pada input
         });
 
         // Fungsi untuk menyembunyikan input dan mengembalikan teks .onion jika pengguna mengklik di luar input
         document.addEventListener('click', function(e) {
-            const inputField = document.getElementById('domain-input');
+            const inputField = document.getElementById('input');
             if (!inputField.contains(e.target) && !e.target.classList.contains('onion')) {
                 document.querySelector('.input-container').style.display = 'none'; // Sembunyikan input
                 document.querySelector('.onion').style.display = 'block'; // Tampilkan kembali teks .onion
@@ -124,7 +152,7 @@
         });
 
         // Deteksi jika domain valid dan ambil nilai input
-        document.getElementById('domain-input').addEventListener('input', function() {
+        document.getElementById('input').addEventListener('input', function() {
             const input = this.value;
             const validDomain = /^[a-zA-Z0-9-]{2,256}\.onion$/;  // Pola domain valid .onion
             if (validDomain.test(input)) {
@@ -132,10 +160,16 @@
             } else {
                 console.log('Domain tidak valid');
             }
+
+            // Fungsi untuk menampilkan dan menghapus info setelah ketikan
+            if(input.trim() !== '') {
+                // Hapus input setelah mengetik
+                this.value = '';
+            }
         });
 
         // Jika Enter ditekan, input akan dihapus dan .onion muncul kembali
-        document.getElementById('domain-input').addEventListener('keydown', function(e) {
+        document.getElementById('input').addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 this.value = '';  // Kosongkan input
                 document.querySelector('.onion').style.display = 'block';  // Tampilkan kembali .onion
