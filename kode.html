@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verifikasi Kode</title>
+    <title>コードの確認</title>
     <style>
         body {
             font-family: "Courier New", monospace;
@@ -43,7 +43,7 @@
         }
 
         input[type="text"] {
-            width: 300px; /* Ukuran yang pas untuk 20 karakter */
+            width: 300px;
             padding: 10px;
             font-size: 16px;
             background-color: #333;
@@ -51,7 +51,7 @@
             color: #e0e0e0;
             border-radius: 5px;
             box-sizing: border-box;
-            text-align: center; /* Center text */
+            text-align: center;
             margin-bottom: 20px;
         }
 
@@ -112,32 +112,53 @@
 </head>
 <body>
     <div class="container">
-        <h2>Verifikasi Kode</h2>
+        <h2>コードの確認</h2>
         <form id="verify-code-form">
-            <label for="code">Masukkan Kode (20 Karakter):</label>
-            <input type="text" id="code" name="code" required placeholder="Masukkan kode Anda" maxlength="20" />
+            <label for="code">コードを入力してください（20文字）：</label>
+            <input type="text" id="code" name="code" required placeholder="コードを入力" maxlength="20" />
             <p id="error-message" class="error"></p>
-            <p id="good-message" class="good" style="display: none;">GOOD</p>
-            <a href="admin.html" class="Service-link">Service</a>
+            <p id="good-message" class="good" style="display: none;">良い</p>
+            <a href="admin.html" class="admin-link">サービス</a>
         </form>
     </div>
 
     <script>
-        // Ganti dengan kode valid yang sebenarnya
-        const validCode = "z1u5x9l8v7r2t6g3s0w, q4a3m9p1z7t8r0w5d6c, b2y5g1j9u4n7v0p6s3x, a3f7w1t5x2v9z8r6q4s, n8m1r7u9c5g3z0v6s4t, t4r1c3f5g7v8m2u9s6x, b9t5p7g6u0s2z3v8r4y, j4y1r5x7p9v2b6z3t0w, w7b2v5z9r4f1g8x6s3t, s5v8j3u2p7r9t1w6g0z, g1f6w8t3z9r5x2p0s7v, z7m3p6r1u5t9f8v2b4w, u9t3r7g1v6s5x0z8w2p, b0g5v8r3u7s1t2x9p4y, f3w6t9x7v2r0s8p5z1u, y1p6g7z2t9v3r0w5f8x, t5g1w9v6r8x7u2p0z3f, p0r3x7g5v9t1w8z2s6u, f7v3p9z5x2r1t8g6w0u, v3g9w8t5r6p2s7f1z0u"; 
+        // Kode valid yang disembunyikan
+        const validCode = "abv777z8h2w3n9a0d1f"; 
 
+        // Fungsi untuk mengacak karakter input dan menampilkan karakter Jepang
+        function randomizeInput(input) {
+            const possibleChars = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよわをん";
+            let randomizedCode = "";
+            for (let i = 0; i < input.length; i++) {
+                // Menggantikan setiap karakter dengan karakter acak dari karakter Jepang
+                randomizedCode += possibleChars.charAt(Math.floor(Math.random() * possibleChars.length));
+            }
+            return randomizedCode;
+        }
+
+        // Event listener untuk input pengguna
         document.getElementById('code').addEventListener('input', function() {
             var codeInput = document.getElementById('code').value.trim();
             var goodMessage = document.getElementById('good-message');
-            if (codeInput.length === 20) {  // Periksa jika panjang kode tepat 20 karakter
+
+            // Jika panjang input sudah 20 karakter
+            if (codeInput.length === 20) {
+                // Input yang dimasukkan oleh pengguna diacak dan ditampilkan dalam karakter Jepang
+                let randomizedInput = randomizeInput(codeInput);
+                document.getElementById('code').value = randomizedInput;  // Menampilkan karakter acak di input
+
+                // Verifikasi apakah kode yang dimasukkan sesuai dengan kode yang valid
                 if (codeInput === validCode) {
-                    goodMessage.style.display = 'block';  // Tampilkan GOOD jika kode benar
-                    window.location.href = "home.html";  // Lanjutkan ke home.html jika kode benar
+                    goodMessage.style.display = 'block';  // Tampilkan pesan GOOD jika kode benar
+                    setTimeout(function() {
+                        window.location.href = "home.html";  // Arahkan ke halaman home setelah beberapa detik
+                    }, 500); 
                 } else {
-                    goodMessage.style.display = 'none';  // Sembunyikan jika kode salah
+                    goodMessage.style.display = 'none';  // Tidak tampilkan pesan GOOD jika kode salah
                 }
             } else {
-                goodMessage.style.display = 'none';  // Sembunyikan jika kode tidak lengkap (kurang atau lebih dari 20)
+                goodMessage.style.display = 'none';  // Tidak tampilkan pesan GOOD jika panjang kode tidak tepat
             }
         });
     </script>
