@@ -3,99 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verifikasi Domain dengan Ilusi Matrix</title>
+    <title>Verifikasi Domain - Matrix</title>
     <style>
         body {
             font-family: "Courier New", monospace;
-            background-color: black;
-            color: #00ff00;
+            background-color: #121212;
+            color: #e0e0e0;
             margin: 0;
             padding: 0;
-            overflow: hidden; /* Mencegah scrollbar */
-            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            height: 100vh;
+            text-align: center;
             position: relative;
+            overflow: hidden;
         }
 
-        /* Animasi untuk latar belakang matrix */
+        /* Matrix Effect */
         .matrix-background {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1; /* Menempatkan di belakang elemen lainnya */
+            z-index: -1;
             font-size: 16px;
             color: green;
-            animation: matrix 5s linear infinite;
+            animation: matrix-animation 1s linear infinite;
             white-space: nowrap;
             overflow: hidden;
         }
 
-        /* Karakter Jepang untuk matrix */
-        .matrix-background span {
+        @keyframes matrix-animation {
+            0% { opacity: 0.1; }
+            100% { opacity: 1; }
+        }
+
+        .matrix-text {
             display: inline-block;
-            animation: fall 0.5s infinite;
+            animation: fall 0.1s linear infinite;
         }
 
+        /* Animasi untuk karakter yang jatuh */
         @keyframes fall {
-            0% {
-                opacity: 0.1;
-                transform: translateY(-100px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(100vh); /* Menurunkan karakter ke bawah */
-            }
+            0% { opacity: 0.1; transform: translateY(-100vh); }
+            100% { opacity: 1; transform: translateY(100vh); }
         }
 
-        @keyframes matrix {
-            0% {
-                left: 0;
-            }
-            100% {
-                left: -100%;
-            }
-        }
-
+        /* Form Input */
         .container {
+            z-index: 10;
             position: relative;
-            text-align: center;
-            z-index: 1;
+            width: 90%;
             max-width: 400px;
             padding: 20px;
-            background-color: rgba(0, 0, 0, 0.7); /* Latar belakang transparan */
+            background-color: rgba(0, 0, 0, 0.7); /* Transparan */
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
-
-        h2 {
-            font-size: 24px;
-            color: #66ff66;
-            margin-bottom: 20px;
-        }
-
-        label {
-            font-size: 16px;
-            color: #e0e0e0;
-            margin-bottom: 10px;
-            display: block;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5); /* Efek highlight */
         }
 
         input[type="text"] {
             width: 100%;
             padding: 10px;
             font-size: 16px;
-            background-color: #333;
+            background-color: transparent; /* Transparan */
             border: 1px solid #666;
-            color: #00ff00;
+            color: #e0e0e0;
             border-radius: 5px;
-            text-align: center;
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 1; /* Pastikan input di atas matrix */
+            box-sizing: border-box;
+            font-family: "Courier New", monospace;
         }
 
         .onion-suffix {
@@ -115,60 +92,70 @@
             cursor: pointer;
         }
 
-        .clickable:hover {
-            color: #cccccc;
-        }
-
         p.error {
             color: #ff6666;
         }
     </style>
 </head>
 <body>
+    <div class="matrix-background" id="matrix-background"></div>
 
-<!-- Matrix Animasi -->
-<div class="matrix-background">
-    <!-- Karakter Jepang acak yang akan ditampilkan -->
-    <span>あ</span><span>い</span><span>う</span><span>え</span><span>お</span><span>か</span><span>き</span>
-    <span>く</span><span>け</span><span>こ</span><span>さ</span><span>し</span><span>す</span>
-    <span>せ</span><span>そ</span><span>た</span><span>ち</span><span>つ</span><span>て</span>
-    <!-- Karakter lainnya bisa ditambahkan di sini -->
-</div>
+    <div class="container">
+        <h2>Verifikasi Domain</h2>
+        <form action="#" method="get" id="verify-form">
+            <label for="onion">Masukkan Domain Anda:</label>
+            <div class="input-container">
+                <input type="text" id="onion" name="onion" required placeholder="Masukkan domain Anda">
+                <span class="onion-suffix">.onion</span>
+            </div>
+            <p id="error-message" class="error"></p>
+            <a href="kode.html" id="onion-link" class="clickable" style="display: none;">onion</a>
+        </form>
+    </div>
 
-<div class="container">
-    <h2>Verifikasi Domain</h2>
-    <form action="#" method="get" id="verify-form">
-        <label for="onion">Masukkan Domain Anda:</label>
-        <div class="input-container">
-            <input type="text" id="onion" name="onion" required placeholder="Masukkan domain Anda">
-            <span class="onion-suffix">.onion</span>
-        </div>
-        <p id="error-message" class="error"></p>
-        <a href="kode.html" id="onion-link" class="clickable" style="display: none;">onion</a>
-    </form>
-</div>
+    <script>
+        const validDomain = "blackangels"; // Ganti dengan domain yang valid
+        const matrixBackground = document.getElementById("matrix-background");
 
-<script>
-    const validDomain = "blackangels"; // Ganti dengan domain yang valid
+        // Buat karakter acak untuk matrix
+        const characters = ['あ', 'い', 'う', 'え', 'お', 'か', 'き', 'く', 'け', 'こ', 'さ', 'し', 'す', 'せ', 'そ'];
+        
+        function generateMatrixEffect() {
+            matrixBackground.innerHTML = ''; // Reset matrix
 
-    document.getElementById('onion').addEventListener('input', function() {
-        var onionInput = document.getElementById('onion').value.trim();
-        var link = document.getElementById('onion-link');
-        if (onionInput.toLowerCase() === validDomain) {
-            link.style.display = 'inline'; // Tampilkan link jika domain valid
-        } else {
-            link.style.display = 'none'; // Sembunyikan link jika domain tidak valid
+            // Menambahkan 30 baris dengan karakter acak
+            for (let i = 0; i < 30; i++) {
+                let row = '';
+                for (let j = 0; j < window.innerWidth / 20; j++) { // Jumlah kolom berdasarkan lebar layar
+                    const randomChar = characters[Math.floor(Math.random() * characters.length)];
+                    row += `<span class="matrix-text">${randomChar}</span>`;
+                }
+                matrixBackground.innerHTML += `<div>${row}</div>`;
+            }
         }
-    });
 
-    document.getElementById('onion-link').addEventListener('click', function(event) {
-        var onionInput = document.getElementById('onion').value.trim();
-        if (onionInput.toLowerCase() !== validDomain) {
-            alert("Domain tidak valid. Coba lagi.");
-            event.preventDefault(); // Mencegah pindah halaman jika domain tidak valid
-        }
-    });
-</script>
+        // Perbarui efek matrix setiap saat
+        window.addEventListener('resize', generateMatrixEffect);
+        window.addEventListener('load', generateMatrixEffect);
 
+        // Validasi domain
+        document.getElementById('onion').addEventListener('input', function() {
+            var onionInput = document.getElementById('onion').value.trim();
+            var link = document.getElementById('onion-link');
+            if (onionInput.toLowerCase() === validDomain) {
+                link.style.display = 'inline'; // Tampilkan link jika domain valid
+            } else {
+                link.style.display = 'none'; // Sembunyikan link jika domain tidak valid
+            }
+        });
+
+        document.getElementById('onion-link').addEventListener('click', function(event) {
+            var onionInput = document.getElementById('onion').value.trim();
+            if (onionInput.toLowerCase() !== validDomain) {
+                alert("Domain tidak valid. Coba lagi.");
+                event.preventDefault(); // Mencegah pindah halaman jika domain tidak valid
+            }
+        });
+    </script>
 </body>
 </html>
