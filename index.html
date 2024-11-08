@@ -3,17 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matrix Hujan Lebat dengan Efek Rainbow</title>
+    <title>Matrix Diam dengan Karakter Berubah</title>
     <style>
         body {
             font-family: "Courier New", monospace;
             margin: 0;
             padding: 0;
             background-color: black;
-            color: #00FF00; /* Warna teks hijau */
+            color: #00FF00; /* Warna hijau neon untuk teks */
             overflow: hidden;
             height: 100vh;
-            width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -31,60 +30,21 @@
         }
 
         .matrix span {
-            color: #00FF00; /* Karakter tetap hijau */
+            color: #00FF00; /* Warna hijau neon untuk karakter */
             font-size: 16px;
             white-space: pre;
             display: inline-block;
             position: absolute;
-            animation: flow linear infinite, rainbow 5s infinite; /* Menambahkan efek rainbow */
         }
 
-        /* Animasi untuk efek air mengalir */
-        @keyframes flow {
+        /* Animasi untuk efek berubah karakter */
+        @keyframes changeCharacter {
             0% {
-                transform: translateY(-100vh); /* Mulai dari luar layar di atas */
                 opacity: 1;
             }
             100% {
-                transform: translateY(100vh); /* Bergerak ke bawah hingga keluar layar */
-                opacity: 0; /* Karakter menghilang setelah keluar layar */
+                opacity: 0.1;
             }
-        }
-
-        /* Efek rainbow pada karakter */
-        @keyframes rainbow {
-            0% {
-                color: #FF0000; /* Merah */
-            }
-            14% {
-                color: #FF7F00; /* Oranye */
-            }
-            28% {
-                color: #FFFF00; /* Kuning */
-            }
-            42% {
-                color: #00FF00; /* Hijau */
-            }
-            57% {
-                color: #0000FF; /* Biru */
-            }
-            71% {
-                color: #4B0082; /* Indigo */
-            }
-            85% {
-                color: #8B00FF; /* Violet */
-            }
-            100% {
-                color: #FF0000; /* Kembali ke merah */
-            }
-        }
-
-        /* Membuat gerakan air mengalir dengan kecepatan bervariasi */
-        .matrix span:nth-child(odd) {
-            animation-duration: 2s; /* Lebih cepat */
-        }
-        .matrix span:nth-child(even) {
-            animation-duration: 3s; /* Lebih lambat */
         }
 
     </style>
@@ -95,30 +55,29 @@
     <script>
         const matrix = document.querySelector('.matrix');
         const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-
-        // Menyesuaikan jumlah kolom dengan lebar layar perangkat
+        const charsExtended = chars.repeat(50); // Mengulang karakter Jepang untuk lebih banyak variasi
         const columnWidth = 20; // Lebar setiap kolom karakter
         const rowHeight = 30; // Tinggi setiap baris karakter
 
         const columns = Math.floor(window.innerWidth / columnWidth);  // Menyesuaikan jumlah kolom dengan lebar layar
         const rows = Math.floor(window.innerHeight / rowHeight);  // Menyesuaikan jumlah baris dengan tinggi layar
 
-        // Membuat kolom dan baris untuk efek matrix air mengalir
-        for (let i = 0; i < columns; i++) {
-            for (let j = 0; j < rows; j++) {
+        // Membuat kolom dan baris untuk efek matrix
+        for (let i = 0; i < columns * 2; i++) { // Ganda untuk lebih banyak karakter
+            for (let j = 0; j < rows * 2; j++) { // Ganda untuk lebih banyak karakter yang muncul
                 const span = document.createElement('span');
-                span.style.left = `${i * columnWidth}px`;  // Posisi kolom
-                span.style.top = `${j * rowHeight}px`;  // Posisi baris
-                span.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
-                span.style.animationDelay = `${Math.random() * 5}s`; // Mengacak waktu animasi
+                span.style.left = `${i * columnWidth}px`; // Tentukan posisi horizontal karakter
+                span.style.top = `${j * rowHeight}px`; // Tentukan posisi vertikal karakter
+                span.textContent = charsExtended.charAt(Math.floor(Math.random() * charsExtended.length)); // Pilih karakter acak
+                span.style.animation = `changeCharacter 1s infinite`; // Buat karakter berubah setiap detik
                 matrix.appendChild(span);
             }
         }
 
-        // Memperbarui karakter setiap interval waktu untuk efek air mengalir
+        // Memperbarui karakter setiap interval waktu untuk efek berubah
         setInterval(() => {
             document.querySelectorAll('.matrix span').forEach(span => {
-                span.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
+                span.textContent = charsExtended.charAt(Math.floor(Math.random() * charsExtended.length));
             });
         }, 100); // Mengubah karakter setiap 100ms
     </script>
