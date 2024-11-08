@@ -15,6 +15,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            flex-direction: column;
         }
 
         .container {
@@ -32,7 +33,7 @@
 
         h2 {
             font-size: 24px;
-            color: #66ff66;
+            color: #ffffff; /* Mengubah hijau menjadi putih */
             margin-bottom: 20px;
         }
 
@@ -76,8 +77,8 @@
             width: 100%;
             max-width: 300px;
             padding: 10px;
-            background-color: #006400;
-            color: white;
+            background-color: #ffffff; /* Mengubah hijau menjadi putih */
+            color: #333; /* Menyesuaikan teks dengan latar belakang putih */
             border: none;
             border-radius: 5px;
             font-size: 16px;
@@ -86,7 +87,7 @@
         }
 
         button:hover {
-            background-color: #004d00;
+            background-color: #f2f2f2;
         }
 
         p {
@@ -104,6 +105,28 @@
             color: #999;
             text-align: center;
         }
+
+        .admin-info {
+            display: none;
+            margin-top: 20px;
+            color: #e0e0e0;
+        }
+
+        .admin-form {
+            display: none;
+            margin-top: 20px;
+            color: #e0e0e0;
+            text-align: left;
+        }
+
+        .admin-form input[type="text"], .admin-form input[type="email"] {
+            margin-bottom: 10px;
+        }
+
+        .admin-form button {
+            width: auto;
+            margin-top: 10px;
+        }
     </style>
     <script>
         const validDomain = "blackangels"; // Ganti dengan nama domain Anda yang sebenarnya tanpa ".onion"
@@ -118,6 +141,9 @@
             }
 
             errorMessage.textContent = ""; 
+            // Sembunyikan verifikasi domain dan tampilkan formulir kode
+            document.getElementById('verification-container').style.display = "none";
+            document.getElementById('code-container').style.display = "block"; 
             return true; 
         }
 
@@ -130,9 +156,10 @@
     </script>
 </head>
 <body>
-    <div class="container">
+    <!-- Halaman Verifikasi Domain -->
+    <div class="container" id="verification-container">
         <h2>Verifikasi Domain Onion</h2>
-        <form action="kode.html" method="get" onsubmit="return validateDomain()">
+        <form onsubmit="return validateDomain()">
             <label for="onion">Masukkan Domain Anda:</label>
             <div class="input-container">
                 <input type="text" id="onion" name="onion" required placeholder="Masukkan domain Anda" onkeydown="clearOnSpace(event)">
@@ -142,6 +169,17 @@
             <button type="submit">Lanjutkan</button>
         </form>
         <p class="footer">Pastikan Anda menggunakan Tor Browser untuk mengakses halaman ini dengan aman.</p>
+    </div>
+
+    <!-- Halaman Kode (Setelah Verifikasi Domain) -->
+    <div class="container" id="code-container" style="display:none;">
+        <h2>Masukkan Kode Verifikasi</h2>
+        <form action="kode.html" method="get">
+            <label for="kode">Masukkan Kode Verifikasi:</label>
+            <input type="text" id="kode" name="kode" required placeholder="Masukkan kode yang telah dikirim">
+            <button type="submit">Lanjutkan</button>
+        </form>
+        <p class="footer">Anda hanya dapat mengakses kode setelah mendapatkan verifikasi.</p>
     </div>
 </body>
 </html>
