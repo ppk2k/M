@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Domain Verification</title>
+    <title>Verifikasi Kode</title>
     <style>
         body {
             font-family: "Courier New", monospace;
@@ -31,8 +31,6 @@
             font-size: 24px;
             color: #66ff66;
             margin-bottom: 20px;
-            font-family: Arial, sans-serif;
-            font-weight: bold;
         }
 
         label {
@@ -40,13 +38,6 @@
             color: #e0e0e0;
             margin-bottom: 10px;
             display: block;
-        }
-
-        .input-container {
-            position: relative;
-            width: 100%;
-            max-width: 300px;
-            display: inline-block;
         }
 
         input[type="text"] {
@@ -57,23 +48,11 @@
             border: 1px solid #666;
             color: #e0e0e0;
             border-radius: 5px;
-            padding-right: 70px;
-            box-sizing: border-box;
-        }
-
-        .onion-suffix {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 16px;
-            font-weight: bold;
-            color: #fff;
+            margin-bottom: 10px;
         }
 
         button {
             width: 100%;
-            max-width: 300px;
             padding: 10px;
             background-color: #006400;
             color: white;
@@ -81,7 +60,6 @@
             border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
-            margin-top: 20px;
         }
 
         button:hover {
@@ -95,31 +73,13 @@
 </head>
 <body>
     <div class="container">
-        <h2>Domain Verification</h2>
-        <form action="getcode.html" method="get" id="verify-form">
-            <label for="onion">Masukkan Domain Anda:</label>
-            <div class="input-container">
-                <input type="text" id="onion" name="onion" required placeholder="Masukkan domain anda" />
-                <span class="onion-suffix">.onion</span>
-            </div>
+        <h2>Masukkan Kode Verifikasi</h2>
+        <form action="getkode.html" method="get" id="verify-code-form">
+            <label for="code">Masukkan Kode:</label>
+            <input type="text" id="code" name="code" required placeholder="Masukkan kode Anda">
             <p id="error-message" class="error"></p>
-            <button type="submit">Proceed</button>
+            <button type="submit">Verifikasi Kode</button>
         </form>
     </div>
-    <script>
-        document.getElementById('verify-form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Mencegah form untuk reload otomatis
-
-            const onionInput = document.getElementById('onion').value.trim();
-            const validDomain = "blackangels"; // Ganti dengan domain yang benar
-            const errorMessage = document.getElementById('error-message');
-
-            if (onionInput.toLowerCase() === validDomain) {
-                window.location.href = 'getcode.html'; // Pengalihan setelah domain valid
-            } else {
-                errorMessage.textContent = "Domain tidak valid. Silakan coba lagi.";
-            }
-        });
-    </script>
 </body>
 </html>
