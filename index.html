@@ -3,151 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verifikasi Domain</title>
+    <title>Ilusi Matrix Tulisan Jepang</title>
     <style>
         body {
-            font-family: "Courier New", monospace;
-            background-color: #121212;
-            color: #e0e0e0;
             margin: 0;
             padding: 0;
+            overflow: hidden;
+            background-color: black;
+            font-family: "Courier New", monospace;
+            color: #00ff00;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+        }
+
+        #matrix {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .matrix-line {
+            position: absolute;
+            font-size: 2vw; /* Ukuran font fleksibel berdasarkan lebar tampilan */
+            white-space: nowrap;
+            animation: matrix-animation 5s linear infinite;
+        }
+
+        @keyframes matrix-animation {
+            0% { top: -100px; }
+            100% { top: 100vh; }
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
             text-align: center;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 400px;
-            padding: 20px;
-            background-color: #1c1c1c;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
-
-        h2 {
-            font-size: 24px;
-            color: #66ff66;
-            margin-bottom: 20px;
-            font-family: Arial, sans-serif;
-            font-weight: bold;
-        }
-
-        label {
-            font-size: 16px;
             color: #e0e0e0;
-            margin-bottom: 10px;
-            display: block;
+            padding: 50px;
         }
 
         .input-container {
-            position: relative;
-            width: 100%;
-            max-width: 300px;
-            display: inline-block;
+            margin-top: 20px;
         }
 
         input[type="text"] {
-            width: 100%;
+            width: 300px;
             padding: 10px;
             font-size: 16px;
             background-color: #333;
             border: 1px solid #666;
             color: #e0e0e0;
             border-radius: 5px;
-            padding-right: 70px; /* Space for .onion suffix */
-            box-sizing: border-box;
+            text-align: center;
         }
 
-        .onion-suffix {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 16px;
-            font-weight: bold;
-            color: #fff;
+        /* Responsif untuk tablet */
+        @media (max-width: 768px) {
+            .matrix-line {
+                font-size: 4vw; /* Lebih besar pada tablet */
+            }
+
+            input[type="text"] {
+                width: 80%;
+            }
         }
 
-        .clickable {
-            color: #66ff66;
-            font-weight: bold;
-            text-decoration: none;
-            cursor: pointer;
-        }
+        /* Responsif untuk ponsel */
+        @media (max-width: 480px) {
+            .matrix-line {
+                font-size: 6vw; /* Lebih besar pada ponsel */
+            }
 
-        .clickable:hover {
-            color: #cccccc;
-        }
-
-        p.error {
-            color: #ff6666;
-        }
-
-        /* Ilusi ketik */
-        .input-fake {
-            color: transparent;
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            font-size: 16px;
-            font-family: 'Courier New', monospace;
-            pointer-events: none;
-            white-space: nowrap;
+            input[type="text"] {
+                width: 90%;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+
+    <!-- Latar belakang ilusi Matrix -->
+    <div id="matrix"></div>
+
+    <!-- Konten utama -->
+    <div class="content">
         <h2>Verifikasi Domain</h2>
-        <form action="#" method="get" id="verify-form">
-            <label for="onion">Masukkan Domain Anda:</label>
-            <div class="input-container">
-                <input type="text" id="onion" name="onion" required placeholder="Masukkan domain Anda">
-                <span class="onion-suffix">.onion</span>
-                <!-- Fake typing effect -->
-                <span class="input-fake" id="fake-input"></span>
-            </div>
-            <p id="error-message" class="error"></p>
-            <a href="kode.html" id="onion-link" class="clickable" style="display: none;">onion</a>
-        </form>
+        <div class="input-container">
+            <label for="onion">Masukkan Domain Anda (.onion):</label>
+            <input type="text" id="onion" name="onion" required placeholder="Masukkan domain Anda">
+        </div>
     </div>
 
     <script>
-        const validDomain = "blackangels"; // Ganti dengan domain yang valid
+        // Karakter Jepang untuk latar belakang
+        const randomChars = [
+            "ようこそ", "こんにちは", "ありがとう", "頑張って", "愛", 
+            "未来", "平和", "幸せ", "永遠", "忍者"
+        ];
 
-        // Update the fake typing illusion and display the actual domain
-        document.getElementById('onion').addEventListener('input', function() {
-            var onionInput = document.getElementById('onion').value.trim();
-            var link = document.getElementById('onion-link');
-            var fakeInput = document.getElementById('fake-input');
+        const matrix = document.getElementById('matrix');
 
-            // Create an illusion of typing using Japanese characters (or any characters you choose)
-            const illusionCharacters = 'あいうえおかきくけこさしすせそたちつてと';
-            var illusionText = '';
-
-            for (let i = 0; i < onionInput.length; i++) {
-                illusionText += illusionCharacters.charAt(Math.floor(Math.random() * illusionCharacters.length));
+        function createMatrixEffect() {
+            const numberOfLines = Math.floor(window.innerWidth / 20); // Tentukan berapa banyak garis vertikal
+            for (let i = 0; i < numberOfLines; i++) {
+                const line = document.createElement('div');
+                line.classList.add('matrix-line');
+                line.style.left = `${i * 20}px`;
+                matrix.appendChild(line);
+                startMatrixAnimation(line);
             }
+        }
 
-            fakeInput.textContent = illusionText + '.onion'; // Set fake input illusion
+        function startMatrixAnimation(line) {
+            const totalLines = randomChars.length;
+            let currentCharIndex = 0;
 
-            if (onionInput.toLowerCase() === validDomain) {
-                link.style.display = 'inline'; // Tampilkan link jika domain valid
-            } else {
-                link.style.display = 'none'; // Sembunyikan link jika domain tidak valid
-            }
-        });
+            // Interval untuk mengganti karakter
+            setInterval(() => {
+                line.textContent = randomChars[currentCharIndex];
+                currentCharIndex = (currentCharIndex + 1) % totalLines;  // Berputar di antara karakter
+            }, Math.random() * 200 + 50); // Acak interval antara 50ms hingga 250ms
+        }
 
-        document.getElementById('onion-link').addEventListener('click', function(event) {
-            var onionInput = document.getElementById('onion').value.trim();
-            if (onionInput.toLowerCase() !== validDomain) {
-                alert("Domain tidak valid. Coba lagi.");
-                event.preventDefault(); // Mencegah pindah halaman jika domain tidak valid
-            }
-        });
+        // Buat efek Matrix pada load halaman
+        window.onload = createMatrixEffect;
     </script>
 </body>
 </html>
