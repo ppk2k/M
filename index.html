@@ -9,10 +9,10 @@
         body {
             font-family: "Courier New", monospace;
             background-color: #000;
-            color: #00FF00;
+            color: #00FF00; /* Hijau untuk teks matrix */
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            overflow: hidden; /* Menyembunyikan scrollbar */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -28,11 +28,11 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            z-index: -1;
+            z-index: -1; /* Di belakang form */
         }
 
         .matrix span {
-            color: #00FF00;
+            color: #00FF00; /* Hijau untuk karakter matrix */
             font-size: 16px;
             white-space: pre;
             animation: fall linear infinite;
@@ -48,49 +48,86 @@
         .matrix span:nth-child(odd) { animation-duration: 3s; }
         .matrix span:nth-child(even) { animation-duration: 5s; }
 
-        /* Form penuh lebar */
+        /* Container Form */
         .container {
-            width: 100%;
-            padding: 0 10px; /* Menyisakan sedikit ruang di kiri dan kanan */
-            background-color: rgba(0, 0, 0, 0); /* Transparan */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh; /* Penuh layar */
+            width: 90%;  /* Menambahkan jarak samping untuk perangkat kecil */
+            height: 90vh; /* Menambahkan jarak atas/bawah */
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0); /* Transparan untuk form */
+            border-radius: 8px;
+            position: relative;
             z-index: 1;
         }
 
-        /* Input penuh lebar */
+        /* Input Transparan */
         .input-container {
+            position: relative;
             width: 100%;
-            max-width: 100%; /* Maksimal lebar penuh perangkat */
-            display: flex;
-            justify-content: center;
+            max-width: 100%;
+            display: inline-block;
         }
 
         input[type="text"] {
             width: 100%;
-            padding: 15px;
-            font-size: 18px;
-            background-color: rgba(0, 0, 0, 0);
+            padding: 10px;
+            font-size: 16px;
+            background-color: rgba(0, 0, 0, 0); /* Transparan */
             border: none;
             color: #00FF00;
             text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
-            outline: none;
         }
 
+        /* Efek Matrix untuk Onion Suffix */
         .onion-suffix {
-            font-size: 18px;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            font-weight: bold;
             color: #00FF00;
-            margin-left: 5px;
             opacity: 0.8;
             animation: flicker 3s infinite alternate;
+            font-family: "Courier New", monospace; /* Pastikan font sama dengan input */
         }
 
         @keyframes flicker {
             0%, 100% { opacity: 0.3; }
             50% { opacity: 0.8; }
         }
+
+        /* Hapus bagian link yang mengganggu */
+        #onion-link {
+            display: none; /* Menghilangkan link */
+        }
+
+        /* Media Query untuk Perangkat Mobile */
+        @media (max-width: 600px) {
+            .container {
+                width: 90%;  /* Lebar 90% untuk perangkat kecil */
+                margin-left: 5%; /* Memberikan jarak kiri 5% */
+                margin-right: 5%; /* Memberikan jarak kanan 5% */
+            }
+        }
+
+        /* Media Query untuk Tablet */
+        @media (min-width: 601px) and (max-width: 1024px) {
+            .container {
+                width: 80%;  /* Lebar 80% untuk tablet */
+                margin-left: 10%; /* Memberikan jarak kiri 10% */
+                margin-right: 10%; /* Memberikan jarak kanan 10% */
+            }
+        }
+
+        /* Media Query untuk Desktop */
+        @media (min-width: 1025px) {
+            .container {
+                width: 60%;  /* Lebar 60% untuk perangkat desktop */
+                margin-left: 20%; /* Memberikan jarak kiri 20% */
+                margin-right: 20%; /* Memberikan jarak kanan 20% */
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -120,10 +157,12 @@
 
     <!-- Form Verifikasi -->
     <div class="container">
-        <div class="input-container">
-            <input type="text" id="onion" name="onion" required placeholder="Masukkan domain Anda">
-            <span class="onion-suffix">.onion</span>
-        </div>
+        <form action="#" method="get" id="verify-form">
+            <div class="input-container">
+                <input type="text" id="onion" name="onion" required placeholder="Masukkan domain Anda">
+                <span class="onion-suffix">.onion</span>
+            </div>
+        </form>
     </div>
 </body>
 </html>
