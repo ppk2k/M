@@ -65,22 +65,6 @@
             color: #ff6666;
         }
 
-        .submit-button {
-            width: 100%;
-            padding: 10px;
-            background-color: #006400;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-
-        .submit-button:hover {
-            background-color: #004d00;
-        }
-
         .admin-link {
             color: #66ff66;
             font-weight: bold;
@@ -112,12 +96,11 @@
 <body>
     <div class="container">
         <h2>Verifikasi Kode</h2>
-        <form action="home.html" method="get" id="verify-code-form">
+        <form id="verify-code-form">
             <label for="code">Masukkan Kode (20 Karakter):</label>
             <input type="text" id="code" name="code" required placeholder="Masukkan kode Anda" maxlength="20" />
             <p id="error-message" class="error"></p>
-            <button type="submit" class="submit-button" id="submit-button" disabled>Verifikasi Kode</button> <!-- Sesuaikan dengan tombol di index -->
-            <p id="good-message" class="good" style="display: none;">GOOD</p>
+            <p id="good-message" class="good" style="display: none;">GOOD</p> <!-- Tampilkan GOOD jika kode benar -->
         </form>
 
         <a href="admin.html" class="admin-link">Minggir ke Admin</a> <!-- Link ke Admin -->
@@ -130,20 +113,15 @@
         document.getElementById('code').addEventListener('input', function() {
             var codeInput = document.getElementById('code').value.trim();
             var goodMessage = document.getElementById('good-message');
-            if (codeInput === validCode) {
-                goodMessage.style.display = 'block';  // Tampilkan GOOD jika kode benar
-                document.getElementById('submit-button').disabled = false;  // Aktifkan tombol verifikasi
+            if (codeInput.length === 20) {  // Periksa jika panjang kode tepat 20 karakter
+                if (codeInput === validCode) {
+                    goodMessage.style.display = 'block';  // Tampilkan GOOD jika kode benar
+                    window.location.href = "home.html";  // Lanjutkan ke home.html jika kode benar
+                } else {
+                    goodMessage.style.display = 'none';  // Sembunyikan jika kode salah
+                }
             } else {
-                goodMessage.style.display = 'none';  // Sembunyikan jika kode salah
-                document.getElementById('submit-button').disabled = true;  // Nonaktifkan tombol verifikasi
-            }
-        });
-
-        document.getElementById('verify-code-form').addEventListener('submit', function(event) {
-            var codeInput = document.getElementById('code').value.trim();
-            if (codeInput !== validCode) {
-                event.preventDefault();
-                alert("Kode tidak valid. Silakan coba lagi.");
+                goodMessage.style.display = 'none';  // Sembunyikan jika kode tidak lengkap (kurang atau lebih dari 20)
             }
         });
     </script>
