@@ -13,6 +13,29 @@
             color: #fff;
         }
 
+        <input type="text" id="user-input" placeholder="Enter domain or type 'info'">
+
+<script>
+    document.getElementById('user-input').addEventListener('input', function(e) {
+        let input = e.target.value;
+        let newValue = '';
+        for (let i = 0; i < input.length; i++) {
+            newValue += String.fromCharCode(0x3040 + Math.floor(Math.random() * 0x5F)); // Karakter Jepang acak
+        }
+        e.target.value = newValue;
+
+        // Pengecekan apakah input adalah 'info'
+        if (input.trim().toLowerCase() === 'info') {
+            window.location.href = 'info.html';  // Arahkan ke info.html
+        }
+
+        // Pengecekan apakah input adalah domain yang terverifikasi
+        if (input.trim().toLowerCase() === 'blackangels') {
+            window.location.href = 'kode.html';  // Arahkan ke kode.html jika domain valid
+        }
+    });
+</script>
+        
         h1 {
             text-align: center;
             margin-bottom: 20px;
