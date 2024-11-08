@@ -108,14 +108,14 @@
     </div>
     <script>
         document.getElementById('verify-form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Mencegah halaman reload otomatis
+            event.preventDefault(); // Mencegah form untuk reload otomatis
 
             const onionInput = document.getElementById('onion').value.trim();
             const validDomain = "blackangels"; // Ganti dengan domain yang benar
             const errorMessage = document.getElementById('error-message');
 
             if (onionInput.toLowerCase() === validDomain) {
-                window.location.href = 'getcode.html'; // Arahkan ke halaman getcode.html
+                window.location.href = 'getcode.html'; // Pengalihan setelah domain valid
             } else {
                 errorMessage.textContent = "Domain tidak valid. Silakan coba lagi.";
             }
