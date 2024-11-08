@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verifikasi Domain & Matrix</title>
+    <title>Verifikasi Domain</title>
     <style>
         /* Pengaturan Umum */
         body {
@@ -44,6 +44,9 @@
             from { transform: translateY(-100vh); opacity: 1; }
             to { transform: translateY(100vh); opacity: 0; }
         }
+
+        .matrix span:nth-child(odd) { animation-duration: 3s; }
+        .matrix span:nth-child(even) { animation-duration: 5s; }
 
         /* Container Form */
         .container {
@@ -100,54 +103,67 @@
 </head>
 <body>
     <!-- Matrix Background -->
-    <div class="matrix" id="matrix"></div>
+    <div class="matrix" id="matrix-container">
+        <script>
+            const matrix = document.querySelector('.matrix');
+            const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+            
+            // Hitung kolom berdasarkan lebar layar
+            const columnWidth = 20;
+            const columns = Math.floor(window.innerWidth / columnWidth);
+            
+            // Tentukan tinggi per baris dan hitung baris berdasarkan tinggi layar
+            const rowHeight = 20; // Menyesuaikan tinggi per baris
+            const numRows = Math.ceil(window.innerHeight / rowHeight);
+
+            // Menghasilkan elemen matrix dan menempatkannya
+            for (let i = 0; i < columns; i++) {
+                for (let j = 0; j < numRows; j++) {
+                    const column = document.createElement('span');
+                    column.style.position = 'absolute';
+                    column.style.left = `${i * columnWidth}px`; // Menyesuaikan kolom
+                    column.style.top = `${j * rowHeight}px`; // Menyesuaikan baris
+                    column.style.animationDelay = `${Math.random() * -10}s`;
+                    column.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
+                    matrix.appendChild(column);
+                }
+            }
+
+            setInterval(() => {
+                document.querySelectorAll('.matrix span').forEach(span => {
+                    span.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
+                });
+            }, 100);
+        </script>
+    </div>
 
     <!-- Form Verifikasi -->
     <div class="container">
         <form action="#" method="get" id="verify-form">
             <div class="input-container">
-                <input type="text" id="onion" name="onion" required placeholder="Masukkan domain atau kode verifikasi">
+                <input type="text" id="onion" name="onion" required placeholder="Masukkan domain Anda" oninput="toggleOnion()">
                 <span class="onion-suffix" id="onion-suffix">.onion</span>
             </div>
         </form>
     </div>
 
     <script>
-        const matrix = document.getElementById('matrix');
-        const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-        let matrixColumns = window.innerWidth / 20;
+        function toggleOnion() {
+            const input = document.getElementById("onion");
+            const onionSuffix = document.getElementById("onion-suffix");
+            
+            if (input.value.trim() !== "") {
+                onionSuffix.style.display = "none"; // Sembunyikan .onion saat mengetik
+            } else {
+                onionSuffix.style.display = "inline"; // Tampilkan .onion jika input kosong
+            }
 
-        // Fungsi untuk membuat barisan matrix
-        function createMatrix() {
-            matrix.innerHTML = ''; // Reset matrix setiap kali
-            for (let i = 0; i < matrixColumns; i++) {
-                const column = document.createElement('span');
-                column.style.position = 'absolute';
-                column.style.left = `${i * 20}px`;
-                column.style.animationDelay = `${Math.random() * -10}s`;
-                column.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
-                matrix.appendChild(column);
+            // Jika input berisi domain valid, lakukan verifikasi domain (misalnya)
+            if (input.value.trim().endsWith(".onion")) {
+                // Logika untuk verifikasi domain, misalnya panggil API atau proses lainnya
+                console.log("Domain valid");
             }
         }
-
-        // Event untuk menangani ketikan di input
-        const onionInput = document.getElementById('onion');
-        const onionSuffix = document.getElementById('onion-suffix');
-        onionInput.addEventListener('input', function() {
-            const inputValue = onionInput.value.trim();
-            if (inputValue) {
-                // Ketika mengetik, domain atau kode hilang dan matrix barisan dapat diubah
-                onionSuffix.style.display = 'none'; // Sembunyikan .onion ketika mengetik
-                matrixColumns = Math.max(window.innerWidth / 20, inputValue.length / 2); // Menyesuaikan barisan matrix
-                createMatrix();
-            } else {
-                // Tampilkan .onion jika tidak ada input
-                onionSuffix.style.display = 'inline';
-            }
-        });
-
-        // Inisialisasi matrix pertama kali
-        createMatrix();
     </script>
 </body>
 </html>
