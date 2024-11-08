@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verifikasi Domain dan Matrix</title>
+    <title>Verifikasi Domain & Matrix</title>
     <style>
         /* Pengaturan Umum */
         body {
@@ -18,7 +18,6 @@
             align-items: center;
             height: 100vh;
             text-align: center;
-            flex-direction: column; /* Agar form memanjang ke bawah */
         }
 
         /* Efek Matrix */
@@ -46,31 +45,23 @@
             to { transform: translateY(100vh); opacity: 0; }
         }
 
-        .matrix span:nth-child(odd) { animation-duration: 3s; }
-        .matrix span:nth-child(even) { animation-duration: 5s; }
-
         /* Container Form */
         .container {
             width: 100%;
-            height: 90vh;
+            height: 100vh; /* Penuh layar */
             padding: 20px;
-            background-color: rgba(0, 0, 0, 0);
+            background-color: rgba(0, 0, 0, 0); /* Transparan untuk form */
             border-radius: 8px;
             position: relative;
             z-index: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center; /* Memastikan form berada di tengah */
-            align-items: center;
         }
 
         /* Input Transparan */
         .input-container {
             position: relative;
             width: 100%;
-            max-width: 400px; /* Menyesuaikan lebar input */
+            max-width: 100%;
             display: inline-block;
-            margin-bottom: 20px;
         }
 
         input[type="text"] {
@@ -81,7 +72,6 @@
             border: none;
             color: #00FF00;
             text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
-            outline: none;
         }
 
         /* Efek Matrix untuk Onion Suffix */
@@ -95,7 +85,6 @@
             color: #00FF00;
             opacity: 0.8;
             animation: flicker 3s infinite alternate;
-            cursor: pointer;
         }
 
         @keyframes flicker {
@@ -107,28 +96,31 @@
         #onion-link {
             display: none; /* Menghilangkan link */
         }
-
-        .input-container span {
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #00FF00;
-            font-size: 16px;
-            opacity: 0.8;
-        }
-
     </style>
 </head>
 <body>
     <!-- Matrix Background -->
-    <div class="matrix">
-        <script>
-            const matrix = document.querySelector('.matrix');
-            const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-            const columns = window.innerWidth / 20;
+    <div class="matrix" id="matrix"></div>
 
-            for (let i = 0; i < columns; i++) {
+    <!-- Form Verifikasi -->
+    <div class="container">
+        <form action="#" method="get" id="verify-form">
+            <div class="input-container">
+                <input type="text" id="onion" name="onion" required placeholder="Masukkan domain atau kode verifikasi">
+                <span class="onion-suffix" id="onion-suffix">.onion</span>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const matrix = document.getElementById('matrix');
+        const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+        let matrixColumns = window.innerWidth / 20;
+
+        // Fungsi untuk membuat barisan matrix
+        function createMatrix() {
+            matrix.innerHTML = ''; // Reset matrix setiap kali
+            for (let i = 0; i < matrixColumns; i++) {
                 const column = document.createElement('span');
                 column.style.position = 'absolute';
                 column.style.left = `${i * 20}px`;
@@ -136,73 +128,26 @@
                 column.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
                 matrix.appendChild(column);
             }
-
-            setInterval(() => {
-                document.querySelectorAll('.matrix span').forEach(span => {
-                    span.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
-                });
-            }, 100);
-        </script>
-    </div>
-
-    <!-- Form Verifikasi -->
-    <div class="container">
-        <form action="#" method="get" id="verify-form">
-            <div class="input-container">
-                <span class="onion-suffix" onclick="showPlaceholder()">.onion</span>
-                <input type="text" id="input-field" name="input" required placeholder="Masukkan domain atau kode verifikasi" />
-            </div>
-        </form>
-    </div>
-
-    <script>
-        const validDomain = "matrix"; // Ganti dengan domain yang valid
-        const validCode = "1234"; // Ganti dengan kode yang valid
-        const inputField = document.getElementById('input-field');
-        const form = document.getElementById('verify-form');
-
-        let isDomainValid = false; // Flag untuk mengecek apakah domain sudah valid
-
-        // Fungsi untuk menampilkan placeholder setelah klik .onion
-        function showPlaceholder() {
-            if (!isDomainValid) {
-                inputField.setAttribute('placeholder', 'Masukkan domain Anda');
-            } else {
-                inputField.setAttribute('placeholder', 'Masukkan kode verifikasi');
-            }
         }
 
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            var inputValue = inputField.value.trim();
-
-            if (!isDomainValid) {
-                // Mengecek domain
-                if (inputValue.toLowerCase() === validDomain) {
-                    isDomainValid = true;
-                    inputField.setAttribute('placeholder', 'Masukkan kode verifikasi');
-                    alert("Domain valid! Sekarang masukkan kode verifikasi.");
-                } else {
-                    alert("Domain tidak valid. Coba lagi.");
-                }
+        // Event untuk menangani ketikan di input
+        const onionInput = document.getElementById('onion');
+        const onionSuffix = document.getElementById('onion-suffix');
+        onionInput.addEventListener('input', function() {
+            const inputValue = onionInput.value.trim();
+            if (inputValue) {
+                // Ketika mengetik, domain atau kode hilang dan matrix barisan dapat diubah
+                onionSuffix.style.display = 'none'; // Sembunyikan .onion ketika mengetik
+                matrixColumns = Math.max(window.innerWidth / 20, inputValue.length / 2); // Menyesuaikan barisan matrix
+                createMatrix();
             } else {
-                // Mengecek kode verifikasi setelah domain valid
-                if (inputValue === validCode) {
-                    alert("Verifikasi Berhasil!");
-                    // Arahkan ke halaman lain setelah verifikasi berhasil
-                    // window.location.href = "halaman_setelah_verifikasi.html";
-                } else {
-                    alert("Kode verifikasi tidak valid. Coba lagi.");
-                }
+                // Tampilkan .onion jika tidak ada input
+                onionSuffix.style.display = 'inline';
             }
         });
 
-        // Menghilangkan teks domain ketika mulai mengetik
-        inputField.addEventListener('input', function() {
-            if (inputField.value.length > 0 && !isDomainValid) {
-                inputField.setAttribute('placeholder', 'Masukkan kode verifikasi');
-            }
-        });
+        // Inisialisasi matrix pertama kali
+        createMatrix();
     </script>
 </body>
 </html>
