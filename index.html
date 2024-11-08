@@ -40,7 +40,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 36px;
+            font-size: 20px;
             font-family: 'Courier New', monospace;
             color: #C0C0C0; /* Warna abu-abu untuk membedakan dengan teks matrix */
             pointer-events: auto; /* Agar dapat diklik */
@@ -66,6 +66,15 @@
             outline: none;
         }
 
+        .info {
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #00FF00;
+            text-align: center;
+            display: none; /* Mulai disembunyikan */
+        }
     </style>
 </head>
 <body>
@@ -75,6 +84,18 @@
     <!-- Input untuk memasukkan domain -->
     <div class="input-container">
         <input type="text" id="domain-input" placeholder="Masukkan domain .onion" autocomplete="off">
+    </div>
+
+    <!-- Area untuk informasi jika pengguna mengetik 'info' -->
+    <div class="info" id="info-box">
+        <h3>Info tentang Dark Web:</h3>
+        <p>
+            Dark Web adalah bagian dari internet yang tidak dapat diakses menggunakan mesin pencari biasa. Ini adalah area yang lebih tersembunyi dan sering kali digunakan untuk aktivitas yang lebih anonim.
+        </p>
+        <p>
+            Ditemukan pada 2000-an, Dark Web dikembangkan untuk memungkinkan komunikasi yang lebih aman dan anonim.
+        </p>
+        <!-- Anda bisa menambahkan lebih banyak info sesuai kebutuhan -->
     </div>
 
     <script>
@@ -123,14 +144,28 @@
             }
         });
 
-        // Deteksi jika domain valid dan ambil nilai input
+        // Fungsi untuk menampilkan info ketika mengetik 'info'
         document.getElementById('domain-input').addEventListener('input', function() {
-            const input = this.value;
+            const input = this.value.toLowerCase();
             const validDomain = /^[a-zA-Z0-9-]{2,256}\.onion$/;  // Pola domain valid .onion
+
+            // Setiap ketikan mengubah menjadi karakter Jepang acak
+            let randomChar = chars.charAt(Math.floor(Math.random() * chars.length));
+            let outputText = input.split('').map((char) => randomChar).join('');
+            this.value = outputText;
+
+            if (input === 'info') {
+                document.getElementById('info-box').style.display = 'block'; // Tampilkan info
+                this.value = ''; // Kosongkan input setelah mengetik info
+            } else {
+                document.getElementById('info-box').style.display = 'none'; // Sembunyikan info
+            }
+
+            // Cek jika domain valid dan arahkan ke kode.html
             if (validDomain.test(input)) {
                 console.log('Domain valid:', input); // Jika valid, akan tercetak di konsol
-            } else {
-                console.log('Domain tidak valid');
+                // Ganti ini dengan pengalihan ke halaman lain
+                window.location.href = 'kode.html'; // Arahkan ke kode.html
             }
         });
 
