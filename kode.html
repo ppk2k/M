@@ -4,12 +4,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verification Code</title>
-    <link rel="stylesheet" href="styles/code.css"> <!-- Link to specific CSS for code -->
+    <style>
+        body {
+            font-family: "Courier New", monospace;
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 360px;
+            padding: 20px;
+            background-color: #1c1c1c;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #66ff66;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 16px;
+            color: #e0e0e0;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .input-container {
+            position: relative;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #333;
+            border: 1px solid #666;
+            color: #e0e0e0;
+            border-radius: 5px;
+            padding-right: 50px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            max-width: 300px;
+            padding: 10px;
+            background-color: #006400;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background-color: #004d00;
+        }
+
+        p.error {
+            color: #ff6666;
+        }
+    </style>
+    <script>
+                const validCodes = ["A1b2C3d4E5", "F6g7H8i9J0", "K1l2M3n4O5", "P6q7R8s9T0", "U1v2W3x4Y5", "Z6a7B8c9D0"];
+
+        function verifyCode(event) {
+            event.preventDefault();
+            const userCode = document.getElementById('verification-code').value.trim();
+            const errorMessage = document.getElementById('error-message');
+
+            if (validCodes.includes(userCode)) {
+                window.location.href = "home.html";
+            } else {
+                errorMessage.textContent = "Invalid verification code. Please try again.";
+            }
+        }
+    </script>
 </head>
 <body>
 
     <div class="container">
-        <h2>Verification Code</h2>
+        <h2>Enter Your Verification Code</h2>
         <form id="code-form" onsubmit="verifyCode(event)">
             <label for="verification-code">Enter Code:</label>
             <div class="input-container">
@@ -20,6 +109,5 @@
         <p class="error" id="error-message"></p>
     </div>
 
-    <script src="scripts/code.js"></script> <!-- Link to specific JS for code -->
 </body>
 </html>
