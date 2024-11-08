@@ -9,12 +9,13 @@
             font-family: "Courier New", monospace;
             margin: 0;
             padding: 0;
-            background-color: transparent; /* Latar belakang transparan */
+            background-color: transparent;
             color: #00FF00;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            position: relative;
         }
 
         .input-container {
@@ -25,10 +26,10 @@
             padding: 10px;
             font-size: 18px;
             width: 300px;
-            background-color: transparent; /* Latar belakang transparan */
+            background-color: transparent;
             color: #00FF00;
-            border: none; /* Tidak ada border sama sekali */
-            outline: none; /* Menghapus outline */
+            border: none;
+            outline: none;
         }
 
     </style>
@@ -41,12 +42,12 @@
     <script>
         const inputField = document.getElementById('domain-input');
 
-        // Fungsi untuk mendeteksi domain .onion dan menghilangkan tulisan
-        inputField.addEventListener('focus', function() {
-            inputField.placeholder = ""; // Hilangkan placeholder saat klik
+        // Fungsi untuk mendeteksi dan menghapus input
+        inputField.addEventListener('input', function() {
+            inputField.value = ''; // Menghapus input saat mengetik
         });
 
-        // Fungsi untuk mengembalikan ke halaman index.html ketika klik di luar input
+        // Fungsi untuk mengembalikan halaman ke index.html saat klik di luar input
         document.body.addEventListener('click', function(event) {
             const inputContainer = document.querySelector('.input-container');
             if (!inputContainer.contains(event.target)) {
