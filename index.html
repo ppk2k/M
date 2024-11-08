@@ -40,7 +40,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 48px;
+            font-size: 10px;
             font-family: 'Courier New', monospace;
             color: #00FF00; /* Warna hijau neon untuk teks */
             pointer-events: none; /* Menghindari gangguan pada klik */
@@ -141,62 +141,6 @@
                 document.querySelector('.onion').style.display = 'block';  // Tampilkan kembali .onion
             }
         });
-    </script>
-</body>
-</html>dex: -1;
-        }
-
-        .onion-text {
-            font-size: 50px;
-            font-family: Arial, sans-serif; /* Font biasa untuk tulisan .onion */
-            font-weight: bold;
-            cursor: pointer;
-            z-index: 1;
-        }
-    </style>
-</head>
-<body>
-    <!-- Teks .onion yang dapat diklik untuk mengarah ke input.html -->
-    <div class="onion-text" id="onion-text">.onion</div>
-
-    <!-- Tempat untuk menampilkan karakter matrix -->
-    <div class="matrix"></div>
-
-    <script>
-        const onionText = document.getElementById('onion-text');
-
-        // Menambahkan event listener pada teks .onion untuk mengarahkan ke input.html saat diklik
-        onionText.addEventListener('click', function () {
-            window.location.href = 'input.html'; // Pindah ke input.html saat teks diklik
-        });
-
-        // Fungsi untuk membuat efek matrix
-        const matrix = document.querySelector('.matrix');
-        const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-        const charsExtended = chars.repeat(50); // Menambahkan karakter Jepang hingga 1000 karakter
-        const columnWidth = 20;
-        const rowHeight = 30;
-
-        const columns = Math.floor(window.innerWidth / columnWidth);  
-        const rows = Math.floor(window.innerHeight / rowHeight);  
-
-        // Membuat kolom dan baris untuk efek matrix
-        for (let i = 0; i < columns * 2; i++) {
-            for (let j = 0; j < rows * 2; j++) {
-                const span = document.createElement('span');
-                span.style.left = `${i * columnWidth}px`;
-                span.style.top = `${j * rowHeight}px`;
-                span.textContent = charsExtended.charAt(Math.floor(Math.random() * charsExtended.length));
-                matrix.appendChild(span);
-            }
-        }
-
-        // Memperbarui karakter setiap interval waktu untuk efek matrix
-        setInterval(() => {
-            document.querySelectorAll('.matrix span').forEach(span => {
-                span.textContent = charsExtended.charAt(Math.floor(Math.random() * charsExtended.length));
-            });
-        }, 100); // Mengubah karakter setiap 100ms
     </script>
 </body>
 </html>
