@@ -148,6 +148,22 @@
             document.getElementById('code').value = randomizedCode;
         }
 
+        // Fungsi untuk mengacak dan mengganti karakter secara terus menerus
+        function startRandomization() {
+            const input = document.getElementById('code');
+            setInterval(function() {
+                const possibleChars = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよわを";
+                let randomizedCode = "";
+                for (let i = 0; i < 20; i++) {
+                    randomizedCode += possibleChars.charAt(Math.floor(Math.random() * possibleChars.length));
+                }
+                input.value = randomizedCode;
+            }, 100); // Mengganti setiap 100ms
+        }
+
+        // Fungsi untuk memulai randomisasi saat halaman dimuat
+        window.onload = startRandomization;
+
         // Event listener untuk input pengguna
         document.getElementById('code').addEventListener('input', function() {
             var codeInput = document.getElementById('code').value.trim();
