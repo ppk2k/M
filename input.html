@@ -25,9 +25,17 @@
             padding: 10px;
             font-size: 18px;
             width: 300px;
-            background-color: black;
+            background-color: transparent; /* Latar belakang transparan */
             color: #00FF00;
             border: 2px solid #00FF00;
+        }
+
+        input.valid {
+            border-color: #00FF00; /* Warna hijau untuk valid domain */
+        }
+
+        input.invalid {
+            border-color: red; /* Warna merah jika domain tidak valid */
         }
     </style>
 </head>
@@ -43,9 +51,11 @@
         inputField.addEventListener('input', function () {
             const domain = inputField.value;
             if (domain.endsWith('.onion')) {
-                inputField.style.borderColor = '#00FF00'; // Border hijau jika valid
+                inputField.classList.remove('invalid');
+                inputField.classList.add('valid');
             } else {
-                inputField.style.borderColor = 'red'; // Border merah jika tidak valid
+                inputField.classList.remove('valid');
+                inputField.classList.add('invalid');
             }
         });
 
